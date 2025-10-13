@@ -1,0 +1,911 @@
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T19:54:24.091Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T19:54:24.130Z"}
+warn: [WARN] Intento de eliminar usuario con ID: 1007 {"timestamp":"2025-10-02T19:54:26.823Z"}
+info: [INFO] Usuario con ID 1007 (y su empleado/módulos) eliminados exitosamente. {"timestamp":"2025-10-02T19:54:26.882Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T19:54:26.893Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T19:54:26.901Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T21:38:15.814Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T21:38:15.856Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T21:38:39.718Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T21:38:39.727Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T21:43:32.697Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T21:43:32.717Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T21:47:44.310Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T21:47:44.357Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T21:54:36.187Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T21:54:36.233Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T22:45:46.484Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T22:45:46.685Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:02:26.697Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:02:26.889Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:04:53.796Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:04:53.827Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:09:58.033Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:09:58.081Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:21:30.150Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:21:30.192Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:32:59.301Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:32:59.350Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:55:56.612Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:55:56.871Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:56:00.089Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:56:00.152Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-02T23:57:38.907Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-02T23:57:38.966Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:00:45.731Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:00:45.767Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:00:51.750Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:00:51.760Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:07:44.769Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:07:44.819Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:07:44.837Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:07:44.873Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:11:52.282Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:11:52.309Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:12:30.798Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:12:30.837Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:12:51.382Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:12:51.402Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:28:29.141Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:28:29.205Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:30.282Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:30.341Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:31.105Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:31.114Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:31.898Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:31.913Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:33.667Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:33.677Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:34.444Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:34.454Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:29:42.270Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:29:42.286Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:46:43.582Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:46:43.775Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:46:45.335Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:46:45.344Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:50:15.474Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:50:15.523Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:50:17.600Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:50:17.611Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:51:17.103Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:51:17.148Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:51:24.696Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:51:24.710Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T00:51:33.671Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T00:51:33.677Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:02:27.350Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:02:27.393Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:02:38.355Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:02:38.384Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:06:14.871Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:06:15.061Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:16:36.821Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:16:36.871Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:19:12.424Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:19:12.489Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:21:35.218Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:21:35.290Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:22:56.800Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:22:56.860Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:23:31.505Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:23:31.524Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:23:32.332Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:23:32.353Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:30:14.919Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:30:14.974Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:43:19.936Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:43:19.972Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:43:49.300Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:43:49.324Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:46:54.620Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:46:54.642Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T01:48:22.695Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T01:48:22.713Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:03:42.317Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:03:42.346Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:12:26.796Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:12:26.830Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:15:57.870Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:15:57.889Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:18:30.329Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:18:30.362Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:20:29.884Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:20:29.913Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:20:31.046Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:20:31.053Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:30:20.190Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:30:20.229Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T02:30:43.851Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T02:30:43.875Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T03:13:41.252Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T03:13:41.271Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T03:52:44.589Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T03:52:44.679Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T04:11:22.617Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T04:11:22.650Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T04:11:26.378Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T04:11:26.390Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T04:19:19.791Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T04:19:19.858Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T04:39:41.509Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T04:39:41.541Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T04:46:22.525Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T04:46:22.542Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:08:16.103Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:08:16.119Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:19:59.318Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:19:59.414Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:20:18.615Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:20:18.632Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:21:18.441Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:21:18.718Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:38:07.066Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:38:07.270Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:42:37.294Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:42:37.582Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:52:03.973Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:52:04.019Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:56:39.323Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:56:39.705Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T05:58:21.989Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T05:58:22.039Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:07:22.538Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:07:22.567Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:07:24.353Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:07:24.360Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:18.796Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:18.817Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:20.864Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:20.874Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:32.345Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:32.359Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:34.290Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:34.303Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:46.182Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:46.190Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:08:48.245Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:08:48.252Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:09:13.036Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:09:13.047Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:09:15.319Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:09:15.335Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:12:19.027Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:12:19.093Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:12:20.874Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:12:20.889Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:14:52.481Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:14:52.506Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:14:54.462Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:14:54.466Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:16:14.617Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:16:14.637Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:16:16.332Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:16:16.340Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:18:20.754Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:18:20.776Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:20:27.546Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:20:27.583Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:20:28.349Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:20:28.358Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:20:30.397Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:20:30.408Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:33:43.959Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:33:44.135Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:36:54.325Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:36:54.399Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:39:53.930Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:39:53.969Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T06:45:36.580Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T06:45:36.618Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:26:26.535Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:26:26.562Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:29:23.458Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:29:23.482Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:33:08.342Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:33:08.367Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:34:02.250Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:34:02.282Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:34:44.273Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:34:44.487Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-03T17:34:58.584Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-03T17:34:58.638Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:34:58.652Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:34:58.661Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:36:13.251Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:36:13.292Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:36:45.451Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:36:45.501Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:37:40.476Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:37:40.560Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:38:00.283Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:38:00.294Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:41:41.458Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:41:41.489Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:44:28.514Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:44:28.557Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:45:05.585Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:45:05.594Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:46:22.784Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:46:22.822Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:47:13.639Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:47:13.678Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:49:13.228Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:49:13.283Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:50:28.976Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:50:29.016Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:51:10.683Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:51:10.711Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:52:00.661Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:52:00.683Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:53:02.699Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:53:02.726Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:57:24.006Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:57:24.060Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-03T17:57:33.275Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-03T17:57:33.317Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:57:33.332Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:57:33.341Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-03T17:57:39.412Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-03T17:57:39.434Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T17:57:39.446Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T17:57:39.456Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:01:40.795Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:01:40.840Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-03T18:01:45.226Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-03T18:01:45.297Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:01:45.309Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:01:45.333Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-03T18:04:09.189Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-03T18:04:09.374Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:04:09.391Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:04:09.412Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:04:47.340Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:04:47.392Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:05:11.402Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:05:11.438Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:05:21.617Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:05:21.632Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:22:02.452Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:22:02.470Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:22:20.058Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:22:20.071Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:23:04.309Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:23:04.342Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:29:45.383Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:29:45.410Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:31:08.965Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:31:08.990Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:31:50.557Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:31:50.578Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:32:34.389Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:32:34.435Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:32:46.221Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:32:46.235Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-03T18:42:05.234Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-03T18:42:05.261Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:17:15.888Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:17:15.923Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:17:32.101Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:17:32.107Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:17:47.281Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:17:47.288Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:20:23.982Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:20:24.011Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:20:33.975Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:20:33.983Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:20:49.635Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:20:49.644Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:37:15.409Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:37:15.505Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:59:12.421Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:59:12.449Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T04:59:58.182Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T04:59:58.225Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T05:05:05.627Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T05:05:05.729Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T05:38:06.622Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T05:38:06.693Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:09:59.429Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:09:59.512Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:12:08.852Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:12:08.904Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:12:30.522Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:12:30.531Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:21:17.516Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:21:17.723Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:21:23.136Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:21:23.149Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:24:55.208Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:24:55.233Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:25:04.715Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:25:04.727Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:26:45.053Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:26:45.132Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:27:11.255Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:27:11.264Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:30:44.624Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:30:44.661Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:34:27.741Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:34:27.775Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:35:18.708Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:35:18.787Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:37:04.866Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:37:04.908Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:38:46.337Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:38:46.380Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:41:07.341Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:41:07.415Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:41:23.026Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:41:23.040Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:41:41.056Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:41:41.114Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:41:53.917Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:41:53.925Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:42:50.010Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:42:50.059Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:44:06.246Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:44:06.353Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:44:13.967Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:44:13.974Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:49:41.876Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:49:41.899Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T06:50:39.852Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T06:50:39.881Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:00:50.912Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:00:50.942Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:01:15.747Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:01:15.756Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:01:19.060Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:01:19.069Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:01:25.020Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:01:25.027Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:01:50.166Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:01:50.189Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:02:34.953Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:02:35.001Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:05:16.730Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:05:16.803Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:07:42.913Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:07:42.933Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:09:32.441Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:09:32.475Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:10:39.291Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:10:39.320Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:11:46.133Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:11:46.158Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:11:59.695Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:11:59.707Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:12:44.944Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:12:44.973Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:14:12.760Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:14:12.838Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:14:50.248Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:14:50.272Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:17:00.533Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:17:00.566Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:44:22.695Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:44:22.718Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:50:11.286Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:50:11.477Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:50:52.877Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:50:52.901Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:52:12.154Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:52:12.368Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:52:46.218Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:52:46.232Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T07:52:57.516Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T07:52:57.535Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:14:03.109Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:14:03.148Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:29:56.982Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:29:57.053Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:31:41.357Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:31:41.394Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:32:44.952Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:32:45.014Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:36:08.880Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:36:08.904Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:37:41.196Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:37:41.253Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T08:41:04.222Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T08:41:04.241Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T09:06:07.117Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T09:06:07.136Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T20:32:54.627Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T20:32:54.663Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T20:33:12.816Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T20:33:12.837Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:01:29.575Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:01:29.608Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:01:47.466Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:01:47.484Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:02:31.886Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:02:31.935Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:03:41.552Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:03:41.622Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:04:14.247Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:04:14.265Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:08:54.803Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:08:54.841Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:51:18.227Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:51:18.268Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:51:55.058Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:51:55.093Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:55:16.151Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:55:16.205Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T21:56:43.852Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T21:56:43.892Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T22:04:31.028Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T22:04:31.065Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-04T22:05:04.598Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-04T22:05:04.631Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T13:42:24.931Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T13:42:24.991Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T13:42:57.794Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T13:42:57.812Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T13:44:04.244Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T13:44:04.297Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T13:44:52.085Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T13:44:52.130Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T13:45:13.617Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T13:45:13.629Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:02:33.168Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:02:33.193Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:03:43.676Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:03:43.723Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:04:11.658Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:04:11.700Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:09:44.695Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:09:44.717Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:10:25.786Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:10:25.813Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:11:27.451Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:11:27.505Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:12:12.858Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:12:12.924Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:18:38.782Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:18:38.802Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:19:11.963Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:19:12.021Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:19:21.836Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:19:21.854Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:21:31.963Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:21:32.004Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:21:54.331Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:21:54.339Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:22:18.113Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:22:18.123Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:22:40.064Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:22:40.111Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:22:57.573Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:22:57.584Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:24:42.150Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:24:42.206Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:40:36.290Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:40:36.331Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:40:56.329Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:40:56.342Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:42:48.174Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:42:48.268Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T14:55:15.508Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T14:55:15.574Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:01:34.131Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:01:34.361Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:05:39.752Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:05:39.775Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:06:18.467Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:06:18.513Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:08:05.210Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:08:05.297Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:48:07.874Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:48:07.898Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:48:28.379Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:48:28.391Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:56:09.371Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:56:09.420Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T15:56:23.495Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T15:56:23.512Z"}
+info: [INFO] Intento de agregar nuevo usuario: jude@anacafe.com {"timestamp":"2025-10-05T15:56:41.240Z"}
+error: [ERR] Error al agregar usuario jude@anacafe.com: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-05T15:56:41.301Z"}
+info: [INFO] Intento de agregar nuevo usuario: juan@anacafe.com {"timestamp":"2025-10-05T15:57:30.896Z"}
+error: [ERR] Error al agregar usuario juan@anacafe.com: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-05T15:57:30.933Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:07:08.075Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:07:08.112Z"}
+info: [INFO] Intento de agregar nuevo usuario: juan@anacafe.com {"timestamp":"2025-10-05T16:07:25.825Z"}
+error: [ERR] Error al agregar usuario juan@anacafe.com: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-05T16:07:25.841Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:10:38.549Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:10:38.576Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:11:41.318Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:11:41.361Z"}
+info: [INFO] Intento de agregar nuevo usuario: jude@anacafe.com {"timestamp":"2025-10-05T16:12:26.101Z"}
+info: [INFO] Usuario jude@anacafe.com agregado exitosamente con ID: 1008. {"timestamp":"2025-10-05T16:12:26.172Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:12:26.179Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:12:26.189Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1008 {"timestamp":"2025-10-05T16:13:17.940Z"}
+warn: [WARN] Intento de eliminar usuario con ID: 1008 {"timestamp":"2025-10-05T16:14:04.056Z"}
+info: [INFO] Usuario con ID 1008 (y su empleado/módulos) eliminados exitosamente. {"timestamp":"2025-10-05T16:14:04.121Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:14:04.132Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:14:04.154Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:14:31.739Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:17:20.512Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:26:17.019Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:26:17.080Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:26:33.280Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:27:09.372Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:27:09.409Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:27:32.476Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:32:29.993Z"}
+error: [ERR] Error al actualizar usuario con ID 1: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. UPDATE fails. {"timestamp":"2025-10-05T16:32:30.170Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 1 {"timestamp":"2025-10-05T16:33:44.857Z"}
+info: [INFO] Usuario con ID 1 actualizado exitosamente. {"timestamp":"2025-10-05T16:33:45.066Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T16:33:45.083Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T16:33:45.103Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T17:04:57.754Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T17:04:57.865Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T17:13:07.742Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T17:13:07.794Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T17:13:33.097Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T17:13:33.137Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-05T17:13:45.853Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-05T17:13:45.876Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-07T15:57:19.675Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-07T15:57:19.708Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-07T16:03:37.779Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-07T16:03:37.817Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:01:23.681Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:01:23.719Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:28:35.335Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:28:35.357Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:40:44.103Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:40:44.124Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:47:20.806Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:47:20.826Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:56:20.602Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:56:20.632Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:58:27.422Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:58:27.470Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T22:58:44.147Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T22:58:44.162Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T23:04:52.809Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T23:04:52.849Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T23:18:56.565Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T23:18:56.599Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T23:21:33.650Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T23:21:33.696Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T23:22:10.163Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T23:22:10.205Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-08T23:55:19.714Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-08T23:55:19.734Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T13:49:06.243Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T13:49:06.263Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T13:57:19.633Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T13:57:19.654Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:31:41.745Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:31:41.772Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:31:48.453Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:31:48.467Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:31:52.059Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:31:52.068Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:32:15.698Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:32:15.712Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:33:28.807Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:33:28.828Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:36:33.087Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:36:33.179Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:36:37.047Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:36:37.067Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:37:02.546Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:37:02.556Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:38:01.749Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:38:01.769Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:41:20.668Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:41:20.685Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:41:38.039Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:41:38.177Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:42:57.055Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:42:57.086Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:43:10.964Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:43:10.975Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:50:52.474Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:50:52.494Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:50:58.884Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:50:58.891Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:51:03.513Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:51:03.523Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:53:02.627Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:53:02.673Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:54:35.961Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:54:35.987Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:58:39.880Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:58:39.906Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:58:49.565Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:58:49.572Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:58:55.183Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:58:55.192Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:59:44.351Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:59:44.392Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:59:45.953Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:59:45.969Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T14:59:51.825Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T14:59:51.835Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:03:18.184Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:03:18.210Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:03:53.049Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:03:53.093Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:04:01.759Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:04:01.766Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:04:07.408Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:04:07.416Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:05:03.992Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:05:04.025Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:05:08.896Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:05:08.902Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:05:31.765Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:05:31.771Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:05:37.058Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:05:37.063Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:06:13.195Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:06:13.222Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:06:17.779Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:06:17.785Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:08:57.535Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:08:57.577Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:09:02.563Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:09:02.609Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:09:43.553Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:09:43.595Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:09:49.432Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:09:49.440Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:18:14.777Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:18:14.817Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:18:20.507Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:18:20.521Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:18:25.984Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:18:25.999Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:26:30.530Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:26:30.605Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:26:37.371Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:26:37.380Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:26:50.386Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:26:50.406Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:30:33.902Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:30:33.929Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:30:55.617Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:30:55.627Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:32:06.495Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:32:06.521Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:32:39.881Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:32:39.920Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:32:41.335Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:32:41.342Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:32:48.122Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:32:48.129Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:33:54.114Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:33:54.136Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:34:02.844Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:34:02.852Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:34:23.092Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:34:23.127Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:38:13.445Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:38:13.462Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:39:44.214Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:39:44.279Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:39:52.362Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:39:52.405Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:43:27.803Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:43:27.851Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:43:39.598Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:43:39.605Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:44:54.709Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:44:54.751Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:45:06.939Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:45:06.953Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:45:09.944Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:45:09.956Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:49:08.832Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:49:08.878Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T15:49:23.780Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T15:49:23.790Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:03:32.819Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:03:32.853Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:03:38.243Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:03:38.254Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:03:48.876Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:03:48.888Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:03:53.711Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:03:53.724Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:09:02.721Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:09:02.750Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:10:06.544Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:10:06.619Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:10:11.791Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:10:11.806Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:10:27.781Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:10:27.790Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:10:52.700Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:10:52.736Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:11:25.867Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:11:25.876Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:11:43.968Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:11:43.986Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:11:52.458Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:11:52.474Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:12:01.877Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:12:01.884Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:13:08.840Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:13:08.879Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:13:51.537Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:13:51.548Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:19:24.608Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:19:24.666Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:19:29.940Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:19:29.958Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:19:40.262Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:19:40.271Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:19:55.556Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:19:55.571Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:21:25.137Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:21:25.166Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:21:57.002Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:21:57.058Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:22:01.880Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:22:01.889Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:22:14.793Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:22:14.802Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:23:13.287Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:23:13.341Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:27:19.477Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:27:19.517Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:27:26.601Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:27:26.609Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:29:53.760Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:29:53.793Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:30:44.767Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:30:44.802Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:40:55.779Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:40:55.842Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:41:03.184Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:41:03.193Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:46:06.012Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:46:06.035Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:56:33.618Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:56:33.669Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:56:38.243Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:56:38.251Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:58:06.295Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:58:06.311Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:58:11.937Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:58:11.946Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:58:28.502Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:58:28.512Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T16:58:32.506Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T16:58:32.515Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:00:44.329Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:00:44.391Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:04:14.891Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:04:14.918Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:04:19.851Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:04:19.861Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:04:33.641Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:04:33.673Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:04:39.630Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:04:39.665Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:08:55.797Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:08:55.852Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:19:45.484Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:19:45.504Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:20:01.947Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:20:01.966Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:20:14.506Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:20:14.518Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:22:00.932Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:22:00.966Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:32:18.477Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:32:18.506Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:33:16.567Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:33:16.632Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:34:44.181Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:34:44.221Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:34:53.614Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:34:53.645Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:40:07.707Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:40:07.772Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:41:00.014Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:41:00.071Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:41:07.089Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:41:07.103Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:41:21.739Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:41:21.768Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:42:04.357Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:42:04.407Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:44:21.330Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:44:21.392Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:44:36.290Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:44:36.328Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:44:53.203Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:44:53.241Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:45:00.714Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:45:00.731Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:45:06.675Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:45:06.700Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:49:29.654Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:49:29.703Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:53:33.612Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:53:33.637Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:53:48.689Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:53:48.737Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:54:13.046Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:54:13.082Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:55:00.548Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:55:00.600Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:55:50.095Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:55:50.105Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T17:59:04.215Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T17:59:04.258Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:02:34.594Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:02:34.638Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:02:48.879Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:02:48.927Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:05:33.977Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:05:34.082Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:06:57.997Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:06:58.021Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:07:17.244Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:07:17.279Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T18:12:33.010Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T18:12:33.083Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T20:41:11.642Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T20:41:11.681Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:17:04.215Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:17:04.266Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:17:21.652Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:17:21.664Z"}
+info: [INFO] Intento de agregar nuevo usuario: jude@anacafe.com {"timestamp":"2025-10-12T21:17:52.176Z"}
+info: [INFO] Usuario jude@anacafe.com agregado exitosamente con ID: 2008. {"timestamp":"2025-10-12T21:17:52.259Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:17:52.274Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:17:52.282Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:18:20.233Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:18:20.286Z"}
+info: [INFO] Intento de agregar nuevo usuario: undefined {"timestamp":"2025-10-12T21:37:34.551Z"}
+error: [ERR] Error al agregar usuario undefined: Cannot insert the value NULL into column 'Nombre', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-12T21:37:34.630Z"}
+info: [INFO] Intento de agregar nuevo usuario: paulina@ejemplo.com {"timestamp":"2025-10-12T21:38:09.552Z"}
+error: [ERR] Error al agregar usuario paulina@ejemplo.com: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-12T21:38:09.598Z"}
+info: [INFO] Intento de agregar nuevo usuario: paulina@ejemplo.com {"timestamp":"2025-10-12T21:39:31.459Z"}
+info: [INFO] Usuario paulina@ejemplo.com agregado exitosamente con ID: 2009. {"timestamp":"2025-10-12T21:39:31.542Z"}
+warn: [WARN] Intento de eliminar usuario con ID: 2009 {"timestamp":"2025-10-12T21:44:15.584Z"}
+info: [INFO] Usuario con ID 2009 (y su empleado/módulos) eliminados exitosamente. {"timestamp":"2025-10-12T21:44:15.688Z"}
+info: [INFO] Intento de agregar nuevo usuario: montesrod@anacafe.com {"timestamp":"2025-10-12T21:48:12.579Z"}
+error: [ERR] Error al agregar usuario montesrod@anacafe.com: Cannot insert the value NULL into column 'IdDepartamento', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-12T21:48:12.632Z"}
+info: [INFO] Intento de agregar nuevo usuario: montesrod@anacafe.com {"timestamp":"2025-10-12T21:48:19.556Z"}
+info: [INFO] Usuario montesrod@anacafe.com agregado exitosamente con ID: 2010. {"timestamp":"2025-10-12T21:48:19.614Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:48:34.378Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:48:34.415Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T21:52:27.872Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T21:52:27.903Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T22:14:57.004Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T22:14:57.043Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T22:15:21.903Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T22:15:21.931Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T22:18:12.317Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T22:18:12.370Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-12T22:21:49.860Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-12T22:21:49.940Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T01:59:10.893Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T01:59:10.955Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T01:59:28.908Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T01:59:28.932Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T02:18:57.691Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T02:18:57.739Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 2010 {"timestamp":"2025-10-13T02:19:23.317Z"}
+info: [INFO] Usuario con ID 2010 actualizado exitosamente. {"timestamp":"2025-10-13T02:19:23.351Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T02:19:23.361Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T02:19:23.371Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T02:22:31.850Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T02:22:31.914Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 2010 {"timestamp":"2025-10-13T02:22:59.768Z"}
+error: [ERR] Error al actualizar usuario con ID 2010: Cannot insert the value NULL into column 'Nombre', table 'ANACAFE_DB.dbo.Empleados'; column does not allow nulls. UPDATE fails. {"timestamp":"2025-10-13T02:22:59.816Z"}
+warn: [WARN] Intento de actualizar usuario con ID: 2010 {"timestamp":"2025-10-13T02:25:04.353Z"}
+info: [INFO] Usuario con ID 2010 actualizado exitosamente. {"timestamp":"2025-10-13T02:25:04.440Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-13T02:25:04.452Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-13T02:25:04.467Z"}
