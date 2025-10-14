@@ -17,7 +17,8 @@ const SalonEquipacionRouter = require('./Salones/salon-equipo-opcional');
 const TipoCostoRouter = require('./Salones/tipo-costo'); 
 const CostosRouter= require('./Salones/costo');
 const SolicitudReserva= require('./Reservas/reservas');
-const Pilotos=require('./Pilotos/asignaciones');
+const flotasRoutes = require('./Flota/flotas');
+
 require('dotenv').config();
 
 app.use(cors({
@@ -43,7 +44,7 @@ app.use('/salon-equipo-opcional', SalonEquipacionRouter);
 app.use('/tipo-costo', TipoCostoRouter); 
 app.use('/costo', CostosRouter); 
 app.use('/reservas',SolicitudReserva);
-app.use('/asignaciones',Pilotos);
+app.use('/flotas', flotasRoutes);
 app.use(express.static('public'));
 
 const PORT = process.env.PORT || 3000;

@@ -6,3 +6,5 @@ info: [INFO] Intento de obtener todas las asignaciones. {"timestamp":"2025-10-09
 info: [INFO] Asignaciones obtenidas exitosamente. {"timestamp":"2025-10-09T00:35:32.026Z"}
 info: [INFO] Intento de obtener todas las asignaciones. {"timestamp":"2025-10-12T14:09:18.115Z"}
 info: [INFO] Asignaciones obtenidas exitosamente. {"timestamp":"2025-10-12T14:09:18.139Z"}
+info: [INFO] Intento de obtener todas las asignaciones. {"timestamp":"2025-10-13T16:33:30.627Z"}
+error: [ERR] Error al obtener asignaciones: Invalid column name 'OdometroEntrada'. {"timestamp":"2025-10-13T16:33:30.666Z"}
