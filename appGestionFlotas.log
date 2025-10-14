@@ -1071,3 +1071,418 @@ info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:50:08.61
 info: [POST] /flotas/licencias {"timestamp":"2025-10-14T01:50:26.076Z"}
 info: [INFO] Creando nueva licencia {"timestamp":"2025-10-14T01:50:26.077Z"}
 error: [ERROR] Error al crear licencia: Cannot insert the value NULL into column 'IdEstado', table 'ANACAFE_DB.dbo.LicenciasConductores'; column does not allow nulls. INSERT fails. {"timestamp":"2025-10-14T01:50:26.094Z"}
+info: [POST] /flotas/licencias {"timestamp":"2025-10-14T01:51:52.650Z"}
+info: [INFO] Creando nueva licencia {"timestamp":"2025-10-14T01:51:52.655Z"}
+info: [INFO] Licencia 9 creada por: Paulina  Ramirez {"timestamp":"2025-10-14T01:51:52.792Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T01:51:52.817Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:55:17.135Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:55:17.137Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T01:55:17.143Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T01:55:17.145Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T01:55:17.151Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T01:55:17.153Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T01:55:17.156Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T01:55:17.256Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T01:55:17.271Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:55:17.274Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:55:17.275Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:57:55.517Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:57:55.518Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T01:57:55.527Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T01:57:55.532Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T01:57:55.537Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T01:57:55.538Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T01:57:55.549Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T01:57:55.628Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T01:57:55.649Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:57:55.651Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:57:55.652Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:59:26.422Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:59:26.422Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T01:59:26.439Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T01:59:26.447Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T01:59:26.452Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T01:59:26.453Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T01:59:26.455Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T01:59:26.575Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T01:59:26.587Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T01:59:26.589Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T01:59:26.590Z"}
+info: [POST] /flotas/asignaciones {"timestamp":"2025-10-14T01:59:52.213Z"}
+info: [INFO] Creando nueva asignación de vehículo {"timestamp":"2025-10-14T01:59:52.214Z"}
+info: [INFO] Asignación 20 creada por usuario: Paulina  Ramirez {"timestamp":"2025-10-14T01:59:52.282Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T01:59:52.310Z"}
+info: [PUT] /flotas/asignaciones/20 {"timestamp":"2025-10-14T02:00:40.056Z"}
+info: [INFO] Actualizando asignación: 20 {"timestamp":"2025-10-14T02:00:40.056Z"}
+error: [ERROR] Error al actualizar asignación: Invalid column name 'FechaActualizacion'. {"timestamp":"2025-10-14T02:00:40.100Z"}
+info: [PUT] /flotas/asignaciones/20 {"timestamp":"2025-10-14T02:00:51.293Z"}
+info: [INFO] Actualizando asignación: 20 {"timestamp":"2025-10-14T02:00:51.293Z"}
+error: [ERROR] Error al actualizar asignación: Invalid column name 'FechaActualizacion'. {"timestamp":"2025-10-14T02:00:51.325Z"}
+info: [PUT] /flotas/asignaciones/20 {"timestamp":"2025-10-14T02:00:59.631Z"}
+info: [INFO] Actualizando asignación: 20 {"timestamp":"2025-10-14T02:00:59.632Z"}
+error: [ERROR] Error al actualizar asignación: Invalid column name 'FechaActualizacion'. {"timestamp":"2025-10-14T02:00:59.641Z"}
+info: [PUT] /flotas/asignaciones/20 {"timestamp":"2025-10-14T02:01:15.620Z"}
+info: [INFO] Actualizando asignación: 20 {"timestamp":"2025-10-14T02:01:15.620Z"}
+error: [ERROR] Error al actualizar asignación: Invalid column name 'FechaActualizacion'. {"timestamp":"2025-10-14T02:01:15.629Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T02:02:14.876Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:02:14.876Z"}
+info: [INFO] Historial obtenido: 9 registros {"timestamp":"2025-10-14T02:02:14.916Z"}
+info: [GET] /flotas/asignaciones/12/contrato {"timestamp":"2025-10-14T02:02:21.029Z"}
+info: [INFO] Generando contrato para asignación: 12 {"timestamp":"2025-10-14T02:02:21.030Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:04.304Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:04.305Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:06:04.308Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:06:04.312Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:06:04.313Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:06:04.314Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:06:04.317Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:06:04.385Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:06:04.395Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:04.402Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:04.402Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:45.012Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:45.013Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:06:45.015Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:06:45.023Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:06:45.024Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:06:45.024Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:06:45.029Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:06:45.103Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:06:45.113Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:45.118Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:45.119Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:57.849Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:57.850Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:06:57.851Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:06:57.853Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:06:57.854Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:06:57.856Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:06:57.863Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:06:57.864Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:06:57.879Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:06:57.892Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:06:57.893Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:08:53.690Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:08:53.690Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:08:53.691Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:08:53.695Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:08:53.698Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:08:53.698Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:08:53.702Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:08:53.736Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:08:53.767Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:08:53.771Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:08:53.772Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:10:59.619Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:10:59.620Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:10:59.625Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:10:59.629Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:10:59.629Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:10:59.630Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:10:59.632Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:10:59.701Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:10:59.707Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:10:59.710Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:10:59.711Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:11:37.019Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:11:37.019Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:11:37.020Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:11:37.027Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:11:37.028Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:11:37.028Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:11:37.030Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:11:37.105Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:11:37.112Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:11:37.113Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:11:37.114Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:16:48.239Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:16:48.240Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:16:48.245Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:16:48.249Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:16:48.254Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:16:48.255Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:16:48.257Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:16:48.326Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:16:48.333Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:16:48.334Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:16:48.335Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:17:50.766Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:17:50.767Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:17:50.769Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:17:50.773Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:17:50.780Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:17:50.781Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:17:50.782Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:17:50.875Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:17:50.878Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:17:50.879Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:17:50.879Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:19:15.559Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:19:15.559Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:19:15.563Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:19:15.565Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:19:15.574Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:19:15.575Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:19:15.578Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:19:15.652Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:19:15.666Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:19:15.668Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:19:15.669Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:20:11.706Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:20:11.706Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:20:11.711Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:20:11.714Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:20:11.716Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:20:11.716Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:20:11.724Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:20:11.786Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:20:11.790Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:20:11.791Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:20:11.792Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T02:23:17.313Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:23:17.314Z"}
+info: [INFO] Historial obtenido: 9 registros {"timestamp":"2025-10-14T02:23:17.392Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:24:23.036Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:24:23.037Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:24:23.038Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:24:23.040Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:24:23.044Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:24:23.045Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:24:23.048Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:24:23.099Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:24:23.115Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:24:23.120Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:24:23.120Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T02:24:57.272Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:24:57.272Z"}
+info: [INFO] Historial obtenido: 9 registros {"timestamp":"2025-10-14T02:24:57.339Z"}
+info: [POST] /flotas/asignaciones {"timestamp":"2025-10-14T02:30:26.141Z"}
+info: [INFO] Creando nueva asignación de vehículo {"timestamp":"2025-10-14T02:30:26.142Z"}
+info: [INFO] Asignación 21 creada por usuario: Paulina  Ramirez {"timestamp":"2025-10-14T02:30:26.218Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:30:26.234Z"}
+info: [PUT] /flotas/asignaciones/21/autorizar {"timestamp":"2025-10-14T02:41:56.469Z"}
+info: [INFO] Autorizando asignación: 21 {"timestamp":"2025-10-14T02:41:56.470Z"}
+info: [INFO] Asignación 21 autorizada por: Paulina  Ramirez {"timestamp":"2025-10-14T02:41:56.518Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:41:56.534Z"}
+info: [GET] /flotas/asignaciones/21/contrato {"timestamp":"2025-10-14T02:42:03.907Z"}
+info: [INFO] Generando contrato para asignación: 21 {"timestamp":"2025-10-14T02:42:03.907Z"}
+info: [PUT] /flotas/asignaciones/21/finalizar {"timestamp":"2025-10-14T02:42:12.705Z"}
+info: [INFO] Finalizando asignación: 21 {"timestamp":"2025-10-14T02:42:12.706Z"}
+info: [INFO] Asignación 21 finalizada exitosamente {"timestamp":"2025-10-14T02:42:12.733Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:42:12.747Z"}
+info: [GET] /flotas/asignaciones/17/contrato {"timestamp":"2025-10-14T02:43:06.522Z"}
+info: [INFO] Generando contrato para asignación: 17 {"timestamp":"2025-10-14T02:43:06.523Z"}
+info: [GET] /flotas/asignaciones/historial?idVehiculo=3 {"timestamp":"2025-10-14T02:43:30.207Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:43:30.207Z"}
+info: [INFO] Historial obtenido: 2 registros {"timestamp":"2025-10-14T02:43:30.261Z"}
+info: [GET] /flotas/asignaciones/21/contrato {"timestamp":"2025-10-14T02:43:35.201Z"}
+info: [INFO] Generando contrato para asignación: 21 {"timestamp":"2025-10-14T02:43:35.202Z"}
+info: [PUT] /flotas/asignaciones/20/autorizar {"timestamp":"2025-10-14T02:43:57.059Z"}
+info: [INFO] Autorizando asignación: 20 {"timestamp":"2025-10-14T02:43:57.059Z"}
+info: [INFO] Asignación 20 autorizada por: Paulina  Ramirez {"timestamp":"2025-10-14T02:43:57.082Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:43:57.096Z"}
+info: [GET] /flotas/asignaciones/20/contrato {"timestamp":"2025-10-14T02:43:57.814Z"}
+info: [INFO] Generando contrato para asignación: 20 {"timestamp":"2025-10-14T02:43:57.815Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:45:06.064Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:45:06.065Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:45:06.069Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:45:06.075Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:45:06.076Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:45:06.077Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:45:06.082Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:45:06.135Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:45:06.149Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:45:06.153Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:45:06.154Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:45:42.473Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:45:42.475Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:45:42.480Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:45:42.481Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:45:42.483Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:45:42.484Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:45:42.486Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:45:42.558Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:45:42.571Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:45:42.573Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:45:42.574Z"}
+info: [PUT] /flotas/asignaciones/20/autorizar {"timestamp":"2025-10-14T02:45:51.290Z"}
+info: [INFO] Autorizando asignación: 20 {"timestamp":"2025-10-14T02:45:51.291Z"}
+info: [INFO] Asignación 20 autorizada por: Josefa Mendez {"timestamp":"2025-10-14T02:45:51.314Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:45:51.329Z"}
+info: [PUT] /flotas/asignaciones/20/finalizar {"timestamp":"2025-10-14T02:47:10.597Z"}
+info: [INFO] Finalizando asignación: 20 {"timestamp":"2025-10-14T02:47:10.598Z"}
+info: [INFO] Asignación 20 finalizada exitosamente {"timestamp":"2025-10-14T02:47:10.659Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:47:10.674Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T02:47:13.478Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:47:13.478Z"}
+info: [INFO] Historial obtenido: 10 registros {"timestamp":"2025-10-14T02:47:13.503Z"}
+info: [GET] /flotas/asignaciones/historial?idVehiculo=3 {"timestamp":"2025-10-14T02:50:37.138Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:50:37.139Z"}
+info: [INFO] Historial obtenido: 2 registros {"timestamp":"2025-10-14T02:50:37.200Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:56:20.196Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:56:20.196Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:56:20.205Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:56:20.208Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:56:20.210Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:56:20.211Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:56:20.227Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:56:20.270Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:56:20.283Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:56:20.292Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:56:20.293Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:56:39.961Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:56:39.961Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:56:39.967Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:56:39.969Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:56:39.975Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:56:39.976Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:56:39.979Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:56:40.013Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:56:40.018Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:56:40.023Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:56:40.024Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:36.927Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:36.928Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:57:36.933Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:57:36.941Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:57:36.941Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:57:36.942Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:57:36.956Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:57:36.957Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:36.972Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:36.972Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:57:36.993Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T02:57:40.610Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T02:57:40.611Z"}
+info: [INFO] Historial obtenido: 10 registros {"timestamp":"2025-10-14T02:57:40.659Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:53.753Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:53.754Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:57:53.759Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:57:53.763Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:57:53.767Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:57:53.768Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:57:53.772Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:57:53.773Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:57:53.810Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:53.814Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:53.815Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:58.137Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:58.138Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:57:58.145Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:57:58.149Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:57:58.160Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:57:58.161Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:57:58.172Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:57:58.173Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:57:58.174Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:57:58.178Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:57:58.214Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:12.670Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:12.670Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:58:12.676Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:58:12.679Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:58:12.687Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:58:12.688Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:58:12.689Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:58:12.693Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:12.714Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:12.715Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:58:12.716Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:20.085Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:20.086Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:58:20.090Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:58:20.094Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:58:20.096Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:58:20.097Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:20.104Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:20.105Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:58:20.110Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:58:20.115Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:58:20.122Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:38.798Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:38.799Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T02:58:38.801Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T02:58:38.805Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T02:58:38.808Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T02:58:38.808Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T02:58:38.822Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T02:58:38.827Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T02:58:38.829Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T02:58:38.849Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T02:58:38.850Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:15.193Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:15.195Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T03:33:15.201Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T03:33:15.205Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T03:33:15.207Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T03:33:15.208Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T03:33:15.210Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T03:33:15.212Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T03:33:15.260Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:15.283Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:15.284Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:41.509Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:41.510Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T03:33:41.518Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T03:33:41.519Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T03:33:41.523Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T03:33:41.524Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T03:33:41.525Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T03:33:41.534Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T03:33:41.553Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:41.555Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:41.555Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:53.723Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:53.724Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T03:33:53.727Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T03:33:53.728Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T03:33:53.734Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T03:33:53.734Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T03:33:53.741Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T03:33:53.768Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T03:33:53.797Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:33:53.801Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:33:53.802Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:41:34.291Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:41:34.292Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T03:41:34.299Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T03:41:34.300Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T03:41:34.303Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T03:41:34.305Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T03:41:34.308Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T03:41:34.309Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T03:41:34.384Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T03:41:34.386Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T03:41:34.386Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T03:41:36.173Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T03:41:36.174Z"}
+info: [INFO] Historial obtenido: 10 registros {"timestamp":"2025-10-14T03:41:36.209Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T04:44:06.638Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T04:44:06.639Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T04:44:06.643Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T04:44:06.645Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T04:44:06.646Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T04:44:06.647Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T04:44:06.652Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T04:44:06.653Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T04:44:06.686Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T04:44:06.701Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T04:44:06.702Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T05:45:24.454Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T05:45:24.456Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T05:45:24.467Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T05:45:24.473Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T05:45:24.478Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T05:45:24.480Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T05:45:24.490Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T05:45:24.491Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T05:45:24.562Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T05:45:24.582Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T05:45:24.583Z"}
+info: [POST] /flotas/asignaciones {"timestamp":"2025-10-14T05:46:09.231Z"}
+info: [INFO] Creando nueva asignación de vehículo {"timestamp":"2025-10-14T05:46:09.233Z"}
+info: [INFO] Asignación 22 creada por usuario: Juan Adolfo s Pérez Mendez {"timestamp":"2025-10-14T05:46:09.302Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T05:46:09.330Z"}
+info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T05:46:18.307Z"}
+info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T05:46:18.308Z"}
+info: [INFO] Historial obtenido: 11 registros {"timestamp":"2025-10-14T05:46:18.334Z"}

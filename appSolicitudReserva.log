@@ -1515,3 +1515,26 @@ info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-13T16:33:26.848Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-13T16:56:18.762Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-13T23:40:09.647Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T03:39:22.708Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T04:41:17.132Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T04:43:17.041Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina  Ramirez {"timestamp":"2025-10-14T04:43:17.041Z"}
+info: [INFO] Horas normalizadas: Inicio=08:45:00, Fin=10:45:00 {"timestamp":"2025-10-14T04:43:17.042Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T04:43:17.058Z"}
+info: [INFO] No se detectó conflicto de horario. Continuando con el registro. {"timestamp":"2025-10-14T04:43:17.086Z"}
+info: [INFO] Registro de Solicitud principal creado: 51 {"timestamp":"2025-10-14T04:43:17.100Z"}
+info: [DEBUG] IdEmpleado a insertar: 2007, Tipo: number {"timestamp":"2025-10-14T04:43:17.100Z"}
+info: [INFO] Solicitud de reserva 51 finalizada con COMMIT por usuario: Paulina  Ramirez {"timestamp":"2025-10-14T04:43:17.154Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T04:43:19.936Z"}
+info: [INFO] Intento de obtener solicitud con ID: 51 {"timestamp":"2025-10-14T04:43:25.909Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T04:43:33.746Z"}
+info: [INFO] Intento de obtener solicitud con ID: 51 {"timestamp":"2025-10-14T04:43:37.120Z"}
+info: [INFO] Actualizando estado de solicitud 51 a 5 {"timestamp":"2025-10-14T04:43:41.964Z"}
+info: [INFO] Estado de solicitud 51 actualizado a 5 {"timestamp":"2025-10-14T04:43:41.979Z"}
+info: [INFO] Generando contrato para solicitud: 51 {"timestamp":"2025-10-14T04:43:43.554Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T04:43:57.536Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T04:44:04.374Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T05:19:34.168Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T05:19:59.369Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: Failed to connect to ANACAFE:5432 - getaddrinfo ENOTFOUND anacafe {"timestamp":"2025-10-14T05:20:02.076Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T05:45:21.369Z"}
