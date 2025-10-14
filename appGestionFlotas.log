@@ -1486,3 +1486,14 @@ info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T05:46:09.330Z"
 info: [GET] /flotas/asignaciones/historial? {"timestamp":"2025-10-14T05:46:18.307Z"}
 info: [INFO] Obteniendo historial de asignaciones {"timestamp":"2025-10-14T05:46:18.308Z"}
 info: [INFO] Historial obtenido: 11 registros {"timestamp":"2025-10-14T05:46:18.334Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T07:10:33.305Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T07:10:33.311Z"}
+info: [GET] /flotas/licencias {"timestamp":"2025-10-14T07:10:33.316Z"}
+info: [GET] /flotas/empleados/pilotos {"timestamp":"2025-10-14T07:10:33.320Z"}
+info: [GET] /flotas/conductores {"timestamp":"2025-10-14T07:10:33.324Z"}
+info: [INFO] Obteniendo lista de conductores {"timestamp":"2025-10-14T07:10:33.325Z"}
+info: [GET] /flotas/tipos-vehiculo {"timestamp":"2025-10-14T07:10:33.328Z"}
+info: [GET] /flotas/tipos-asignacion {"timestamp":"2025-10-14T07:10:33.586Z"}
+info: [GET] /flotas/asignaciones/activas {"timestamp":"2025-10-14T07:10:33.609Z"}
+info: [GET] /flotas/vehiculos {"timestamp":"2025-10-14T07:10:33.613Z"}
+info: [INFO] Obteniendo lista de vehículos {"timestamp":"2025-10-14T07:10:33.614Z"}
