@@ -18,7 +18,7 @@ const TipoCostoRouter = require('./Salones/tipo-costo');
 const CostosRouter= require('./Salones/costo');
 const SolicitudReserva= require('./Reservas/reservas');
 const flotasRoutes = require('./Flota/flotas');
-
+const { pool } = require('./database'); // 
 require('dotenv').config();
 
 app.use(cors({
