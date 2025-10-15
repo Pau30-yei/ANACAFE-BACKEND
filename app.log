@@ -1311,3 +1311,11 @@ info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-15T00:
 error: [ERR] Error al obtener usuarios: Connection terminated due to connection timeout {"timestamp":"2025-10-15T00:07:28.418Z"}
 info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-15T00:07:58.481Z"}
 info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-15T00:07:59.635Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-15T00:17:52.265Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-15T00:17:52.363Z"}
+info: [INFO] Intento de agregar nuevo usuario: cernal@anacafe.com {"timestamp":"2025-10-15T00:19:09.896Z"}
+info: [INFO] Usuario cernal@anacafe.com agregado exitosamente con ID: 4. {"timestamp":"2025-10-15T00:19:10.668Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-15T00:19:10.679Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-15T00:19:10.772Z"}
+info: [INFO] Intento de obtener todos los usuarios. {"timestamp":"2025-10-15T00:19:58.709Z"}
+info: [INFO] Usuarios obtenidos exitosamente. {"timestamp":"2025-10-15T00:19:59.215Z"}

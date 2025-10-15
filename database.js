@@ -5,7 +5,7 @@ const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   host: process.env.DB_HOST || 'mainline.proxy.rlwy.net',
   database: process.env.DB_DATABASE || 'railway',
-  password: process.env.DB_PASS ,
+  password: process.env.DB_PASS || 'sdyhQutboMsiQrtaLTKPQgYrPLVyQdZU',
   port: process.env.DB_PORT || 30002,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 20,
