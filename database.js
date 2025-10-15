@@ -7,7 +7,7 @@ const pool = new Pool({
   database: process.env.DB_DATABASE || 'railway',
   password: process.env.DB_PASS || 'sdyhQutboMsiQrtaLTKPQgYrPLVyQdZU',
   port: process.env.DB_PORT || 30002,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  ssl:  { rejectUnauthorized: false } ,
   max: 20,
   idleTimeoutMillis: 60000,
   connectionTimeoutMillis: 10000,

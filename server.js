@@ -59,4 +59,4 @@ setInterval(async () => {
   } catch (err) {
     console.error('Error en ping a la base:', err.message);
   }
-}, 5 * 60 * 1000); // cada 5 minutos
+}, 60 * 1000); // cada 5 minutos
