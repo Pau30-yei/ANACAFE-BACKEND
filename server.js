@@ -47,5 +47,5 @@ app.use('/reservas',SolicitudReserva);
 app.use('/flotas', flotasRoutes);
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en https://anacafe-backend-production.up.railway.app:${PORT}`));

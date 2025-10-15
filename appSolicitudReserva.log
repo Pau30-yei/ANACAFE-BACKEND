@@ -1539,3 +1539,4 @@ info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-
 error: [ERROR] Error al obtener solicitudes para calendario: Failed to connect to ANACAFE:5432 - getaddrinfo ENOTFOUND anacafe {"timestamp":"2025-10-14T05:20:02.076Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T05:45:21.369Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T07:10:46.326Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T08:13:17.534Z"}

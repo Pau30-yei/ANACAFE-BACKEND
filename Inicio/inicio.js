@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
 const { connectDB } = require('../database.js');
 
 // Endpoint para obtener la información del usuario
 router.get('/infouser', async (req, res) => {
-    let pool;
+    let client;
     try {
-        // Se asume que el idUsuario viene de la query string (e.g., /infouser?id=1)
         const idUsuario = req.query.id;  
         console.log(`[INFO] Petición recibida en /infouser con idUsuario = ${idUsuario}`);
 
@@ -17,41 +15,35 @@ router.get('/infouser', async (req, res) => {
         }
 
         console.log('[INFO] Conectando a la base de datos...');
-        pool = await connectDB();
+        client = await connectDB();
         console.log('[INFO] Conexión a la base de datos establecida.');
 
-        const request = pool.request();
-        request.input('IdUsuario', sql.Int, idUsuario);
+        // Usar tu función específica ObtenerRolesDeUsuario
+        console.log(`[INFO] Ejecutando función ObtenerRolesDeUsuario con IdUsuario = ${idUsuario}`);
+        const result = await client.query('SELECT * FROM ObtenerRolesDeUsuario($1)', [idUsuario]);
+        console.log('[INFO] Función ejecutada correctamente.');
         
-        // Ejecución del SP que ya devuelve Nombre
-        console.log(`[INFO] Ejecutando procedimiento almacenado ObtenerRolesDeUsuario con IdUsuario = ${idUsuario}`);
-        const result = await request.execute('ObtenerRolesDeUsuario');
-        console.log('[INFO] Procedimiento ejecutado correctamente.');
-        console.log('[DEBUG] Result completo:', JSON.stringify(result, null, 2));
-
-        if (result.recordset.length > 0) {
-            const user = result.recordset[0];
-            // user ahora contiene Nombre, NombreRol, Email, etc.
+        if (result.rows.length > 0) {
+            const user = result.rows[0];
             console.log('[INFO] Usuario encontrado:', user);
 
-            // Obtener módulos del usuario
-            console.log(`[INFO] Ejecutando procedimiento almacenado sp_ModulosPorUsuario con IdUsuario = ${idUsuario}`);
-            const resultModulos = await pool.request()
-                .input('IdUsuario', sql.Int, idUsuario)
-                .execute('sp_ModulosPorUsuario');
-            console.log('[INFO] Procedimiento sp_ModulosPorUsuario ejecutado correctamente.');
-            console.log('[DEBUG] Modulos encontrados:', JSON.stringify(resultModulos.recordset, null, 2));
+            // Obtener módulos del usuario usando tu función específica
+            console.log(`[INFO] Ejecutando función sp_ModulosPorUsuario con IdUsuario = ${idUsuario}`);
+            const resultModulos = await client.query(
+                'SELECT * FROM sp_modulosporusuario($1)',
+                [idUsuario]
+            );
+            console.log('[INFO] Función sp_ModulosPorUsuario ejecutada correctamente.');
 
-            const modulos = resultModulos.recordset.map(m => m.IdModulo);
+            const modulos = resultModulos.rows.map(m => m.idmodulo);
             console.log('[INFO] IDs de módulos asignados al usuario:', modulos);
 
             // Devuelve rol + módulos
             res.json({
-                idUsuario: user.IdUsuario,
-                // CAMBIO CLAVE: Ahora se usa el campo Nombre devuelto por el SP
-                nombre: user.Nombre, 
-                rol: user.NombreRol,
-                email: user.Email,
+                idUsuario: user.idusuario,
+                nombre: user.nombre, 
+                rol: user.nombrerol,
+                email: user.email,
                 modulos
             });
         } else {
@@ -62,9 +54,9 @@ router.get('/infouser', async (req, res) => {
         console.error('[ERROR] Ocurrió un error:', err);
         res.status(500).json({ message: 'Error interno del servidor.' });
     } finally {
-        if (pool) {
+        if (client) {
             console.log('[INFO] Cerrando conexión a la base de datos.');
-            // pool.close(); // Comentar o manejar si la función connectDB ya gestiona la conexión pooling
+            client.release();
         }
     }
 });

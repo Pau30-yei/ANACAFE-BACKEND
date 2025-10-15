@@ -1,29 +1,27 @@
 require('dotenv').config();
-const sql = require('mssql');
+const { Pool } = require('pg');
 
-const dbConfig = {
-  server: process.env.DB_SERVER,
-  port: parseInt(process.env.DB_PORT) || 1433,
-  database: process.env.DB_DATABASE,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  options: {
-    encrypt: false,
-    enableArithAbort: true,
-    trustServerCertificate: true
-  },
-  connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT) || 30000
-};
+const pool = new Pool({
+  user: process.env.DB_USER || 'postgres',
+  host: process.env.DB_HOST || 'mainline.proxy.rlwy.net',
+  database: process.env.DB_DATABASE || 'railway',
+  password: process.env.DB_PASS ,
+  port: process.env.DB_PORT || 30002,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
 
 async function connectDB() {
   try {
-    const pool = await sql.connect(dbConfig);
-    console.log('Conectado a SQL Server');
-    return pool;
+    const client = await pool.connect();
+    console.log('Conectado a PostgreSQL');
+    return client;
   } catch (err) {
-    console.error('Error de conexión:', err);
+    console.error('Error de conexión a PostgreSQL:', err);
     throw err;
   }
 }
 
-module.exports = { connectDB };
+module.exports = { connectDB, pool };

@@ -1,24 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Conexión a SQL Server
+// Conexión a PostgreSQL
 const { connectDB } = require('../database.js');
 
 // Clave secreta para JWT
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Función auxiliar para registrar historial
-async function registrarHistorial(pool, idUsuario, idTipoLogin, idMotivo) {
+async function registrarHistorial(client, idUsuario, idTipoLogin, idMotivo) {
     try {
         console.log("Registrando historial:", { idUsuario, idTipoLogin, idMotivo });
-        await pool.request()
-            .input('IdUsuario', sql.Int, idUsuario)
-            .input('IdTipoLogin', sql.Int, idTipoLogin)
-            .input('IdMotivo', sql.Int, idMotivo)
-            .execute('sp_RegistrarHistorial');
+        await client.query(
+            'SELECT sp_registrarhistorial($1, $2, $3)',
+            [idUsuario, idTipoLogin, idMotivo]
+        );
     } catch (err) {
         console.error('Error al registrar historial:', err);
     }
@@ -29,66 +27,70 @@ router.post('/', async (req, res) => {
     const { email, clave } = req.body;
     console.log("Intento de login con:", { email, clave });
 
+    let client;
     try {
-        const pool = await connectDB();
+        client = await connectDB();
 
-        // Buscar usuario
-        const result = await pool.request()
-            .input('Email', sql.NVarChar, email)
-            .execute('sp_BuscarUsuarioPorEmail');
+        // Buscar usuario usando tu función específica
+        const result = await client.query(
+            'SELECT * FROM sp_buscarusuarioporemail($1)',
+            [email]
+        );
 
-        console.log("Resultado de sp_BuscarUsuarioPorEmail:", result.recordset);
+        console.log("Resultado de sp_buscarusuarioporemail:", result.rows);
 
-        const user = result.recordset[0];
+        const user = result.rows[0];
 
         if (!user) {
             console.log("Usuario no encontrado:", email);
-            await registrarHistorial(pool, 0, 2, 2);
+            await registrarHistorial(client, 0, 2, 2);
             return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
-        console.log(" Usuario encontrado:", user);
+        console.log("Usuario encontrado:", user);
 
-        if (user.IdStatus === 3) {
-            console.log(" Usuario bloqueado:", user.IdUsuario);
-            await registrarHistorial(pool, user.IdUsuario, 2, 4);
+        if (user.idstatus === 3) {
+            console.log("Usuario bloqueado:", user.idusuario);
+            await registrarHistorial(client, user.idusuario, 2, 4);
             return res.status(403).json({ message: 'Usuario bloqueado' });
         }
 
         // Validar contraseña
         let validPassword = false;
-        if (user.Clave && user.Clave.startsWith('$2b$')) {
-            validPassword = await bcrypt.compare(clave, user.Clave);
+        if (user.clave && user.clave.startsWith('$2b$')) {
+            validPassword = await bcrypt.compare(clave, user.clave);
             console.log("Comparando hash bcrypt:", validPassword);
         } else {
-            validPassword = (clave === user.Clave);
+            validPassword = (clave === user.clave);
             console.log("Comparando clave en texto plano:", validPassword);
             if (validPassword) {
                 const hashedPassword = await bcrypt.hash(clave, 10);
-                console.log(" Guardando clave hasheada en BD:", hashedPassword);
-                await pool.request()
-                    .input('IdUsuario', sql.Int, user.IdUsuario)
-                    .input('Clave', sql.NVarChar, hashedPassword)
-                    .execute('sp_ActualizarClave');
+                console.log("Guardando clave hasheada en BD:", hashedPassword);
+                await client.query(
+                    'SELECT sp_actualizarclave($1, $2)',
+                    [user.idusuario, hashedPassword]
+                );
             }
         }
 
         if (!validPassword) {
-            console.log("Contraseña incorrecta para usuario:", user.IdUsuario);
-            await registrarHistorial(pool, user.IdUsuario, 2, 1);
+            console.log("Contraseña incorrecta para usuario:", user.idusuario);
+            await registrarHistorial(client, user.idusuario, 2, 1);
 
-            const fallosResult = await pool.request()
-                .input('IdUsuario', sql.Int, user.IdUsuario)
-                .execute('sp_ContarFallos');
+            const fallosResult = await client.query(
+                'SELECT * FROM sp_contarfallos($1)',
+                [user.idusuario]
+            );
 
-            const fallos = fallosResult.recordset[0].Fallos;
-            console.log(`Usuario ${user.IdUsuario} lleva ${fallos} intentos fallidos`);
+            const fallos = fallosResult.rows[0].fallos;
+            console.log(`Usuario ${user.idusuario} lleva ${fallos} intentos fallidos`);
 
             if (fallos >= 3) {
-                console.log(`Usuario ${user.IdUsuario} bloqueado por múltiples intentos`);
-                await pool.request()
-                    .input('IdUsuario', sql.Int, user.IdUsuario)
-                    .execute('sp_BloquearUsuario');
+                console.log(`Usuario ${user.idusuario} bloqueado por múltiples intentos`);
+                await client.query(
+                    'SELECT sp_bloquearusuario($1)',
+                    [user.idusuario]
+                );
                 return res.status(403).json({ message: 'Usuario bloqueado por múltiples intentos fallidos' });
             }
 
@@ -96,58 +98,56 @@ router.post('/', async (req, res) => {
         }
 
         // Resetear fallos
-        console.log(`Reseteando fallos de usuario ${user.IdUsuario}`);
-        await pool.request()
-            .input('IdUsuario', sql.Int, user.IdUsuario)
-            .execute('sp_ResetearFallos');
+        console.log(`Reseteando fallos de usuario ${user.idusuario}`);
+        await client.query(
+            'SELECT sp_resetearfallos($1)',
+            [user.idusuario]
+        );
 
         // Revisar si ya está en sesión
-        if (user.EnSesion) {
-            console.log(`Usuario ${user.IdUsuario} ya tiene sesión activa`);
+        if (user.ensesion) {
+            console.log(`Usuario ${user.idusuario} ya tiene sesión activa`);
             return res.status(403).json({ message: 'Ya hay una sesión activa. Cierre sesión anterior para continuar.' });
         }
 
         // Marcar como en sesión
-        console.log(`Marcando usuario ${user.IdUsuario} como EnSesion = true`);
-        await pool.request()
-            .input('IdUsuario', sql.Int, user.IdUsuario)
-            .input('EnSesion', sql.Bit, true)
-            .execute('sp_ActualizarSesion');
+        console.log(`Marcando usuario ${user.idusuario} como EnSesion = true`);
+        await client.query(
+            'SELECT sp_actualizarsesion($1, $2)',
+            [user.idusuario, true]
+        );
 
-        // Obtener módulos
-        const modulosResult = await pool.request()
-            .input('IdUsuario', sql.Int, user.IdUsuario)
-            .execute('sp_ModulosPorUsuario');
-        //Muestra los nombres de los modulos
-        /*const modulos = modulosResult.recordset.map(m => m.NombreModulo);
-        console.log(`Módulos asignados a ${user.IdUsuario}:`, modulos);*/
+        // Obtener módulos usando tu función específica
+        const modulosResult = await client.query(
+            'SELECT * FROM sp_modulosporusuario($1)',
+            [user.idusuario]
+        );
 
-        //  IDs de los modulos
-        const modulos = modulosResult.recordset.map(m => m.IdModulo);
-
-        console.log(`Módulos asignados a ${user.IdUsuario}:`, modulos);
+        // IDs de los módulos
+        const modulos = modulosResult.rows.map(m => m.idmodulo);
+        console.log(`Módulos asignados a ${user.idusuario}:`, modulos);
 
         // Generar token
         const token = jwt.sign({
-            idUsuario: user.IdUsuario,
-            nombre: user.Nombre,
-            idRol: user.IdRol,
-            email: user.Email,
+            idUsuario: user.idusuario,
+            nombre: user.nombre,
+            idRol: user.idrol,
+            email: user.email,
             modulos
         }, JWT_SECRET, { expiresIn: '8h' });
 
-        console.log(`Token JWT generado para ${user.IdUsuario}`);
+        console.log(`Token JWT generado para ${user.idusuario}`);
 
-        // Registrar login
-        await registrarHistorial(pool, user.IdUsuario, 1, 1);
+        // Registrar login exitoso
+        await registrarHistorial(client, user.idusuario, 1, 1);
 
         return res.json({
             message: 'Login exitoso',
             user: {
-                id: user.IdUsuario,
-                nombre: user.Nombre,
-                rol: user.IdRol,
-                email: user.Email,
+                id: user.idusuario,
+                nombre: user.nombre,
+                rol: user.idrol,
+                email: user.email,
                 modulos
             },
             token
@@ -156,6 +156,10 @@ router.post('/', async (req, res) => {
     } catch (err) {
         console.error('ERROR EN LOGIN:', err);
         return res.status(500).json({ error: 'Error interno del servidor', detalle: err.message });
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 });
 
@@ -164,19 +168,22 @@ router.post('/logout', async (req, res) => {
     const { idUsuario } = req.body;
     console.log("Logout solicitado para usuario:", idUsuario);
 
+    let client;
     try {
-        const pool = await connectDB();
-        const result = await pool.request()
-            .input('IdUsuario', sql.Int, idUsuario)
-            .input('EnSesion', sql.Bit, false)
-            .execute('sp_ActualizarSesion');
-
-        console.log("Resultado de sp_ActualizarSesion:", result);
+        client = await connectDB();
+        await client.query(
+            'SELECT sp_actualizarsesion($1, $2)',
+            [idUsuario, false]
+        );
 
         res.json({ message: 'Sesión cerrada correctamente' });
     } catch (err) {
         console.error('ERROR EN LOGOUT:', err);
         res.status(500).json({ error: 'Error interno del servidor', detalle: err.message });
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 });
 
