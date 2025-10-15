@@ -50,3 +50,13 @@ app.use(express.static('public'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en https://anacafe-backend-production.up.railway.app:${PORT}`));
+
+// Al final de tu server.js
+setInterval(async () => {
+  try {
+    await pool.query('SELECT 1');
+    console.log('Ping a la base de datos OK');
+  } catch (err) {
+    console.error('Error en ping a la base:', err.message);
+  }
+}, 5 * 60 * 1000); // cada 5 minutos
