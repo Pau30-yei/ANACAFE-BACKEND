@@ -1,44 +1,46 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../database.js");
-const sql = require("mssql");
 
 // ================================
 // GET todos los salones
 // ================================
 router.get("/", async (req, res) => {
   console.info("[INFO] GET /salones - Inicio de petición");
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request().query(`
+    client = await connectDB();
+    const result = await client.query(`
       SELECT 
-    s.IdSalon,
-    s.Nombre,
-    STRING_AGG(tc.Nombre + ': ' + FORMAT(c.Monto, 'N2'), ' | ') AS CostosConcatenados,
-    s.MedidaLargo,
-    s.MedidaAncho,
-    ISNULL(CONVERT(VARCHAR(10), t.TarimaLargo), 'N/A') AS TarimaLargo,
-    ISNULL(CONVERT(VARCHAR(10), t.TarimaAncho), 'N/A') AS TarimaAncho,
-    s.Nota,
-    s.IdEstado,
-    s.FechaCreacion,
-    s.FechaModificacion
-FROM Salones s
-LEFT JOIN DetalleTarimaPorSalon t ON s.IdSalon = t.IdSalon
-LEFT JOIN Costos c ON s.IdSalon = c.IdSalon
-LEFT JOIN TiposCosto tc ON c.IdTipoCosto = tc.IdTipoCosto
-WHERE s.IdEstado <> 3
+    s.idsalon AS "IdSalon",
+    s.nombre AS "Nombre",
+    STRING_AGG(tc.nombre || ': ' || TO_CHAR(c.monto, 'FM999,999,999.00'), ' | ') AS "CostosConcatenados",
+    s.medidalargo AS "MedidaLargo",
+    s.medidaancho AS "MedidaAncho",
+    COALESCE(CAST(t.tarimalargo AS VARCHAR), 'N/A') AS "TarimaLargo",
+    COALESCE(CAST(t.tarimaancho AS VARCHAR), 'N/A') AS "TarimaAncho",
+    s.nota AS "Nota",
+    s.idestado AS "IdEstado",
+    s.fechacreacion AS "FechaCreacion",
+    s.fechamodificacion AS "FechaModificacion"
+FROM salones s
+LEFT JOIN detalletarimaporsalon t ON s.idsalon = t.idsalon
+LEFT JOIN costos c ON s.idsalon = c.idsalon
+LEFT JOIN tiposcosto tc ON c.idtipocosto = tc.idtipocosto
+WHERE s.idestado <> 3
 GROUP BY 
-    s.IdSalon, s.Nombre, s.MedidaLargo, s.MedidaAncho, 
-    t.TarimaLargo, t.TarimaAncho, 
-    s.Nota, s.IdEstado, s.FechaCreacion, s.FechaModificacion
-ORDER BY s.IdSalon
+    s.idsalon, s.nombre, s.medidalargo, s.medidaancho, 
+    t.tarimalargo, t.tarimaancho, 
+    s.nota, s.idestado, s.fechacreacion, s.fechamodificacion
+ORDER BY s.idsalon
     `);
-    console.info(`[INFO] GET /salones - ${result.recordset.length} registros obtenidos`);
-    res.json(result.recordset);  // <-- Esto envía un JSON al frontend
+    console.info(`[INFO] GET /salones - ${result.rows.length} registros obtenidos`);
+    res.json(result.rows);  // <-- Esto envía un JSON al frontend
   } catch (err) {
     console.error("[ERROR] GET /salones -", err.message);
     res.status(500).json({ message: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 // ================================
@@ -47,39 +49,36 @@ ORDER BY s.IdSalon
 router.post("/", async (req, res) => {
   const { nombre, medidaLargo, medidaAncho, aplicaTarima, tarimaLargo, tarimaAncho, nota, idEstado } = req.body;
 
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Inserta salón
-    const insertSalon = await pool.request()
-      .input("nombre", nombre)
-      .input("medidaLargo", medidaLargo)
-      .input("medidaAncho", medidaAncho)
-      .input("nota", nota)
-      .input("idEstado", idEstado)
-      .query(`
-        INSERT INTO Salones (Nombre, MedidaLargo, MedidaAncho, Nota, IdEstado)
-        OUTPUT INSERTED.IdSalon
-        VALUES (@nombre, @medidaLargo, @medidaAncho, @nota, @idEstado)
-      `);
+    const insertSalon = await client.query(
+      `INSERT INTO salones (nombre, medidalargo, medidaancho, nota, idestado)
+        VALUES ($1, $2, $3, $4, $5) RETURNING idsalon`,
+      [nombre, medidaLargo, medidaAncho, nota, idEstado]
+    );
 
-    const newSalonId = insertSalon.recordset[0].IdSalon;
+    const newSalonId = insertSalon.rows[0].idsalon;
 
     // Inserta tarima si aplica
     if (aplicaTarima) {
-      await pool.request()
-        .input("idSalon", newSalonId)
-        .input("tarimaLargo", tarimaLargo)
-        .input("tarimaAncho", tarimaAncho)
-        .query(`
-          INSERT INTO DetalleTarimaPorSalon (IdSalon, TarimaLargo, TarimaAncho)
-          VALUES (@idSalon, @tarimaLargo, @tarimaAncho)
-        `);
+      await client.query(
+        `INSERT INTO detalletarimaporsalon (idsalon, tarimalargo, tarimaancho)
+          VALUES ($1, $2, $3)`,
+        [newSalonId, tarimaLargo, tarimaAncho]
+      );
     }
 
+    await client.query('COMMIT');
     res.status(201).json({ message: "Salón agregado correctamente" });
   } catch (err) {
+    await client.query('ROLLBACK');
     res.status(500).json({ message: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -90,68 +89,61 @@ router.put("/:id", async (req, res) => {
   const id = req.params.id;
   const { nombre, medidaLargo, medidaAncho, aplicaTarima, tarimaLargo, tarimaAncho, nota, idEstado } = req.body;
 
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Actualiza salón
-    await pool.request()
-      .input("id", id)
-      .input("nombre", nombre)
-      .input("medidaLargo", medidaLargo)
-      .input("medidaAncho", medidaAncho)
-      .input("nota", nota)
-      .input("idEstado", idEstado)
-      .query(`
-        UPDATE Salones
-        SET Nombre = @nombre,
-            MedidaLargo = @medidaLargo,
-            MedidaAncho = @medidaAncho,
-            Nota = @nota,
-            IdEstado = @idEstado,
-            FechaModificacion = GETDATE()
-        WHERE IdSalon = @id
-      `);
+    await client.query(
+      `UPDATE salones
+        SET nombre = $1,
+            medidalargo = $2,
+            medidaancho = $3,
+            nota = $4,
+            idestado = $5,
+            fechamodificacion = CURRENT_TIMESTAMP
+        WHERE idsalon = $6`,
+      [nombre, medidaLargo, medidaAncho, nota, idEstado, id]
+    );
 
     // Actualiza detalle de tarima
     if (aplicaTarima) {
       // Verifica si existe
-      const exists = await pool.request()
-        .input("idSalon", id)
-        .query("SELECT COUNT(*) AS count FROM DetalleTarimaPorSalon WHERE IdSalon = @idSalon");
+      const exists = await client.query(
+        "SELECT COUNT(*) AS count FROM detalletarimaporsalon WHERE idsalon = $1",
+        [id]
+      );
 
-      if (exists.recordset[0].count > 0) {
+      if (parseInt(exists.rows[0].count) > 0) {
         // Actualiza existente
-        await pool.request()
-          .input("idSalon", id)
-          .input("tarimaLargo", tarimaLargo)
-          .input("tarimaAncho", tarimaAncho)
-          .query(`
-            UPDATE DetalleTarimaPorSalon
-            SET TarimaLargo = @tarimaLargo,
-                TarimaAncho = @tarimaAncho
-            WHERE IdSalon = @idSalon
-          `);
+        await client.query(
+          `UPDATE detalletarimaporsalon
+            SET tarimalargo = $1,
+                tarimaancho = $2
+            WHERE idsalon = $3`,
+          [tarimaLargo, tarimaAncho, id]
+        );
       } else {
         // Inserta nuevo
-        await pool.request()
-          .input("idSalon", id)
-          .input("tarimaLargo", tarimaLargo)
-          .input("tarimaAncho", tarimaAncho)
-          .query(`
-            INSERT INTO DetalleTarimaPorSalon (IdSalon, TarimaLargo, TarimaAncho)
-            VALUES (@idSalon, @tarimaLargo, @tarimaAncho)
-          `);
+        await client.query(
+          `INSERT INTO detalletarimaporsalon (idsalon, tarimalargo, tarimaancho)
+            VALUES ($1, $2, $3)`,
+          [id, tarimaLargo, tarimaAncho]
+        );
       }
     } else {
       // Elimina detalle si no aplica
-      await pool.request()
-        .input("idSalon", id)
-        .query("DELETE FROM DetalleTarimaPorSalon WHERE IdSalon = @idSalon");
+      await client.query("DELETE FROM detalletarimaporsalon WHERE idsalon = $1", [id]);
     }
 
+    await client.query('COMMIT');
     res.json({ message: "Salón actualizado correctamente" });
   } catch (err) {
+    await client.query('ROLLBACK');
     res.status(500).json({ message: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -161,66 +153,68 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const id = req.params.id;
   const usuario = req.body.usuario || "Desconocido";
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Verificar dependencias en Capacidades
-    const check = await pool.request()
-      .input("id", id)
-      .query(`SELECT COUNT(*) AS count FROM Capacidades WHERE IdSalon = @id`);
+    const check = await client.query(
+      `SELECT COUNT(*) AS count FROM capacidades WHERE idsalon = $1`,
+      [id]
+    );
 
-    if (check.recordset[0].count > 0) {
+    if (parseInt(check.rows[0].count) > 0) {
+      await client.query('ROLLBACK');
       return res.status(400).json({
         message: "No se puede eliminar, el salón tiene capacidades asociadas."
       });
     }
 
     // Obtener datos antes de eliminar para auditoría
-    const salon = await pool.request()
-      .input("id", id)
-      .query("SELECT * FROM Salones WHERE IdSalon = @id");
+    const salon = await client.query("SELECT * FROM salones WHERE idsalon = $1", [id]);
 
-    const datosEliminados = salon.recordset[0] ? JSON.stringify(salon.recordset[0]) : null;
+    const datosEliminados = salon.rows[0] ? JSON.stringify(salon.rows[0]) : null;
 
     // Eliminar físicamente
-    await pool.request()
-      .input("id", id)
-      .query("DELETE FROM Salones WHERE IdSalon = @id");
+    await client.query("DELETE FROM salones WHERE idsalon = $1", [id]);
 
     // Guardar auditoría
-    await pool.request()
-      .input("usuario", usuario)
-      .input("tabla", "Salones")
-      .input("idRegistro", id)
-      .input("datos", datosEliminados)
-      .query(`
-        INSERT INTO AuditoriaEliminaciones
-        (Usuario, TablaEliminada, IdRegistroEliminado, DatosEliminados)
-        VALUES (@usuario, @tabla, @idRegistro, @datos)
-      `);
+    await client.query(
+      `INSERT INTO auditoriaeliminaciones
+        (usuario, tablaeliminada, idregistroeliminado, datoseleminados)
+        VALUES ($1, $2, $3, $4)`,
+      [usuario, "Salones", id, datosEliminados]
+    );
 
+    await client.query('COMMIT');
     res.json({ message: "Salón eliminado correctamente y auditoría registrada" });
   } catch (err) {
+    await client.query('ROLLBACK');
     console.error("[ERROR] DELETE /salones -", err.message);
     res.status(500).json({ message: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
 router.patch("/toggle/:id", async (req, res) => {
   const id = req.params.id;
+  let client;
   try {
-    const pool = await connectDB();
-    await pool.request()
-      .input("id", id)
-      .query(`
-        UPDATE Salones
-        SET IdEstado = CASE WHEN IdEstado = 1 THEN 2 ELSE 1 END,
-            FechaModificacion = GETDATE()
-        WHERE IdSalon = @id
-      `);
+    client = await connectDB();
+    await client.query(
+      `UPDATE salones
+        SET idestado = CASE WHEN idestado = 1 THEN 2 ELSE 1 END,
+            fechamodificacion = CURRENT_TIMESTAMP
+        WHERE idsalon = $1`,
+      [id]
+    );
     res.json({ message: "Estado actualizado correctamente" });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 

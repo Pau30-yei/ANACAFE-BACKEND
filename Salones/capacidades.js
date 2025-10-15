@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../database.js");
-const sql = require("mssql");
 
 // Logger simple (puedes luego reemplazar por winston o pino)
 const logger = {
@@ -15,29 +14,30 @@ const logger = {
 // ================================
 router.get("/salon/:idSalon", async (req, res) => {
   const { idSalon } = req.params;
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("idSalon", sql.Int, idSalon)
-      .query(`
+    client = await connectDB();
+    const result = await client.query(`
         SELECT 
-            c.IdCapacidad,
-            c.IdSalon,
-            s.Nombre AS NombreSalon,
-            c.IdTipoMontaje,
-            tm.Nombre AS NombreTipoMontaje,
-            c.CantidadPersonas
-        FROM Capacidades c
-        LEFT JOIN TiposMontaje tm ON c.IdTipoMontaje = tm.IdTipoMontaje
-        LEFT JOIN Salones s ON c.IdSalon = s.IdSalon
-        WHERE c.IdSalon = @idSalon
-        ORDER BY c.IdCapacidad
-      `);
+            c.idcapacidad AS "IdCapacidad",
+            c.idsalon AS "IdSalon",
+            s.nombre AS "NombreSalon",
+            c.idtipomontaje AS "IdTipoMontaje",
+            tm.nombre AS "NombreTipoMontaje",
+            c.cantidadpersonas AS "CantidadPersonas"
+        FROM capacidades c
+        LEFT JOIN tiposmontaje tm ON c.idtipomontaje = tm.idtipomontaje
+        LEFT JOIN salones s ON c.idsalon = s.idsalon
+        WHERE c.idsalon = $1
+        ORDER BY c.idcapacidad
+      `, [idSalon]);
 
-    res.json(result.recordset);
+    res.json(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error del servidor al obtener capacidades." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -52,21 +52,23 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Todos los campos son requeridos." });
   }
 
+  let client;
   try {
     logger.info("Agregando nueva capacidad", { idSalon, IdTipoMontaje, CantidadPersonas });
 
-    const pool = await connectDB();
-    await pool.request()
-      .input("idSalon", sql.Int, idSalon)
-      .input("IdTipoMontaje", sql.Int, IdTipoMontaje)
-      .input("CantidadPersonas", sql.Int, CantidadPersonas)
-      .query("INSERT INTO Capacidades (IdSalon, IdTipoMontaje, CantidadPersonas) VALUES (@idSalon, @IdTipoMontaje, @CantidadPersonas)");
+    client = await connectDB();
+    await client.query(
+      "INSERT INTO capacidades (idsalon, idtipomontaje, cantidadpersonas) VALUES ($1, $2, $3)",
+      [idSalon, IdTipoMontaje, CantidadPersonas]
+    );
 
     logger.info("Capacidad agregada correctamente");
     res.status(201).json({ message: "Capacidad agregada correctamente." });
   } catch (err) {
     logger.error("Error al agregar capacidad", err);
     res.status(500).json({ message: "Error del servidor al agregar la capacidad." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -87,17 +89,17 @@ router.put("/:id", async (req, res) => {
     return res.status(400).json({ message: "Tipo de montaje y cantidad de personas son requeridos." });
   }
 
+  let client;
   try {
     logger.info("Actualizando capacidad", { id, IdTipoMontaje, CantidadPersonas });
 
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .input("IdTipoMontaje", sql.Int, IdTipoMontaje)
-      .input("CantidadPersonas", sql.Int, CantidadPersonas)
-      .query("UPDATE Capacidades SET IdTipoMontaje = @IdTipoMontaje, CantidadPersonas = @CantidadPersonas WHERE IdCapacidad = @id");
+    client = await connectDB();
+    const result = await client.query(
+      "UPDATE capacidades SET idtipomontaje = $1, cantidadpersonas = $2 WHERE idcapacidad = $3",
+      [IdTipoMontaje, CantidadPersonas, id]
+    );
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       logger.warn("Capacidad no encontrada al actualizar", { id });
       return res.status(404).json({ message: "Capacidad no encontrada." });
     }
@@ -107,6 +109,8 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     logger.error("Error al actualizar capacidad", err);
     res.status(500).json({ message: "Error del servidor al actualizar la capacidad." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -120,15 +124,14 @@ router.delete("/:id", async (req, res) => {
     return res.status(400).json({ message: "ID de capacidad requerido y debe ser un número." });
   }
 
+  let client;
   try {
     logger.info("Eliminando capacidad", { id });
 
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .query("DELETE FROM Capacidades WHERE IdCapacidad = @id");
+    client = await connectDB();
+    const result = await client.query("DELETE FROM capacidades WHERE idcapacidad = $1", [id]);
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       logger.warn("Capacidad no encontrada al eliminar", { id });
       return res.status(404).json({ message: "Capacidad no encontrada." });
     }
@@ -138,6 +141,8 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     logger.error("Error al eliminar capacidad", err);
     res.status(500).json({ message: "Error del servidor al eliminar la capacidad." });
+  } finally {
+    if (client) client.release();
   }
 });
 

@@ -1,32 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../database.js");
-const sql = require("mssql");
 
 // ================================
 // GET servicios por salón
 // ================================
 router.get("/salon/:idSalon", async (req, res) => {
   const { idSalon } = req.params;
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("idSalon", sql.Int, idSalon)
-      .query(`
-        SELECT ss.Id, ss.IdSalon, ss.IdServicio, ss.Nota,
-               s.Nombre AS NombreSalon,
-               srv.Nombre AS NombreServicio
-        FROM SalonServicios ss
-        INNER JOIN Salones s ON ss.IdSalon = s.IdSalon
-        INNER JOIN Servicios srv ON ss.IdServicio = srv.IdServicio
-        WHERE ss.IdSalon = @idSalon
-        ORDER BY ss.Id
-      `);
+    client = await connectDB();
+          const result = await client.query(`
+        SELECT 
+          ss.id as "Id", 
+          ss.idsalon as "IdSalon", 
+          ss.idservicio as "IdServicio", 
+          ss.nota as "Nota",
+          s.nombre as "NombreSalon",
+          srv.nombre as "NombreServicio"
+        FROM salonservicios ss
+        INNER JOIN salones s ON ss.idsalon = s.idsalon
+        INNER JOIN servicios srv ON ss.idservicio = srv.idservicio
+        WHERE ss.idsalon = $1
+        ORDER BY ss.id
+      `, [idSalon]);
 
-    res.json(result.recordset);
+    res.json(result.rows);
   } catch (err) {
     console.error("Error al obtener servicios del salón:", err);
     res.status(500).json({ message: "Error al obtener servicios del salón." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -41,24 +45,19 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Faltan campos obligatorios o son inválidos: IdSalon e IdServicio." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
     
-    // *** CORRECCIÓN CLAVE ***: Uso de SCOPE_IDENTITY() para obtener el ID de inserción
     const query = `
-      INSERT INTO SalonServicios (IdSalon, IdServicio, Nota) 
-      VALUES (@IdSalon, @IdServicio, @Nota);
-      SELECT SCOPE_IDENTITY() AS Id;
+      INSERT INTO salonservicios (idsalon, idservicio, nota) 
+      VALUES ($1, $2, $3) RETURNING id;
     `;
     
-    const result = await pool.request()
-      .input("IdSalon", sql.Int, IdSalon)
-      .input("IdServicio", sql.Int, IdServicio)
-      .input("Nota", sql.VarChar, Nota || "")
-      .query(query);
+    const result = await client.query(query, [IdSalon, IdServicio, Nota || ""]);
 
     // Obtener el ID insertado
-    const nuevoId = result.recordset[0].Id;
+    const nuevoId = result.rows[0].id;
 
     res.status(201).json({ 
         Id: nuevoId, // Devolvemos el ID al cliente
@@ -69,15 +68,17 @@ router.post("/", async (req, res) => {
     console.error("Error detallado al agregar servicio a salón:", err);
     
     // Manejo de error de duplicado (si tiene una clave única en (IdSalon, IdServicio))
-    if (err.number === 2627) {
+    if (err.code === '23505') {
         return res.status(409).json({ message: "Este servicio ya está asignado al salón." });
     }
     // Manejo de error de clave foránea (IdSalon o IdServicio no existe)
-    if (err.number === 547) {
+    if (err.code === '23503') {
         return res.status(400).json({ message: "El ID de Salón o ID de Servicio proporcionado no existe." });
     }
     
-    res.status(500).json({ message: err.message, number: err.number });
+    res.status(500).json({ message: err.message, number: err.code });
+  } finally {
+    if (client) client.release();
   }
 });
 // ================================
@@ -91,15 +92,15 @@ router.put("/:id", async (req, res) => {
     return res.status(400).json({ message: "Falta el campo obligatorio IdServicio." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .input("IdServicio", sql.Int, IdServicio)
-      .input("Nota", sql.VarChar, Nota || "")
-      .query("UPDATE SalonServicios SET IdServicio = @IdServicio, Nota = @Nota WHERE Id = @id");
+    client = await connectDB();
+    const result = await client.query(
+      "UPDATE salonservicios SET idservicio = $1, nota = $2 WHERE id = $3",
+      [IdServicio, Nota || "", id]
+    );
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ message: "Registro no encontrado." });
     }
 
@@ -107,6 +108,8 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     console.error("Error al actualizar servicio de salón:", err);
     res.status(500).json({ message: "Error del servidor al actualizar servicio." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -123,13 +126,12 @@ router.delete("/:id", async (req, res) => {
     return res.status(400).json({ message: "ID inválido." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, idNum)
-      .query("DELETE FROM SalonServicios WHERE Id = @id");
+    client = await connectDB();
+    const result = await client.query("DELETE FROM salonservicios WHERE id = $1", [idNum]);
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ message: "Registro no encontrado o ya eliminado." });
     }
 
@@ -138,11 +140,13 @@ router.delete("/:id", async (req, res) => {
     console.error("Error al eliminar servicio de salón:", err);
 
     // Manejo de error de clave foránea
-    if (err.number === 547) {
+    if (err.code === '23503') {
       return res.status(400).json({ message: "No se puede eliminar porque está relacionado con otro registro." });
     }
 
     res.status(500).json({ message: err.message || "Error del servidor al eliminar." });
+  } finally {
+    if (client) client.release();
   }
 });
 

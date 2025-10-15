@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../database.js"); 
-const sql = require("mssql");
 
 const logger = {
   info: (msg, meta = "") => console.log(`INFO: ${msg}`, meta),
@@ -18,28 +17,29 @@ router.get("/salon/:idSalon", async (req, res) => {
     return res.status(400).json({ message: "ID de salón inválido." });
   }
   
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("idSalon", sql.Int, idSalon)
-      .query(`
+    client = await connectDB();
+    const result = await client.query(`
         SELECT 
-            c.IdCosto,
-            c.IdSalon,
-            tc.IdTipoCosto,
-            tc.Nombre AS NombreTipoCosto,
-            c.Monto,
-            c.FechaRegistro
-        FROM Costos c
-        LEFT JOIN TiposCosto tc ON c.IdTipoCosto = tc.IdTipoCosto
-        WHERE c.IdSalon = @idSalon
-        ORDER BY tc.Nombre
-      `);
+            c.idcosto AS "IdCosto",
+            c.idsalon AS "IdSalon",
+            tc.idtipocosto AS "IdTipoCosto",
+            tc.nombre AS "NombreTipoCosto",
+            c.monto AS "Monto",
+            c.fecharegistro AS "FechaRegistro"
+        FROM costos c
+        LEFT JOIN tiposcosto tc ON c.idtipocosto = tc.idtipocosto
+        WHERE c.idsalon = $1
+        ORDER BY tc.nombre
+      `, [idSalon]);
 
-    res.json(result.recordset);
+    res.json(result.rows);
   } catch (err) {
     logger.error("Error al obtener costos:", err);
     res.status(500).json({ message: "Error del servidor." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -54,37 +54,38 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Datos incompletos o inválidos: IdSalon, IdTipoCosto y Monto son requeridos y Monto debe ser un número >= 0." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
     
     // ----------------------------------------------------------------------
     //  LÓGICA DE VALIDACIÓN DE UNICIDAD (IdSalon + IdTipoCosto) 
     // Esto asegura que un mismo salón no tenga dos veces el mismo tipo de costo ( dos Precios Base).
     // ----------------------------------------------------------------------
-    const checkUnique = await pool.request()
-        .input("IdSalon", sql.Int, IdSalon)
-        .input("IdTipoCosto", sql.Int, IdTipoCosto)
-        .query("SELECT COUNT(*) AS count FROM Costos WHERE IdSalon = @IdSalon AND IdTipoCosto = @IdTipoCosto");
+    const checkUnique = await client.query(
+        "SELECT COUNT(*) AS count FROM costos WHERE idsalon = $1 AND idtipocosto = $2", 
+        [IdSalon, IdTipoCosto]);
         
-    if (checkUnique.recordset[0].count > 0) {
+    if (parseInt(checkUnique.rows[0].count) > 0) {
         // Devuelve un error 409 Conflict si ya existe la combinación
         return res.status(409).json({ message: "Este tipo de costo ya está asignado a este salón. Para cambiar el monto, debe actualizar el costo existente." });
     }
     // ----------------------------------------------------------------------
     
-    const result = await pool.request()
-      .input("IdSalon", sql.Int, IdSalon)
-      .input("IdTipoCosto", sql.Int, IdTipoCosto)
-      .input("Monto", sql.Decimal(18, 2), Monto)
-      .query("INSERT INTO Costos (IdSalon, IdTipoCosto, Monto) VALUES (@IdSalon, @IdTipoCosto, @Monto); SELECT SCOPE_IDENTITY() AS IdCosto;");
+    const result = await client.query(
+      "INSERT INTO costos (idsalon, idtipocosto, monto) VALUES ($1, $2, $3) RETURNING idcosto",
+      [IdSalon, IdTipoCosto, Monto]
+    );
 
     res.status(201).json({ 
       message: "Costo agregado correctamente.", 
-      IdCosto: result.recordset[0].IdCosto 
+      IdCosto: result.rows[0].idcosto 
     });
   } catch (err) {
     logger.error("Error al agregar costo:", err);
     res.status(500).json({ message: "Error del servidor al agregar el costo." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -100,14 +101,15 @@ router.put("/:id", async (req, res) => {
     return res.status(400).json({ message: "ID o Monto inválido. El monto debe ser un número >= 0." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .input("Monto", sql.Decimal(18, 2), Monto)
-      .query("UPDATE Costos SET Monto = @Monto, FechaRegistro = GETDATE() WHERE IdCosto = @id");
+    client = await connectDB();
+    const result = await client.query(
+      "UPDATE costos SET monto = $1, fecharegistro = CURRENT_TIMESTAMP WHERE idcosto = $2",
+      [Monto, id]
+    );
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ message: "Costo no encontrado." });
     }
     
@@ -115,6 +117,8 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     logger.error("Error al actualizar monto del costo:", err);
     res.status(500).json({ message: "Error del servidor al actualizar el costo." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -128,13 +132,12 @@ router.delete("/:id", async (req, res) => {
     return res.status(400).json({ message: "ID de costo inválido." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .query("DELETE FROM Costos WHERE IdCosto = @id");
+    client = await connectDB();
+    const result = await client.query("DELETE FROM costos WHERE idcosto = $1", [id]);
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ message: "Costo no encontrado." });
     }
 
@@ -143,6 +146,8 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     logger.error("Error al eliminar costo:", err);
     res.status(500).json({ message: "Error del servidor al eliminar el costo." });
+  } finally {
+    if (client) client.release();
   }
 });
 

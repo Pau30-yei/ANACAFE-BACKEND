@@ -1,21 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const { connectDB } = require("../database.js");
-const sql = require("mssql");
 
 // ================================
 // GET todos los equipos opcionales
 // ================================
 router.get("/", async (req, res) => {
   console.log("[INFO] Solicitud GET /EquipoOpcional recibida");
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request().query("SELECT * FROM EquipoOpcional");
-    console.log(`[INFO] Se obtuvieron ${result.recordset.length} equipos opcionales`);
-    res.json(result.recordset);
+    client = await connectDB();
+    const result = await client.query(`
+      SELECT 
+        idequipo as "IdEquipo",
+        nombre as "Nombre",
+        descripcion as "Descripcion"
+      FROM equipoopcional
+    `);
+    console.log(`[INFO] Se obtuvieron ${result.rows.length} equipos opcionales`);
+    res.json(result.rows);
   } catch (err) {
     console.error("[ERROR] Error al obtener equipos opcionales:", err);
     res.status(500).json({ message: "Error del servidor al obtener equipos opcionales." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -31,18 +39,21 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Nombre y descripción son campos requeridos." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    await pool.request()
-      .input("Nombre", sql.NVarChar(50), Nombre)
-      .input("Descripcion", sql.NVarChar(255), Descripcion) // Asumo un NVarChar más largo para Descripción
-      .query("INSERT INTO EquipoOpcional (Nombre, Descripcion) VALUES (@Nombre, @Descripcion)");
+    client = await connectDB();
+    await client.query(
+      "INSERT INTO equipoopcional (nombre, descripcion) VALUES ($1, $2)",
+      [Nombre, Descripcion]
+    );
 
     console.log("[INFO] Equipo opcional agregado correctamente:", Nombre);
     res.status(201).json({ message: "Equipo opcional agregado correctamente." });
   } catch (err) {
     console.error("[ERROR] Error al agregar equipo opcional:", err);
     res.status(500).json({ message: "Error del servidor al agregar el equipo opcional." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -59,15 +70,15 @@ router.put("/:id", async (req, res) => {
     return res.status(400).json({ message: "Nombre y descripción son campos requeridos." });
   }
 
+  let client;
   try {
-    const pool = await connectDB();
-    const result = await pool.request()
-      .input("IdEquipo", sql.Int, id)
-      .input("Nombre", sql.NVarChar(50), Nombre)
-      .input("Descripcion", sql.NVarChar(255), Descripcion)
-      .query("UPDATE EquipoOpcional SET Nombre = @Nombre, Descripcion = @Descripcion WHERE IdEquipo = @id");
+    client = await connectDB();
+    const result = await client.query(
+      "UPDATE equipoopcional SET nombre = $1, descripcion = $2 WHERE idequipo = $3",
+      [Nombre, Descripcion, id]
+    );
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       console.warn(`[WARN] Equipo opcional con ID ${id} no encontrado`);
       return res.status(404).json({ message: "Equipo opcional no encontrado." });
     }
@@ -77,6 +88,8 @@ router.put("/:id", async (req, res) => {
   } catch (err) {
     console.error("[ERROR] Error al actualizar equipo opcional:", err);
     res.status(500).json({ message: "Error del servidor al actualizar el equipo opcional." });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -87,15 +100,17 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   console.log(`[INFO] Solicitud DELETE /EquipoOpcional/${id} recibida`);
 
+  let client;
   try {
-    const pool = await connectDB();
+    client = await connectDB();
 
     // Verificar si el equipo opcional está en uso en SalonEquipoOpcional
-    const check = await pool.request()
-      .input("id", sql.Int, id)
-      .query("SELECT COUNT(*) AS total FROM SalonEquipoOpcional WHERE IdEquipo = @id");
+    const check = await client.query(
+      "SELECT COUNT(*) AS total FROM salonequipoopcional WHERE idequipo = $1",
+      [id]
+    );
 
-    if (check.recordset[0].total > 0) {
+    if (parseInt(check.rows[0].total) > 0) {
       console.warn(`[WARN] No se puede eliminar, está en uso en SalonEquipoOpcional`);
       return res.status(400).json({
         message: "No se puede eliminar este Equipo Opcional porque está en uso en Salones."
@@ -103,11 +118,12 @@ router.delete("/:id", async (req, res) => {
     }
 
     // Si no está en uso, eliminarlo
-    const result = await pool.request()
-      .input("id", sql.Int, id)
-      .query("DELETE FROM EquipoOpcional WHERE IdEquipo = @id");
+    const result = await client.query(
+      "DELETE FROM equipoopcional WHERE idequipo = $1",
+      [id]
+    );
 
-    if (result.rowsAffected[0] === 0) {
+    if (result.rowCount === 0) {
       console.warn(`[WARN] Equipo opcional con ID ${id} no encontrado para eliminar`);
       return res.status(404).json({ message: "Equipo opcional no encontrado." });
     }
@@ -118,8 +134,9 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     console.error("[ERROR] Error al eliminar equipo opcional:", err);
     res.status(500).json({ message: "Error del servidor al eliminar el equipo opcional." });
+  } finally {
+    if (client) client.release();
   }
 });
-
 
 module.exports = router;

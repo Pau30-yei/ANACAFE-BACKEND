@@ -1540,3 +1540,130 @@ error: [ERROR] Error al obtener solicitudes para calendario: Failed to connect t
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T05:45:21.369Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T07:10:46.326Z"}
 info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T08:13:17.534Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T17:17:06.423Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: pool.request is not a function {"timestamp":"2025-10-14T17:17:06.426Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T19:43:56.431Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: pool.request is not a function {"timestamp":"2025-10-14T19:43:56.439Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T19:44:14.019Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: pool.request is not a function {"timestamp":"2025-10-14T19:44:14.021Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:07:50.529Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: pool.request is not a function {"timestamp":"2025-10-14T20:07:51.733Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:14:01.185Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:19:01.069Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T20:21:56.824Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina Ramirez {"timestamp":"2025-10-14T20:21:56.826Z"}
+info: [INFO] Horas normalizadas: Inicio=14:20:00, Fin=15:10:00 {"timestamp":"2025-10-14T20:21:56.827Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T20:21:57.341Z"}
+info: [INFO] No se detectó conflicto de horario. Continuando con el registro. {"timestamp":"2025-10-14T20:21:57.436Z"}
+warn: [WARN] Transacción con ROLLBACK debido a error. {"timestamp":"2025-10-14T20:21:57.621Z"}
+error: [ERR] Error al procesar la solicitud de reserva: insert or update on table "solicitudes" violates foreign key constraint "solicitudes_idtiposolicitante_fkey" {"timestamp":"2025-10-14T20:21:57.622Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T20:26:48.331Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina Ramirez {"timestamp":"2025-10-14T20:26:48.331Z"}
+info: [INFO] Horas normalizadas: Inicio=14:20:00, Fin=15:10:00 {"timestamp":"2025-10-14T20:26:48.332Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T20:26:49.495Z"}
+info: [INFO] No se detectó conflicto de horario. Continuando con el registro. {"timestamp":"2025-10-14T20:26:49.696Z"}
+info: [INFO] Registro de Solicitud principal creado: 2 {"timestamp":"2025-10-14T20:26:49.896Z"}
+warn: [WARN] Transacción con ROLLBACK debido a error. {"timestamp":"2025-10-14T20:26:50.708Z"}
+error: [ERR] Error al procesar la solicitud de reserva: null value in column "idservicio" of relation "solicitudservicios" violates not-null constraint {"timestamp":"2025-10-14T20:26:50.709Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T20:32:57.687Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina Ramirez {"timestamp":"2025-10-14T20:32:57.691Z"}
+info: [INFO] Horas normalizadas: Inicio=14:20:00, Fin=15:10:00 {"timestamp":"2025-10-14T20:32:57.692Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T20:32:58.459Z"}
+info: [INFO] No se detectó conflicto de horario. Continuando con el registro. {"timestamp":"2025-10-14T20:32:58.558Z"}
+info: [INFO] Registro de Solicitud principal creado: 3 {"timestamp":"2025-10-14T20:32:58.658Z"}
+info: [INFO] Solicitud de reserva 3 finalizada con COMMIT por usuario: Paulina Ramirez {"timestamp":"2025-10-14T20:32:58.940Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:33:02.781Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T20:33:07.929Z"}
+info: [INFO] Intento de obtener solicitud con ID: 1 {"timestamp":"2025-10-14T20:35:17.761Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T20:35:43.814Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:51:56.729Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T20:52:02.002Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T20:52:14.982Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:52:26.426Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T20:53:42.334Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina Ramirez {"timestamp":"2025-10-14T20:53:42.335Z"}
+info: [INFO] Horas normalizadas: Inicio=11:10:00, Fin=15:35:00 {"timestamp":"2025-10-14T20:53:42.337Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T20:53:43.387Z"}
+warn: [WARN] Conflicto de horario detectado. Rollback. Solicitud cancelada. {"timestamp":"2025-10-14T20:53:43.739Z"}
+info: [INFO] Intento de crear nueva solicitud de reserva. {"timestamp":"2025-10-14T20:53:56.612Z"}
+info: [INFO] Usuario que crea la solicitud: Paulina Ramirez {"timestamp":"2025-10-14T20:53:56.613Z"}
+info: [INFO] Horas normalizadas: Inicio=11:10:00, Fin=15:35:00 {"timestamp":"2025-10-14T20:53:56.613Z"}
+info: [INFO] Verificando conflicto de horario para la nueva solicitud. {"timestamp":"2025-10-14T20:53:56.705Z"}
+info: [INFO] No se detectó conflicto de horario. Continuando con el registro. {"timestamp":"2025-10-14T20:53:56.801Z"}
+info: [INFO] Registro de Solicitud principal creado: 4 {"timestamp":"2025-10-14T20:53:56.894Z"}
+info: [INFO] Solicitud de reserva 4 finalizada con COMMIT por usuario: Paulina Ramirez {"timestamp":"2025-10-14T20:53:57.555Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T20:54:38.985Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T20:54:46.277Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T20:54:56.706Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:01:43.624Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:01:46.825Z"}
+info: [INFO] Actualizando estado de solicitud 4 a 5 {"timestamp":"2025-10-14T21:01:53.759Z"}
+info: [INFO] Estado de solicitud 4 actualizado a 5 {"timestamp":"2025-10-14T21:01:54.153Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:01:56.068Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:02:08.056Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:07:09.865Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:07:14.778Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:11:58.944Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:12:03.845Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:12:08.334Z"}
+error: [ERROR] Error al obtener solicitud por ID 4: syntax error at or near "s" {"timestamp":"2025-10-14T21:12:08.670Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:14:07.633Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:14:11.539Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T21:14:15.647Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:14:35.910Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:14:39.376Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:14:41.312Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:15:09.270Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T21:15:12.417Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:15:46.970Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T21:15:50.427Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:16:49.077Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T21:16:53.281Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:17:00.278Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:17:03.122Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:17:09.756Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:18:49.898Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:24:07.772Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:24:14.257Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:16.797Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:24.361Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:25.350Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:26.243Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:28.096Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:30.211Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:31.957Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:32.757Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:33.556Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:34.298Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:35.081Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:35.842Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:36.610Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:37.426Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:38.196Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:24:38.965Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:27:52.519Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:27:54.818Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:28:03.721Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:28:08.239Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:28:13.027Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:29:57.644Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:30:00.467Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:30:14.024Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:30:57.971Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:35:57.157Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:36:02.399Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:37:00.352Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:37:04.352Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:38:50.349Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:39:12.490Z"}
+info: [INFO] Intento de obtener solicitud con ID: 3 {"timestamp":"2025-10-14T21:39:17.251Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:39:22.172Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:39:24.959Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:39:26.941Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:46:53.445Z"}
+error: [ERROR] Error al obtener solicitudes para calendario: Connection terminated due to connection timeout {"timestamp":"2025-10-14T21:46:55.466Z"}
+info: [INFO] Intento de obtener solicitud con ID: 4 {"timestamp":"2025-10-14T21:50:17.525Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T21:50:21.619Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T21:50:53.315Z"}
+info: [INFO] Generando contrato para solicitud: 4 {"timestamp":"2025-10-14T22:41:14.891Z"}
+info: [INFO] Intento de obtener solicitudes para calendario. {"timestamp":"2025-10-14T22:43:28.080Z"}

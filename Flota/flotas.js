@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
 const { connectDB } = require('../database.js');
 const winston = require('winston');
 
@@ -28,32 +27,31 @@ router.get('/conductores', async (req, res) => {
   logger.info('[INFO] Obteniendo lista de conductores');
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          e.IdEmpleado,
-          e.Nombre,
-          e.Apellido,
-          e.Email,
-          e.Telefono,
-          e.FechaIngreso,
-          d.Nombre AS Departamento,
-          lc.NumeroLicencia,
-          lc.TipoLicencia,
-          lc.FechaCaducidad,
-          lc.IdEstado AS EstadoLicencia,
-          eg.Nombre AS EstadoLicenciaNombre
-        FROM Empleados e
-        INNER JOIN Departamento d ON e.IdDepartamento = d.IdDepartamento
-        LEFT JOIN LicenciasConductores lc ON e.IdEmpleado = lc.IdEmpleado
-        LEFT JOIN EstadosGenerales eg ON lc.IdEstado = eg.IdEstado
-        WHERE d.Nombre = 'Pilotos' OR d.Nombre LIKE '%Pilot%'
-        ORDER BY e.Nombre, e.Apellido
-      `);
+    const result = await client.query(`
+      SELECT 
+        e.idempleado as "IdEmpleado",
+        e.nombre as "Nombre",
+        e.apellido as "Apellido",
+        e.email as "Email",
+        e.telefono as "Telefono",
+        e.fechaingreso as "FechaIngreso",
+        d.nombre as "Departamento",
+        lc.numerolicencia as "NumeroLicencia",
+        lc.tipolicencia as "TipoLicencia",
+        lc.fechacaducidad as "FechaCaducidad",
+        lc.idestado as "EstadoLicencia",
+        eg.nombre as "EstadoLicenciaNombre"
+      FROM empleados e
+      INNER JOIN departamento d ON e.iddepartamento = d.iddepartamento
+      LEFT JOIN licenciasconductores lc ON e.idempleado = lc.idempleado
+      LEFT JOIN estadosgenerales eg ON lc.idestado = eg.idestado
+      WHERE d.nombre = 'Pilotos' OR d.nombre LIKE '%Pilot%'
+      ORDER BY e.nombre, e.apellido
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener conductores: ${err.message}`);
@@ -68,21 +66,36 @@ router.get('/vehiculos', async (req, res) => {
   logger.info('[INFO] Obteniendo lista de vehículos');
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          v.*,
-          tv.Nombre AS TipoVehiculo,
-          eg.Nombre AS EstadoNombre
-        FROM Vehiculos v
-        INNER JOIN TiposVehiculo tv ON v.IdTipoVehiculo = tv.IdTipoVehiculo
-        INNER JOIN EstadosGenerales eg ON v.IdEstado = eg.IdEstado
-        ORDER BY v.IdEstado, v.Marca, v.Modelo
-      `);
+    const result = await client.query(`
+      SELECT 
+        v.IdVehiculo AS "IdVehiculo",
+        v.Marca AS "Marca",
+        v.Modelo AS "Modelo",
+        v.Anio AS "Anio",
+        v.Placa AS "Placa",
+        v.NumeroChasis AS "NumeroChasis",
+        v.NumeroMotor AS "NumeroMotor",
+        v.Color AS "Color",
+        v.IdTipoVehiculo AS "IdTipoVehiculo",
+        v.TarjetaCirculacion AS "TarjetaCirculacion",
+        v.FechaVencimientoTarjeta AS "FechaVencimientoTarjeta",
+        v.PolizaSeguro AS "PolizaSeguro",
+        v.FechaVencimientoSeguro AS "FechaVencimientoSeguro",
+        v.KilometrajeActual AS "KilometrajeActual",
+        v.IdEstado AS "IdEstado",
+        v.Observaciones AS "Observaciones",
+        v.FechaRegistro AS "FechaRegistro",
+        tv.nombre as "TipoVehiculo",
+        eg.nombre as "EstadoNombre"
+      FROM vehiculos v
+      INNER JOIN tiposvehiculo tv ON v.idtipovehiculo = tv.idtipovehiculo
+      INNER JOIN estadosgenerales eg ON v.idestado = eg.idestado
+      ORDER BY v.idestado, v.marca, v.modelo
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener vehículos: ${err.message}`);
@@ -98,26 +111,40 @@ router.get('/vehiculos/:id', async (req, res) => {
   logger.info(`[INFO] Obteniendo vehículo con ID: ${idVehiculo}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .query(`
-        SELECT 
-          v.*,
-          tv.Nombre AS TipoVehiculo,
-          eg.Nombre AS EstadoNombre
-        FROM Vehiculos v
-        INNER JOIN TiposVehiculo tv ON v.IdTipoVehiculo = tv.IdTipoVehiculo
-        INNER JOIN EstadosGenerales eg ON v.IdEstado = eg.IdEstado
-        WHERE v.IdVehiculo = @IdVehiculo
-      `);
+    const result = await client.query(`
+      SELECT 
+         v.IdVehiculo AS "IdVehiculo",
+        v.Marca AS "Marca",
+        v.Modelo AS "Modelo",
+        v.Anio AS "Anio",
+        v.Placa AS "Placa",
+        v.NumeroChasis AS "NumeroChasis",
+        v.NumeroMotor AS "NumeroMotor",
+        v.Color AS "Color",
+        v.IdTipoVehiculo AS "IdTipoVehiculo",
+        v.TarjetaCirculacion AS "TarjetaCirculacion",
+        v.FechaVencimientoTarjeta AS "FechaVencimientoTarjeta",
+        v.PolizaSeguro AS "PolizaSeguro",
+        v.FechaVencimientoSeguro AS "FechaVencimientoSeguro",
+        v.KilometrajeActual AS "KilometrajeActual",
+        v.IdEstado AS "IdEstado",
+        v.Observaciones AS "Observaciones",
+        v.FechaRegistro AS "FechaRegistro",
+        tv.nombre as "TipoVehiculo",
+        eg.nombre as "EstadoNombre"
+      FROM vehiculos v
+      INNER JOIN tiposvehiculo tv ON v.idtipovehiculo = tv.idtipovehiculo
+      INNER JOIN estadosgenerales eg ON v.idestado = eg.idestado
+      WHERE v.idvehiculo = $1
+    `, [idVehiculo]);
     
-    if (result.recordset.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Vehículo no encontrado' });
     }
     
-    res.status(200).json(result.recordset[0]);
+    res.status(200).json(result.rows[0]);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener vehículo ${idVehiculo}: ${err.message}`);
@@ -130,19 +157,21 @@ router.get('/vehiculos/:id', async (req, res) => {
 // =============================================================
 router.get('/tipos-vehiculo', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          tv.*,
-          eg.Nombre AS EstadoNombre
-        FROM TiposVehiculo tv
-        INNER JOIN EstadosGenerales eg ON tv.IdEstado = eg.IdEstado
-        ORDER BY tv.Nombre
-      `);
+    const result = await client.query(`
+      SELECT 
+        tv.IdTipoVehiculo AS "IdTipoVehiculo",
+        tv.Nombre AS "Nombre",
+        tv.descripcion AS "Descripcion",
+        tv.idestado AS "IdEstado",
+        eg.nombre as "EstadoNombre"
+      FROM tiposvehiculo tv
+      INNER JOIN estadosgenerales eg ON tv.idestado = eg.idestado
+      ORDER BY tv.nombre
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener tipos de vehículo: ${err.message}`);
@@ -155,20 +184,22 @@ router.get('/tipos-vehiculo', async (req, res) => {
 // =============================================================
 router.get('/tipos-asignacion', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          ta.*,
-          eg.Nombre AS EstadoNombre
-        FROM TiposAsignacion ta
-        INNER JOIN EstadosGenerales eg ON ta.IdEstado = eg.IdEstado
-        WHERE ta.IdEstado = 1
-        ORDER BY ta.Nombre
-      `);
+    const result = await client.query(`
+      SELECT 
+      ta.IdTipoAsignacion as "IdTipoAsignacion"
+      ,ta.Nombre as "Nombre"
+      ,ta.Descripcion as "Descripcion"
+      ,ta.IdEstado as "IdEstado"
+      ,eg.nombre as "EstadoNombre"
+      FROM tiposasignacion ta
+      INNER JOIN estadosgenerales eg ON ta.idestado = eg.idestado
+      WHERE ta.idestado = 1
+      ORDER BY ta.nombre
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener tipos de asignación: ${err.message}`);
@@ -181,20 +212,22 @@ router.get('/tipos-asignacion', async (req, res) => {
 // =============================================================
 router.get('/tipos-mantenimiento', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          tm.*,
-          eg.Nombre AS EstadoNombre
-        FROM TiposMantenimiento tm
-        INNER JOIN EstadosGenerales eg ON tm.IdEstado = eg.IdEstado
-        WHERE tm.IdEstado = 1
-        ORDER BY tm.Nombre
-      `);
+    const result = await client.query(`
+      SELECT 
+        tm.IdTipoMantenimiento AS "IdTipoMantenimiento"
+      ,tm.Nombre AS "Nombre"
+      ,tm.Descripcion AS "Descripcion"
+      ,tm.IdEstado AS "IdEstado",
+        eg.nombre as "EstadoNombre"
+      FROM tiposmantenimiento tm
+      INNER JOIN estadosgenerales eg ON tm.idestado = eg.idestado
+      WHERE tm.idestado = 1
+      ORDER BY tm.nombre
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener tipos de mantenimiento: ${err.message}`);
@@ -210,31 +243,26 @@ router.post('/asignaciones', async (req, res) => {
   const data = req.body;
   
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
-  let transaction;
+  let client;
   
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Verificar disponibilidad del vehículo
-    const disponibilidadCheck = await transaction.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('FechaInicio', sql.Date, data.FechaInicio)
-      .input('FechaFin', sql.Date, data.FechaFin)
-      .query(`
-        SELECT IdAsignacion 
-        FROM AsignacionesVehiculos 
-        WHERE IdVehiculo = @IdVehiculo 
-          AND IdEstado IN (1, 4, 5) -- Activo, Pendiente, Autorizada
-          AND (
-            (FechaInicio <= @FechaFin AND FechaFin >= @FechaInicio) OR
-            (@FechaFin IS NULL AND FechaInicio <= @FechaInicio)
-          )
-      `);
+    const disponibilidadCheck = await client.query(`
+      SELECT idasignacion AS "IdAsignacion"
+      FROM asignacionesvehiculos 
+      WHERE idvehiculo = $1 
+        AND idestado IN (1, 4, 5) -- Activo, Pendiente, Autorizada
+        AND (
+          (fechainicio <= $2 AND fechafin >= $3) OR
+          ($2 IS NULL AND fechainicio <= $3)
+        )
+    `, [data.IdVehiculo, data.FechaFin, data.FechaInicio]);
 
-    if (disponibilidadCheck.recordset.length > 0) {
-      await transaction.rollback();
+    if (disponibilidadCheck.rows.length > 0) {
+      await client.query('ROLLBACK');
       return res.status(409).json({ 
         message: 'El vehículo no está disponible en las fechas solicitadas',
         isConflict: true 
@@ -242,62 +270,44 @@ router.post('/asignaciones', async (req, res) => {
     }
 
     // Verificar que el conductor tenga licencia vigente
-    const licenciaCheck = await transaction.request()
-      .input('IdConductor', sql.Int, data.IdConductor)
-      .query(`
-        SELECT 1 
-        FROM LicenciasConductores 
-        WHERE IdEmpleado = @IdConductor 
-          AND FechaCaducidad > GETDATE()
-          AND IdEstado = 1
-      `);
+    const licenciaCheck = await client.query(`
+      SELECT 1 
+      FROM licenciasconductores 
+      WHERE idempleado = $1 
+        AND fechacaducidad > CURRENT_DATE
+        AND idestado = 1
+    `, [data.IdConductor]);
 
-    if (licenciaCheck.recordset.length === 0) {
-      await transaction.rollback();
+    if (licenciaCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(400).json({ 
         message: 'El conductor no tiene una licencia vigente'
       });
     }
 
     // Crear la asignación
-    const asignacionResult = await transaction.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('IdConductor', sql.Int, data.IdConductor)
-      .input('IdSolicitante', sql.Int, data.IdSolicitante)
-      .input('IdTipoAsignacion', sql.Int, data.IdTipoAsignacion)
-      .input('FechaInicio', sql.Date, data.FechaInicio)
-      .input('FechaFin', sql.Date, data.FechaFin)
-      .input('Destino', sql.NVarChar(500), data.Destino)
-      .input('Proposito', sql.NVarChar(1000), data.Proposito)
-      .input('KilometrajeInicial', sql.Decimal(10,2), data.KilometrajeInicial)
-      .input('NivelCombustibleInicial', sql.NVarChar(50), data.NivelCombustibleInicial)
-      .input('Observaciones', sql.NVarChar(1000), data.Observaciones || '')
-      .input('UsuarioRegistro', sql.NVarChar(100), usuario)
-      .query(`
-        INSERT INTO AsignacionesVehiculos (
-          IdVehiculo, IdConductor, IdSolicitante, IdTipoAsignacion, FechaInicio, FechaFin,
-          Destino, Proposito, KilometrajeInicial, NivelCombustibleInicial, Observaciones, UsuarioRegistro
-        )
-        OUTPUT INSERTED.IdAsignacion
-        VALUES (
-          @IdVehiculo, @IdConductor, @IdSolicitante, @IdTipoAsignacion, @FechaInicio, @FechaFin,
-          @Destino, @Proposito, @KilometrajeInicial, @NivelCombustibleInicial, @Observaciones, @UsuarioRegistro
-        )
-      `);
-
-    const idAsignacion = asignacionResult.recordset[0].IdAsignacion;
+    const asignacionResult = await client.query(`
+      INSERT INTO asignacionesvehiculos (
+        idvehiculo, idconductor, idsolicitante, idtipoasignacion, fechainicio, fechafin,
+        destino, proposito, kilometrajeinicial, nivelcombustibleinicial, observaciones, usuarioregistro
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING idasignacion
+    `, [
+      data.IdVehiculo, data.IdConductor, data.IdSolicitante, data.IdTipoAsignacion, 
+      data.FechaInicio, data.FechaFin, data.Destino, data.Proposito, 
+      data.KilometrajeInicial, data.NivelCombustibleInicial, data.Observaciones || '', usuario
+    ]);
+    
+    const idAsignacion = asignacionResult.rows[0].idasignacion;
 
     // Actualizar estado del vehículo a "En Uso" (9)
-    await transaction.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('KilometrajeActual', sql.Decimal(10,2), data.KilometrajeInicial)
-      .query(`
-        UPDATE Vehiculos 
-        SET IdEstado = 9, KilometrajeActual = @KilometrajeActual
-        WHERE IdVehiculo = @IdVehiculo
-      `);
+    await client.query(`
+      UPDATE vehiculos 
+      SET idestado = 9, kilometrajeactual = $1
+      WHERE idvehiculo = $2
+    `, [data.KilometrajeInicial, data.IdVehiculo]);
 
-    await transaction.commit();
+    await client.query('COMMIT');
     logger.info(`[INFO] Asignación ${idAsignacion} creada por usuario: ${usuario}`);
 
     res.status(201).json({
@@ -306,9 +316,11 @@ router.post('/asignaciones', async (req, res) => {
     });
 
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    if (client) await client.query('ROLLBACK');
     logger.error(`[ERROR] Error al crear asignación: ${err.message}`);
     res.status(500).json({ error: 'Error al crear la asignación: ' + err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -317,30 +329,45 @@ router.post('/asignaciones', async (req, res) => {
 // =============================================================
 router.get('/asignaciones/activas', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          a.*,
-          v.Marca,
-          v.Modelo,
-          v.Placa,
-          c.Nombre + ' ' + c.Apellido AS NombreConductor,
-          s.Nombre + ' ' + s.Apellido AS NombreSolicitante,
-          ta.Nombre AS TipoAsignacion,
-          eg.Nombre AS EstadoNombre
-        FROM AsignacionesVehiculos a
-        INNER JOIN Vehiculos v ON a.IdVehiculo = v.IdVehiculo
-        INNER JOIN Empleados c ON a.IdConductor = c.IdEmpleado
-        INNER JOIN Empleados s ON a.IdSolicitante = s.IdEmpleado
-        INNER JOIN TiposAsignacion ta ON a.IdTipoAsignacion = ta.IdTipoAsignacion
-        INNER JOIN EstadosGenerales eg ON a.IdEstado = eg.IdEstado
-        WHERE a.IdEstado IN (1, 4, 5) -- Activo, Pendiente, Autorizada
-        ORDER BY a.FechaAsignacion DESC
-      `);
+    const result = await client.query(`
+      SELECT 
+      a.IdAsignacion AS "IdAsignacion"
+      ,a.IdVehiculo AS "IdVehiculo"
+      ,a.IdConductor AS "IdConductor"
+      ,a.IdSolicitante AS "IdSolicitante"
+      ,a.IdTipoAsignacion AS "IdTipoAsignacion"
+      ,a.FechaAsignacion AS "FechaAsignacion"
+      ,a.FechaInicio AS "FechaInicio"
+      ,a.FechaFin AS "FechaFin"
+      ,a.Destino AS "Destino"
+      ,a.Proposito AS "Proposito"
+      ,a.KilometrajeInicial AS "KilometrajeInicial"
+      ,a.NivelCombustibleInicial AS "NivelCombustibleInicial"
+      ,a.Observaciones AS "Observaciones"
+      ,a.IdEstado AS "IdEstado"
+      ,a.UsuarioRegistro AS "UsuarioRegistro"
+      ,a.FechaAutorizacion AS "FechaAutorizacion"
+      ,a.FechaActualizacion AS "FechaActualizacion",
+        v.marca as "Marca",
+        v.modelo as "Modelo",
+        v.placa as "Placa",
+        CONCAT(c.nombre, ' ', c.apellido) as "NombreConductor",
+        CONCAT(s.nombre, ' ', s.apellido) as "NombreSolicitante",
+        ta.nombre as "TipoAsignacion",
+        eg.nombre as "EstadoNombre"
+      FROM asignacionesvehiculos a
+      INNER JOIN vehiculos v ON a.idvehiculo = v.idvehiculo
+      INNER JOIN empleados c ON a.idconductor = c.idempleado
+      INNER JOIN empleados s ON a.idsolicitante = s.idempleado
+      INNER JOIN tiposasignacion ta ON a.idtipoasignacion = ta.idtipoasignacion
+      INNER JOIN estadosgenerales eg ON a.idestado = eg.idestado
+      WHERE a.idestado IN (1, 4, 5) -- Activo, Pendiente, Autorizada
+      ORDER BY a.fechaasignacion DESC
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener asignaciones activas: ${err.message}`);
@@ -349,7 +376,7 @@ router.get('/asignaciones/activas', async (req, res) => {
 });
 
 // =============================================================
-// GET: OBTENER HISTORIAL DE ASIGNACIONES (DEBE IR ANTES DE :id)
+// GET: OBTENER HISTORIAL DE ASIGNACIONES
 // =============================================================
 router.get('/asignaciones/historial', async (req, res) => {
   const { fechaInicio, fechaFin, idVehiculo, idConductor } = req.query;
@@ -357,59 +384,81 @@ router.get('/asignaciones/historial', async (req, res) => {
   logger.info('[INFO] Obteniendo historial de asignaciones');
   
   try {
-    const pool = await connectDB();
-    let request = pool.request();
+    const client = await connectDB();
     
     let query = `
       SELECT 
-        a.*,
-        v.Marca,
-        v.Modelo,
-        v.Placa,
-        c.Nombre + ' ' + c.Apellido AS NombreConductor,
-        s.Nombre + ' ' + s.Apellido AS NombreSolicitante,
-        ta.Nombre AS TipoAsignacion,
-        eg.Nombre AS EstadoNombre,
-        rv.KilometrajeEntrada,
-        rv.KilometrajeSalida,
-        (rv.KilometrajeEntrada - rv.KilometrajeSalida) AS KilometrosRecorridos
-      FROM AsignacionesVehiculos a
-      INNER JOIN Vehiculos v ON a.IdVehiculo = v.IdVehiculo
-      INNER JOIN Empleados c ON a.IdConductor = c.IdEmpleado
-      INNER JOIN Empleados s ON a.IdSolicitante = s.IdEmpleado
-      INNER JOIN TiposAsignacion ta ON a.IdTipoAsignacion = ta.IdTipoAsignacion
-      INNER JOIN EstadosGenerales eg ON a.IdEstado = eg.IdEstado
-      LEFT JOIN RegistroViajes rv ON a.IdAsignacion = rv.IdAsignacion
+      a.IdAsignacion AS "IdAsignacion"
+      ,a.IdVehiculo AS "IdVehiculo"
+      ,a.IdConductor AS "IdConductor"
+      ,a.IdSolicitante AS "IdSolicitante"
+      ,a.IdTipoAsignacion AS "IdTipoAsignacion"
+      ,a.FechaAsignacion AS "FechaAsignacion"
+      ,a.FechaInicio AS "FechaInicio"
+      ,a.FechaFin AS "FechaFin"
+      ,a.Destino AS "Destino"
+      ,a.Proposito AS "Proposito"
+      ,a.KilometrajeInicial AS "KilometrajeInicial"
+      ,a.NivelCombustibleInicial AS "NivelCombustibleInicial"
+      ,a.Observaciones AS "Observaciones"
+      ,a.IdEstado AS "IdEstado"
+      ,a.UsuarioRegistro AS "UsuarioRegistro"
+      ,a.FechaAutorizacion AS "FechaAutorizacion"
+      ,a.FechaActualizacion AS "FechaActualizacion",
+        v.marca as "Marca",
+        v.modelo as "Modelo",
+        v.placa as "Placa",
+        CONCAT(c.nombre, ' ', c.apellido) as "NombreConductor",
+        CONCAT(s.nombre, ' ', s.apellido) as "NombreSolicitante",
+        ta.nombre as "TipoAsignacion",
+        eg.nombre as "EstadoNombre",
+        rv.kilometrajeentrada as "KilometrajeEntrada",
+        rv.kilometrajesalida as "KilometrajeSalida",
+        (rv.kilometrajeentrada - rv.kilometrajesalida) as "KilometrosRecorridos"
+      FROM asignacionesvehiculos a
+      INNER JOIN vehiculos v ON a.idvehiculo = v.idvehiculo
+      INNER JOIN empleados c ON a.idconductor = c.idempleado
+      INNER JOIN empleados s ON a.idsolicitante = s.idempleado
+      INNER JOIN tiposasignacion ta ON a.idtipoasignacion = ta.idtipoasignacion
+      INNER JOIN estadosgenerales eg ON a.idestado = eg.idestado
+      LEFT JOIN registroviajes rv ON a.idasignacion = rv.idasignacion
       WHERE 1=1
     `;
     
+    const params = [];
+    let paramCount = 0;
+
     if (fechaInicio) {
-      request.input('FechaInicio', sql.Date, fechaInicio);
-      query += ' AND a.FechaInicio >= @FechaInicio';
+      paramCount++;
+      query += ` AND a.fechainicio >= $${paramCount}`;
+      params.push(fechaInicio);
     }
     
     if (fechaFin) {
-      request.input('FechaFin', sql.Date, fechaFin);
-      query += ' AND a.FechaInicio <= @FechaFin';
+      paramCount++;
+      query += ` AND a.fechainicio <= $${paramCount}`;
+      params.push(fechaFin);
     }
     
     if (idVehiculo) {
-      request.input('IdVehiculo', sql.Int, idVehiculo);
-      query += ' AND a.IdVehiculo = @IdVehiculo';
+      paramCount++;
+      query += ` AND a.idvehiculo = $${paramCount}`;
+      params.push(idVehiculo);
     }
     
     if (idConductor) {
-      request.input('IdConductor', sql.Int, idConductor);
-      query += ' AND a.IdConductor = @IdConductor';
+      paramCount++;
+      query += ` AND a.idconductor = $${paramCount}`;
+      params.push(idConductor);
     }
     
-    query += ' ORDER BY a.FechaAsignacion DESC';
+    query += ' ORDER BY a.fechaasignacion DESC';
     
-    const result = await request.query(query);
+    const result = await client.query(query, params);
     
-    logger.info(`[INFO] Historial obtenido: ${result.recordset.length} registros`);
+    logger.info(`[INFO] Historial obtenido: ${result.rows.length} registros`);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener historial: ${err.message}`);
@@ -424,21 +473,29 @@ router.get('/asignaciones/:id/viajes', async (req, res) => {
   const idAsignacion = req.params.id;
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT 
-          rv.*,
-          eg.Nombre AS EstadoNombre
-        FROM RegistroViajes rv
-        INNER JOIN EstadosGenerales eg ON rv.IdEstado = eg.IdEstado
-        WHERE rv.IdAsignacion = @IdAsignacion
-        ORDER BY rv.FechaSalida DESC
-      `);
+    const result = await client.query(`
+      SELECT 
+        rv.IdRegistroViaje AS "IdRegistroViaje"
+      ,rv.IdAsignacion AS "IdAsignacion"
+      ,rv.FechaSalida AS "FechaSalida"
+      ,rv.FechaEntrada AS "FechaEntrada"
+      ,rv.KilometrajeSalida AS "KilometrajeSalida"
+      ,rv.KilometrajeEntrada AS "KilometrajeEntrada"
+      ,rv.NivelCombustibleSalida AS "NivelCombustibleSalida"
+      ,rv.NivelCombustibleEntrada AS "NivelCombustibleEntrada"
+      ,rv.CombustibleConsumido AS "CombustibleConsumido"
+      ,rv.Observaciones AS "Observaciones"
+      ,rv.IdEstado AS "IdEstado",
+        eg.nombre as "EstadoNombre"
+      FROM registroviajes rv
+      INNER JOIN estadosgenerales eg ON rv.idestado = eg.idestado
+      WHERE rv.idasignacion = $1
+      ORDER BY rv.fechasalida DESC
+    `, [idAsignacion]);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener registros de viaje: ${err.message}`);
@@ -455,98 +512,86 @@ router.put('/asignaciones/:id/finalizar', async (req, res) => {
   
   logger.info(`[INFO] Finalizando asignación: ${idAsignacion}`);
   
-  let transaction;
+  let client;
   
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Verificar que la asignación existe y está activa
-    const asignacionCheck = await transaction.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT IdAsignacion, IdVehiculo, KilometrajeInicial
-        FROM AsignacionesVehiculos 
-        WHERE IdAsignacion = @IdAsignacion 
-          AND IdEstado IN (1, 4, 5)
-      `);
+    const asignacionCheck = await client.query(`
+      SELECT idasignacion AS "IdAsignacion", idvehiculo AS "IdVehiculo", kilometrajeinicial AS "KilometrajeInicial"
+      FROM asignacionesvehiculos 
+      WHERE idasignacion = $1 
+        AND idestado IN (1, 4, 5)
+    `, [idAsignacion]);
 
-    if (asignacionCheck.recordset.length === 0) {
-      await transaction.rollback();
+    if (asignacionCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ message: 'La asignación no existe o no está activa' });
     }
 
-    const asignacion = asignacionCheck.recordset[0];
+    const asignacion = asignacionCheck.rows[0];
 
     // Validar que el kilometraje final sea mayor al inicial
-    if (data.KilometrajeFinal <= asignacion.KilometrajeInicial) {
-      await transaction.rollback();
+    if (data.KilometrajeFinal <= asignacion.kilometrajeinicial) {
+      await client.query('ROLLBACK');
       return res.status(400).json({ 
         message: 'El kilometraje final debe ser mayor al kilometraje inicial' 
       });
     }
 
-    // Actualizar asignación a estado "Finalizada" (6)
-    await transaction.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .input('ObservacionesCierre', sql.NVarChar(1000), data.Observaciones || '')
-      .query(`
-        UPDATE AsignacionesVehiculos 
-        SET IdEstado = 11, -- Finalizada
-            Observaciones = ISNULL(Observaciones, '') + ' | Cierre: ' + @ObservacionesCierre
-        WHERE IdAsignacion = @IdAsignacion
-      `);
+    // Actualizar asignación a estado "Finalizada" (11)
+    await client.query(`
+      UPDATE asignacionesvehiculos 
+      SET idestado = 11,
+          observaciones = COALESCE(observaciones, '') || ' | Cierre: ' || $1
+      WHERE idasignacion = $2
+    `, [data.Observaciones || '', idAsignacion]);
 
     // Actualizar vehículo a "Disponible" (8)
-    await transaction.request()
-      .input('IdVehiculo', sql.Int, asignacion.IdVehiculo)
-      .input('KilometrajeFinal', sql.Decimal(10,2), data.KilometrajeFinal)
-      .query(`
-        UPDATE Vehiculos 
-        SET IdEstado = 8, KilometrajeActual = @KilometrajeFinal
-        WHERE IdVehiculo = @IdVehiculo
-      `);
+    await client.query(`
+      UPDATE vehiculos 
+      SET idestado = 8, kilometrajeactual = $1
+      WHERE idvehiculo = $2
+    `, [data.KilometrajeFinal, asignacion.idvehiculo]);
 
     // Crear registro de viaje
-    await transaction.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .input('KilometrajeFinal', sql.Decimal(10,2), data.KilometrajeFinal)
-      .input('NivelCombustibleFinal', sql.NVarChar(50), data.NivelCombustibleFinal)
-      .input('Observaciones', sql.NVarChar(1000), data.Observaciones || '')
-      .query(`
-        INSERT INTO RegistroViajes (
-          IdAsignacion, FechaSalida, FechaEntrada,
-          KilometrajeSalida, KilometrajeEntrada,
-          NivelCombustibleSalida, NivelCombustibleEntrada,
-          Observaciones
-        )
-        SELECT 
-          IdAsignacion,
-          FechaAsignacion,
-          GETDATE(),
-          KilometrajeInicial,
-          @KilometrajeFinal,
-          NivelCombustibleInicial,
-          @NivelCombustibleFinal,
-          @Observaciones
-        FROM AsignacionesVehiculos
-        WHERE IdAsignacion = @IdAsignacion
-      `);
+    await client.query(`
+      INSERT INTO registroviajes (
+        idasignacion, fechasalida, fechaentrada,
+        kilometrajesalida, kilometrajeentrada,
+        nivelcombustiblesalida, nivelcombustibleentrada,
+        observaciones
+      )
+      SELECT 
+        idasignacion AS "IdAsignacion",
+        fechaasignacion AS "FechaAsignacion",
+        NOW(),
+        kilometrajeinicial AS "KilometrajeInicial",
+        $1,
+        nivelcombustibleinicial AS "NivelCombustibleInicial",
+        $2,
+        $3
+      FROM asignacionesvehiculos
+      WHERE idasignacion = $4
+    `, [data.KilometrajeFinal, data.NivelCombustibleFinal, data.Observaciones || '', idAsignacion]);
 
-    await transaction.commit();
+    await client.query('COMMIT');
     
     logger.info(`[INFO] Asignación ${idAsignacion} finalizada exitosamente`);
     
     res.status(200).json({ 
       message: 'Asignación finalizada exitosamente',
-      kilometrosRecorridos: data.KilometrajeFinal - asignacion.KilometrajeInicial
+      kilometrosRecorridos: data.KilometrajeFinal - asignacion.kilometrajeinicial
     });
     
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    if (client) await client.query('ROLLBACK');
     logger.error(`[ERROR] Error al finalizar asignación: ${err.message}`);
     res.status(500).json({ error: 'Error al finalizar la asignación: ' + err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -560,45 +605,38 @@ router.put('/asignaciones/:id/autorizar', async (req, res) => {
   logger.info(`[INFO] Autorizando asignación: ${idAsignacion}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar que la asignación existe y está pendiente
-    const asignacionCheck = await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT IdAsignacion, IdEstado, IdVehiculo
-        FROM AsignacionesVehiculos 
-        WHERE IdAsignacion = @IdAsignacion AND IdEstado = 4 -- Pendiente
-      `);
+    const asignacionCheck = await client.query(`
+      SELECT idasignacion AS "IdAsignacion", idestado AS "IdEstado", idvehiculo AS "IdVehiculo"
+      FROM asignacionesvehiculos 
+      WHERE idasignacion = $1 AND idestado = 4 -- Pendiente
+    `, [idAsignacion]);
 
-    if (asignacionCheck.recordset.length === 0) {
+    if (asignacionCheck.rows.length === 0) {
       return res.status(404).json({ 
         message: 'La asignación no existe o no está pendiente de autorización' 
       });
     }
 
-    const asignacion = asignacionCheck.recordset[0];
+    const asignacion = asignacionCheck.rows[0];
 
     // Actualizar estado a "Autorizada" (5)
-    await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .input('UsuarioAutorizacion', sql.NVarChar(100), Usuario || 'Sistema')
-      .query(`
-        UPDATE AsignacionesVehiculos 
-        SET IdEstado = 5, 
-            FechaAutorizacion = GETDATE(),
-            UsuarioRegistro = @UsuarioAutorizacion
-        WHERE IdAsignacion = @IdAsignacion
-      `);
+    await client.query(`
+      UPDATE asignacionesvehiculos 
+      SET idestado = 5, 
+          fechaautorizacion = NOW(),
+          usuarioregistro = $1
+      WHERE idasignacion = $2
+    `, [Usuario || 'Sistema', idAsignacion]);
 
     // Actualizar estado del vehículo a "En Uso" (9)
-    await pool.request()
-      .input('IdVehiculo', sql.Int, asignacion.IdVehiculo)
-      .query(`
-        UPDATE Vehiculos 
-        SET IdEstado = 9
-        WHERE IdVehiculo = @IdVehiculo
-      `);
+    await client.query(`
+      UPDATE vehiculos 
+      SET idestado = 9
+      WHERE idvehiculo = $1
+    `, [asignacion.idvehiculo]);
 
     logger.info(`[INFO] Asignación ${idAsignacion} autorizada por: ${Usuario}`);
     
@@ -622,41 +660,35 @@ router.put('/asignaciones/:id', async (req, res) => {
   logger.info(`[INFO] Actualizando asignación: ${idAsignacion}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar que la asignación existe y está pendiente o autorizada
-    const asignacionCheck = await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT IdAsignacion, IdEstado 
-        FROM AsignacionesVehiculos 
-        WHERE IdAsignacion = @IdAsignacion AND IdEstado IN (4, 5) -- Pendiente o Autorizada
-      `);
+    const asignacionCheck = await client.query(`
+      SELECT idasignacion AS "IdAsignacion", idestado  AS "IdEstado"
+      FROM asignacionesvehiculos 
+      WHERE idasignacion = $1 AND idestado IN (4, 5) -- Pendiente o Autorizada
+    `, [idAsignacion]);
 
-    if (asignacionCheck.recordset.length === 0) {
+    if (asignacionCheck.rows.length === 0) {
       return res.status(404).json({ 
         message: 'La asignación no existe o no se puede editar' 
       });
     }
 
     // Actualizar asignación
-    await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .input('FechaInicio', sql.Date, data.FechaInicio)
-      .input('FechaFin', sql.Date, data.FechaFin)
-      .input('Destino', sql.NVarChar(500), data.Destino)
-      .input('Proposito', sql.NVarChar(1000), data.Proposito)
-      .input('Observaciones', sql.NVarChar(1000), data.Observaciones || '')
-      .query(`
-        UPDATE AsignacionesVehiculos 
-        SET FechaInicio = @FechaInicio,
-            FechaFin = @FechaFin,
-            Destino = @Destino,
-            Proposito = @Proposito,
-            Observaciones = @Observaciones,
-            FechaActualizacion = GETDATE()
-        WHERE IdAsignacion = @IdAsignacion
-      `);
+    await client.query(`
+      UPDATE asignacionesvehiculos 
+      SET fechainicio = $1,
+          fechafin = $2,
+          destino = $3,
+          proposito = $4,
+          observaciones = $5,
+          fechaactualizacion = NOW()
+      WHERE idasignacion = $6
+    `, [
+      data.FechaInicio, data.FechaFin, data.Destino, 
+      data.Proposito, data.Observaciones || '', idAsignacion
+    ]);
 
     logger.info(`[INFO] Asignación ${idAsignacion} actualizada exitosamente`);
     
@@ -679,55 +711,46 @@ router.delete('/asignaciones/:id', async (req, res) => {
   
   logger.info(`[INFO] Cancelando asignación: ${idAsignacion}`);
   
-  let transaction;
+  let client;
   
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Verificar que la asignación existe y está activa/pendiente/autorizada
-    const asignacionCheck = await transaction.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT IdAsignacion, IdVehiculo, IdEstado 
-        FROM AsignacionesVehiculos 
-        WHERE IdAsignacion = @IdAsignacion AND IdEstado IN (1, 4, 5)
-      `);
+    const asignacionCheck = await client.query(`
+      SELECT idasignacion AS "IdAsignacion" , idvehiculo AS "IdVehiculo", idestado  AS "IdEstado"
+      FROM asignacionesvehiculos 
+      WHERE idasignacion = $1 AND idestado IN (1, 4, 5)
+    `, [idAsignacion]);
 
-    if (asignacionCheck.recordset.length === 0) {
-      await transaction.rollback();
+    if (asignacionCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ 
         message: 'La asignación no existe o no se puede cancelar' 
       });
     }
 
-    const asignacion = asignacionCheck.recordset[0];
+    const asignacion = asignacionCheck.rows[0];
 
     // Actualizar asignación a estado "Cancelada" (6)
-    await transaction.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .input('Observaciones', sql.NVarChar(1000), 
-             `Cancelada por: ${Usuario}. Motivo: ${Motivo || 'No especificado'}`)
-      .query(`
-        UPDATE AsignacionesVehiculos 
-        SET IdEstado = 6,
-            Observaciones = ISNULL(Observaciones, '') + ' | ' + @Observaciones
-        WHERE IdAsignacion = @IdAsignacion
-      `);
+    await client.query(`
+      UPDATE asignacionesvehiculos 
+      SET idestado = 6,
+          observaciones = COALESCE(observaciones, '') || ' | ' || $1
+      WHERE idasignacion = $2
+    `, [`Cancelada por: ${Usuario}. Motivo: ${Motivo || 'No especificado'}`, idAsignacion]);
 
     // Si el vehículo estaba en uso, volver a disponible
-    if (asignacion.IdEstado === 1 || asignacion.IdEstado === 5) { // Activo o Autorizada
-      await transaction.request()
-        .input('IdVehiculo', sql.Int, asignacion.IdVehiculo)
-        .query(`
-          UPDATE Vehiculos 
-          SET IdEstado = 8 -- Disponible
-          WHERE IdVehiculo = @IdVehiculo
-        `);
+    if (asignacion.idestado === 1 || asignacion.idestado === 5) { // Activo o Autorizada
+      await client.query(`
+        UPDATE vehiculos 
+        SET idestado = 8 -- Disponible
+        WHERE idvehiculo = $1
+      `, [asignacion.idvehiculo]);
     }
 
-    await transaction.commit();
+    await client.query('COMMIT');
     
     logger.info(`[INFO] Asignación ${idAsignacion} cancelada por: ${Usuario}`);
     
@@ -736,48 +759,64 @@ router.delete('/asignaciones/:id', async (req, res) => {
     });
     
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    if (client) await client.query('ROLLBACK');
     logger.error(`[ERROR] Error al cancelar asignación: ${err.message}`);
     res.status(500).json({ error: 'Error al cancelar la asignación: ' + err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
 // =============================================================
-// GET: OBTENER ASIGNACIÓN POR ID (ESTA DEBE IR ÚLTIMA)
+// GET: OBTENER ASIGNACIÓN POR ID
 // =============================================================
 router.get('/asignaciones/:id', async (req, res) => {
   const idAsignacion = req.params.id;
   logger.info(`[INFO] Obteniendo asignación con ID: ${idAsignacion}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(`
-        SELECT 
-          a.*,
-          v.Marca,
-          v.Modelo,
-          v.Placa,
-          c.Nombre + ' ' + c.Apellido AS NombreConductor,
-          s.Nombre + ' ' + s.Apellido AS NombreSolicitante,
-          ta.Nombre AS TipoAsignacion,
-          eg.Nombre AS EstadoNombre
-        FROM AsignacionesVehiculos a
-        INNER JOIN Vehiculos v ON a.IdVehiculo = v.IdVehiculo
-        INNER JOIN Empleados c ON a.IdConductor = c.IdEmpleado
-        INNER JOIN Empleados s ON a.IdSolicitante = s.IdEmpleado
-        INNER JOIN TiposAsignacion ta ON a.IdTipoAsignacion = ta.IdTipoAsignacion
-        INNER JOIN EstadosGenerales eg ON a.IdEstado = eg.IdEstado
-        WHERE a.IdAsignacion = @IdAsignacion
-      `);
+    const result = await client.query(`
+      SELECT 
+      a.IdAsignacion AS "IdAsignacion"
+      ,a.IdVehiculo AS "IdVehiculo"
+      ,a.IdConductor AS "IdConductor"
+      ,a.IdSolicitante AS "IdSolicitante"
+      ,a.IdTipoAsignacion AS "IdTipoAsignacion"
+      ,a.FechaAsignacion AS "FechaAsignacion"
+      ,a.FechaInicio AS "FechaInicio"
+      ,a.FechaFin AS "FechaFin"
+      ,a.Destino AS "Destino"
+      ,a.Proposito AS "Proposito"
+      ,a.KilometrajeInicial AS "KilometrajeInicial"
+      ,a.NivelCombustibleInicial AS "NivelCombustibleInicial"
+      ,a.Observaciones AS "Observaciones"
+      ,a.IdEstado AS "IdEstado"
+      ,a.UsuarioRegistro AS "UsuarioRegistro"
+      ,a.FechaAutorizacion AS "FechaAutorizacion"
+      ,a.FechaActualizacion AS "FechaActualizacion",
+        v.marca as "Marca",
+        v.modelo as "Modelo",
+        v.placa as "Placa",
+        CONCAT(c.nombre, ' ', c.apellido) as "NombreConductor",
+        CONCAT(s.nombre, ' ', s.apellido) as "NombreSolicitante",
+        ta.nombre as "TipoAsignacion",
+        eg.nombre as "EstadoNombre"
+      FROM asignacionesvehiculos a
+      INNER JOIN vehiculos v ON a.idvehiculo = v.idvehiculo
+      INNER JOIN empleados c ON a.idconductor = c.idempleado
+      INNER JOIN empleados s ON a.idsolicitante = s.idempleado
+      INNER JOIN tiposasignacion ta ON a.idtipoasignacion = ta.idtipoasignacion
+      INNER JOIN estadosgenerales eg ON a.idestado = eg.idestado
+      WHERE a.idasignacion = $1
+    `, [idAsignacion]);
     
-    if (result.recordset.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Asignación no encontrada' });
     }
     
-    res.status(200).json(result.recordset[0]);
+    res.status(200).json(result.rows[0]);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener asignación ${idAsignacion}: ${err.message}`);
@@ -792,23 +831,21 @@ router.get('/vehiculos/:id/mantenimientos', async (req, res) => {
   const idVehiculo = req.params.id;
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .query(`
-        SELECT 
-          m.*,
-          tm.Nombre AS TipoMantenimiento,
-          eg.Nombre AS EstadoNombre
-        FROM MantenimientosVehiculos m
-        INNER JOIN TiposMantenimiento tm ON m.IdTipoMantenimiento = tm.IdTipoMantenimiento
-        INNER JOIN EstadosGenerales eg ON m.IdEstado = eg.IdEstado
-        WHERE m.IdVehiculo = @IdVehiculo
-        ORDER BY m.FechaMantenimiento DESC
-      `);
+    const result = await client.query(`
+      SELECT 
+        m.*,
+        tm.nombre as "TipoMantenimiento",
+        eg.nombre as "EstadoNombre"
+      FROM mantenimientosvehiculos m
+      INNER JOIN tiposmantenimiento tm ON m.idtipomantenimiento = tm.idtipomantenimiento
+      INNER JOIN estadosgenerales eg ON m.idestado = eg.idestado
+      WHERE m.idvehiculo = $1
+      ORDER BY m.fechamantenimiento DESC
+    `, [idVehiculo]);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener mantenimientos: ${err.message}`);
@@ -824,36 +861,26 @@ router.post('/mantenimientos', async (req, res) => {
   const data = req.body;
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('IdTipoMantenimiento', sql.Int, data.IdTipoMantenimiento)
-      .input('Descripcion', sql.NVarChar(500), data.Descripcion)
-      .input('FechaMantenimiento', sql.Date, data.FechaMantenimiento)
-      .input('Kilometraje', sql.Decimal(10,2), data.Kilometraje)
-      .input('Costo', sql.Decimal(10,2), data.Costo)
-      .input('Proveedor', sql.NVarChar(100), data.Proveedor || null)
-      .input('Observaciones', sql.NVarChar(500), data.Observaciones || null)
-      .query(`
-        INSERT INTO MantenimientosVehiculos (
-          IdVehiculo, IdTipoMantenimiento, Descripcion, FechaMantenimiento,
-          Kilometraje, Costo, Proveedor, Observaciones
-        )
-        OUTPUT INSERTED.IdMantenimiento
-        VALUES (
-          @IdVehiculo, @IdTipoMantenimiento, @Descripcion, @FechaMantenimiento,
-          @Kilometraje, @Costo, @Proveedor, @Observaciones
-        )
-      `);
+    const result = await client.query(`
+      INSERT INTO mantenimientosvehiculos (
+        idvehiculo, idtipomantenimiento, descripcion, fechamantenimiento,
+        kilometraje, costo, proveedor, observaciones
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING idmantenimiento
+    `, [
+      data.IdVehiculo, data.IdTipoMantenimiento, data.Descripcion, data.FechaMantenimiento,
+      data.Kilometraje, data.Costo, data.Proveedor || null, data.Observaciones || null
+    ]);
     
-    const idMantenimiento = result.recordset[0].IdMantenimiento;
+    const idMantenimiento = result.rows[0].idmantenimiento;
     
     // Si es mantenimiento correctivo, cambiar estado del vehículo a "Mantenimiento"
     if (data.IdTipoMantenimiento === 2) { // Correctivo
-      await pool.request()
-        .input('IdVehiculo', sql.Int, data.IdVehiculo)
-        .query('UPDATE Vehiculos SET IdEstado = 10 WHERE IdVehiculo = @IdVehiculo');
+      await client.query(`
+        UPDATE vehiculos SET idestado = 10 WHERE idvehiculo = $1
+      `, [data.IdVehiculo]);
     }
     
     logger.info(`[INFO] Mantenimiento ${idMantenimiento} creado exitosamente`);
@@ -876,21 +903,19 @@ router.get('/vehiculos/:id/combustible', async (req, res) => {
   const idVehiculo = req.params.id;
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .query(`
-        SELECT 
-          cc.*,
-          eg.Nombre AS EstadoNombre
-        FROM CargasCombustible cc
-        INNER JOIN EstadosGenerales eg ON cc.IdEstado = eg.IdEstado
-        WHERE cc.IdVehiculo = @IdVehiculo
-        ORDER BY cc.FechaCarga DESC
-      `);
+    const result = await client.query(`
+      SELECT 
+        cc.*,
+        eg.nombre as "EstadoNombre"
+      FROM cargascombustible cc
+      INNER JOIN estadosgenerales eg ON cc.idestado = eg.idestado
+      WHERE cc.idvehiculo = $1
+      ORDER BY cc.fechacarga DESC
+    `, [idVehiculo]);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener cargas de combustible: ${err.message}`);
@@ -908,37 +933,26 @@ router.post('/combustible', async (req, res) => {
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('IdAsignacion', sql.Int, data.IdAsignacion || null)
-      .input('CantidadLitros', sql.Decimal(10,2), data.CantidadLitros)
-      .input('CostoTotal', sql.Decimal(10,2), data.CostoTotal)
-      .input('KilometrajeActual', sql.Decimal(10,2), data.KilometrajeActual)
-      .input('EstacionServicio', sql.NVarChar(100), data.EstacionServicio || null)
-      .input('NumeroFactura', sql.NVarChar(100), data.NumeroFactura || null)
-      .input('Observaciones', sql.NVarChar(500), data.Observaciones || null)
-      .input('UsuarioRegistro', sql.NVarChar(100), usuario)
-      .query(`
-        INSERT INTO CargasCombustible (
-          IdVehiculo, IdAsignacion, CantidadLitros, CostoTotal, KilometrajeActual,
-          EstacionServicio, NumeroFactura, Observaciones, UsuarioRegistro
-        )
-        OUTPUT INSERTED.IdCargaCombustible
-        VALUES (
-          @IdVehiculo, @IdAsignacion, @CantidadLitros, @CostoTotal, @KilometrajeActual,
-          @EstacionServicio, @NumeroFactura, @Observaciones, @UsuarioRegistro
-        )
-      `);
+    const result = await client.query(`
+      INSERT INTO cargascombustible (
+        idvehiculo, idasignacion, cantidadlitros, costototal, kilometrajeactual,
+        estacionservicio, numerofactura, observaciones, usuarioregistro
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING idcargacombustible
+    `, [
+      data.IdVehiculo, data.IdAsignacion || null, data.CantidadLitros, data.CostoTotal, 
+      data.KilometrajeActual, data.EstacionServicio || null, data.NumeroFactura || null, 
+      data.Observaciones || null, usuario
+    ]);
     
-    const idCargaCombustible = result.recordset[0].IdCargaCombustible;
+    const idCargaCombustible = result.rows[0].idcargacombustible;
     
     // Actualizar kilometraje del vehículo
-    await pool.request()
-      .input('IdVehiculo', sql.Int, data.IdVehiculo)
-      .input('KilometrajeActual', sql.Decimal(10,2), data.KilometrajeActual)
-      .query('UPDATE Vehiculos SET KilometrajeActual = @KilometrajeActual WHERE IdVehiculo = @IdVehiculo');
+    await client.query(`
+      UPDATE vehiculos SET kilometrajeactual = $1 WHERE idvehiculo = $2
+    `, [data.KilometrajeActual, data.IdVehiculo]);
     
     logger.info(`[INFO] Carga de combustible ${idCargaCombustible} registrada por: ${usuario}`);
     
@@ -960,57 +974,69 @@ router.get('/reportes/estadisticas', async (req, res) => {
   const { mes, anio } = req.query;
   
   try {
-    const pool = await connectDB();
-    let request = pool.request();
+    const client = await connectDB();
     
     let whereClause = 'WHERE 1=1';
+    const params = [];
+    let paramCount = 0;
     
     if (mes && anio) {
-      request.input('Mes', sql.Int, mes);
-      request.input('Anio', sql.Int, anio);
-      whereClause += ' AND MONTH(a.FechaAsignacion) = @Mes AND YEAR(a.FechaAsignacion) = @Anio';
+      paramCount++;
+      whereClause += ` AND EXTRACT(MONTH FROM a.fechaasignacion) = $${paramCount}`;
+      params.push(mes);
+      paramCount++;
+      whereClause += ` AND EXTRACT(YEAR FROM a.fechaasignacion) = $${paramCount}`;
+      params.push(anio);
     }
     
-    const query = `
-      -- Total de asignaciones
-      SELECT COUNT(*) AS TotalAsignaciones FROM AsignacionesVehiculos a ${whereClause};
-      
-      -- Asignaciones por estado
-      SELECT eg.Nombre AS Estado, COUNT(*) AS Cantidad
-      FROM AsignacionesVehiculos a
-      INNER JOIN EstadosGenerales eg ON a.IdEstado = eg.IdEstado
-      ${whereClause.replace('a.', 'a.')}
-      GROUP BY eg.Nombre;
-      
-      -- Kilómetros totales recorridos
-      SELECT ISNULL(SUM(rv.KilometrajeEntrada - rv.KilometrajeSalida), 0) AS TotalKilometros
-      FROM RegistroViajes rv
-      INNER JOIN AsignacionesVehiculos a ON rv.IdAsignacion = a.IdAsignacion
-      ${whereClause.replace('a.', 'a.')};
-      
-      -- Costo total de combustible
-      SELECT ISNULL(SUM(cc.CostoTotal), 0) AS TotalCombustible
-      FROM CargasCombustible cc
-      INNER JOIN AsignacionesVehiculos a ON cc.IdAsignacion = a.IdAsignacion
-      ${whereClause.replace('a.', 'a.')};
-      
-      -- Vehículos más utilizados
-      SELECT TOP 5 v.Marca, v.Modelo, v.Placa, COUNT(*) AS TotalAsignaciones
-      FROM AsignacionesVehiculos a
-      INNER JOIN Vehiculos v ON a.IdVehiculo = v.IdVehiculo
-      ${whereClause.replace('a.', 'a.')}
-      GROUP BY v.Marca, v.Modelo, v.Placa
-      ORDER BY TotalAsignaciones DESC;
-    `;
+    // Total de asignaciones
+    const totalAsignaciones = await client.query(`
+      SELECT COUNT(*) as "TotalAsignaciones" 
+      FROM asignacionesvehiculos a ${whereClause}
+    `, params);
     
-    const result = await request.query(query);
+    // Asignaciones por estado
+    const asignacionesPorEstado = await client.query(`
+      SELECT eg.nombre as "Estado", COUNT(*) as "Cantidad"
+      FROM asignacionesvehiculos a
+      INNER JOIN estadosgenerales eg ON a.idestado = eg.idestado
+      ${whereClause.replace('a.', 'a.')}
+      GROUP BY eg.nombre
+    `, params);
+    
+    // Kilómetros totales recorridos
+    const totalKilometros = await client.query(`
+      SELECT COALESCE(SUM(rv.kilometrajeentrada - rv.kilometrajesalida), 0) as "TotalKilometros"
+      FROM registroviajes rv
+      INNER JOIN asignacionesvehiculos a ON rv.idasignacion = a.idasignacion
+      ${whereClause.replace('a.', 'a.')}
+    `, params);
+    
+    // Costo total de combustible
+    const totalCombustible = await client.query(`
+      SELECT COALESCE(SUM(cc.costototal), 0) as "TotalCombustible"
+      FROM cargascombustible cc
+      INNER JOIN asignacionesvehiculos a ON cc.idasignacion = a.idasignacion
+      ${whereClause.replace('a.', 'a.')}
+    `, params);
+    
+    // Vehículos más utilizados
+    const vehiculosMasUtilizados = await client.query(`
+      SELECT v.marca as "Marca", v.modelo as "Modelo", v.placa as "Placa", COUNT(*) as "TotalAsignaciones"
+      FROM asignacionesvehiculos a
+      INNER JOIN vehiculos v ON a.idvehiculo = v.idvehiculo
+      ${whereClause.replace('a.', 'a.')}
+      GROUP BY v.marca, v.modelo, v.placa
+      ORDER BY "TotalAsignaciones" DESC
+      LIMIT 5
+    `, params);
     
     const estadisticas = {
-      totalAsignaciones: result.recordsets[0][0].TotalAsignaciones,
-      asignacionesPorEstado: result.recordsets[1],
-      totalKilometros: result.recordsets[2][0].TotalKilometros,
-      totalCombustible: result.recordsets[3][0].TotalCombustible,
-      vehiculosMasUtilizados: result.recordsets[4]
+      totalAsignaciones: totalAsignaciones.rows[0].TotalAsignaciones,
+      asignacionesPorEstado: asignacionesPorEstado.rows,
+      totalKilometros: totalKilometros.rows[0].TotalKilometros,
+      totalCombustible: totalCombustible.rows[0].TotalCombustible,
+      vehiculosMasUtilizados: vehiculosMasUtilizados.rows
     };
     
     res.status(200).json(estadisticas);
@@ -1021,80 +1047,72 @@ router.get('/reportes/estadisticas', async (req, res) => {
   }
 });
 
+
 // =============================================================
-// GET: GENERAR CONTRATO EN PDF PARA ASIGNACIÓN AUTORIZADA
+// GET: GENERAR CONTRATO EN PDF PARA ASIGNACIÓN AUTORIZADA O FINALIZADA
 // =============================================================
 router.get('/asignaciones/:id/contrato', async (req, res) => {
   const idAsignacion = req.params.id;
   logger.info(`[INFO] Generando contrato para asignación: ${idAsignacion}`);
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
 
-    // Obtener datos completos de la asignación autorizada
-    const asignacionQuery = `
+    // Obtener datos completos de la asignación (autorizada o finalizada)
+    const asignacionResult = await client.query(`
       SELECT 
-        a.IdAsignacion,
-        a.FechaInicio,
-        a.FechaFin,
-        a.Destino,
-        a.Proposito,
-        a.KilometrajeInicial,
-        a.NivelCombustibleInicial,
-        a.Observaciones,
-        v.Marca,
-        v.Modelo,
-        v.Placa,
-        v.Color,
-        v.Anio,
-        c.Nombre + ' ' + c.Apellido AS NombreConductor,
-        lc.NumeroLicencia,
-        lc.TipoLicencia,
-        lc.FechaCaducidad,
-        c.Telefono,
-        c.Email,
-        s.Nombre + ' ' + s.Apellido AS NombreSolicitante,
-        d.Nombre AS DepartamentoSolicitante,
-        s.Email AS EmailSolicitante,
-        ta.Nombre AS TipoAsignacion,
-        eg.Nombre AS EstadoAsignacion
-      FROM AsignacionesVehiculos a
-      INNER JOIN Vehiculos v ON a.IdVehiculo = v.IdVehiculo
-      INNER JOIN Empleados c ON a.IdConductor = c.IdEmpleado
-      INNER JOIN Empleados s ON a.IdSolicitante = s.IdEmpleado
-      INNER JOIN Departamento d ON s.IdDepartamento = d.IdDepartamento
-      INNER JOIN LicenciasConductores lc ON c.IdEmpleado = lc.IdEmpleado
-      INNER JOIN TiposAsignacion ta ON a.IdTipoAsignacion = ta.IdTipoAsignacion
-      INNER JOIN EstadosGenerales eg ON a.IdEstado = eg.IdEstado
-      WHERE a.IdAsignacion = @IdAsignacion AND a.IdEstado = 11 -- Autorizada
-    `;
+        a.idasignacion as "IdAsignacion",
+        a.fechainicio as "FechaInicio",
+        a.fechafin as "FechaFin",
+        a.destino as "Destino",
+        a.Proposito AS "Proposito",
+        a.kilometrajeinicial as "KilometrajeInicial",
+        a.nivelcombustibleinicial as "NivelCombustibleInicial",
+        a.observaciones as "Observaciones",
+        v.marca as "Marca",
+        v.modelo as "Modelo",
+        v.placa as "Placa",
+        v.color as "Color",
+        v.anio as "Anio",
+        CONCAT(c.nombre, ' ', c.apellido) as "NombreConductor",
+        lc.numerolicencia as "NumeroLicencia",
+        lc.tipolicencia as "TipoLicencia",
+        lc.fechacaducidad as "FechaCaducidad",
+        c.telefono as "Telefono",
+        c.email as "Email",
+        CONCAT(s.nombre, ' ', s.apellido) as "NombreSolicitante",
+        d.nombre as "DepartamentoSolicitante",
+        s.email as "EmailSolicitante",
+        ta.nombre as "TipoAsignacion",
+        eg.nombre as "EstadoAsignacion"
+      FROM asignacionesvehiculos a
+      INNER JOIN vehiculos v ON a.idvehiculo = v.idvehiculo
+      INNER JOIN empleados c ON a.idconductor = c.idempleado
+      INNER JOIN empleados s ON a.idsolicitante = s.idempleado
+      INNER JOIN departamento d ON s.iddepartamento = d.iddepartamento
+      INNER JOIN licenciasconductores lc ON c.idempleado = lc.idempleado
+      INNER JOIN tiposasignacion ta ON a.idtipoasignacion = ta.idtipoasignacion
+      INNER JOIN estadosgenerales eg ON a.idestado = eg.idestado
+      WHERE a.idasignacion = $1 AND a.idestado IN (5, 11) -- Autorizada o Finalizada
+    `, [idAsignacion]);
 
-    const asignacionResult = await pool.request()
-      .input('IdAsignacion', sql.Int, idAsignacion)
-      .query(asignacionQuery);
-
-    if (asignacionResult.recordset.length === 0) {
-      return res.status(404).json({ message: 'Asignación no encontrada o no autorizada.' });
+    if (asignacionResult.rows.length === 0) {
+      return res.status(404).json({ 
+        message: 'Asignación no encontrada, no autorizada o no finalizada.' 
+      });
     }
 
-    const asignacion = asignacionResult.recordset[0];
-    const formatDate = (date) => {
-      const d = new Date(date);
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
+    const asignacion = asignacionResult.rows[0];
 
     // Preparar datos para el contrato
     const contratoData = {
       idAsignacion: asignacion.IdAsignacion,
-      fechaInicio: asignacion.FechaInicio,
-      fechaFin: asignacion.FechaFin ,
+      fechaInicio: new Date(asignacion.FechaInicio).toLocaleDateString('es-ES'),
+      fechaFin: asignacion.FechaFin ? new Date(asignacion.FechaFin).toLocaleDateString('es-ES') : 'Permanente',
       destino: asignacion.Destino,
       proposito: asignacion.Proposito,
       tipoAsignacion: asignacion.TipoAsignacion,
-      kilometrajeInicial: asignacion.KilometrajeInicial,
+      kilometrajeInicial: parseFloat(asignacion.KilometrajeInicial),
       nivelCombustibleInicial: asignacion.NivelCombustibleInicial,
       observaciones: asignacion.Observaciones,
       
@@ -1110,7 +1128,7 @@ router.get('/asignaciones/:id/contrato', async (req, res) => {
         nombre: asignacion.NombreConductor,
         numeroLicencia: asignacion.NumeroLicencia,
         tipoLicencia: asignacion.TipoLicencia,
-        fechaCaducidad: asignacion.FechaCaducidad.toISOString().split('T')[0],
+        fechaCaducidad: new Date(asignacion.FechaCaducidad).toLocaleDateString('es-ES'),
         telefono: asignacion.Telefono,
         email: asignacion.Email
       },
@@ -1125,7 +1143,7 @@ router.get('/asignaciones/:id/contrato', async (req, res) => {
       horaGeneracion: new Date().toLocaleTimeString('es-ES')
     };
 
-    // Enviar datos del contrato (el frontend generará el PDF)
+    // Enviar datos del contrato
     res.status(200).json(contratoData);
 
   } catch (err) {
@@ -1133,7 +1151,6 @@ router.get('/asignaciones/:id/contrato', async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor al generar contrato.' });
   }
 });
-
 
 // =============================================================
 // CRUD DE VEHÍCULOS
@@ -1147,48 +1164,32 @@ router.post('/vehiculos', async (req, res) => {
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar si la placa ya existe
-    const placaCheck = await pool.request()
-      .input('Placa', sql.NVarChar(20), data.Placa)
-      .query('SELECT IdVehiculo FROM Vehiculos WHERE Placa = @Placa');
+    const placaCheck = await client.query(
+      'SELECT idvehiculo FROM vehiculos WHERE placa = $1',
+      [data.Placa]
+    );
     
-    if (placaCheck.recordset.length > 0) {
+    if (placaCheck.rows.length > 0) {
       return res.status(409).json({ message: 'Ya existe un vehículo con esta placa' });
     }
     
-    const result = await pool.request()
-      .input('Marca', sql.NVarChar(100), data.Marca)
-      .input('Modelo', sql.NVarChar(100), data.Modelo)
-      .input('Anio', sql.Int, data.Anio)
-      .input('Placa', sql.NVarChar(20), data.Placa)
-      .input('NumeroChasis', sql.NVarChar(100), data.NumeroChasis)
-      .input('NumeroMotor', sql.NVarChar(100), data.NumeroMotor)
-      .input('Color', sql.NVarChar(50), data.Color)
-      .input('IdTipoVehiculo', sql.Int, data.IdTipoVehiculo)
-      .input('TarjetaCirculacion', sql.NVarChar(100), data.TarjetaCirculacion)
-      .input('FechaVencimientoTarjeta', sql.Date, data.FechaVencimientoTarjeta)
-      .input('PolizaSeguro', sql.NVarChar(100), data.PolizaSeguro)
-      .input('FechaVencimientoSeguro', sql.Date, data.FechaVencimientoSeguro)
-      .input('KilometrajeActual', sql.Decimal(10,2), data.KilometrajeActual || 0)
-      .input('Observaciones', sql.NVarChar(1000), data.Observaciones || '')
-      .input('UsuarioRegistro', sql.NVarChar(100), usuario)
-      .query(`
-        INSERT INTO Vehiculos (
-          Marca, Modelo, Anio, Placa, NumeroChasis, NumeroMotor, Color, 
-          IdTipoVehiculo, TarjetaCirculacion, FechaVencimientoTarjeta, 
-          PolizaSeguro, FechaVencimientoSeguro, KilometrajeActual, Observaciones
-        )
-        OUTPUT INSERTED.IdVehiculo
-        VALUES (
-          @Marca, @Modelo, @Anio, @Placa, @NumeroChasis, @NumeroMotor, @Color,
-          @IdTipoVehiculo, @TarjetaCirculacion, @FechaVencimientoTarjeta,
-          @PolizaSeguro, @FechaVencimientoSeguro, @KilometrajeActual, @Observaciones
-        )
-      `);
+    const result = await client.query(`
+      INSERT INTO vehiculos (
+        marca, modelo, anio, placa, numerochasis, numeromotor, color, 
+        idtipovehiculo, tarjetacirculacion, fechavencimientotarjeta, 
+        polizaseguro, fechavencimientoseguro, kilometrajeactual, observaciones
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING idvehiculo
+    `, [
+      data.Marca, data.Modelo, data.Anio, data.Placa, data.NumeroChasis, data.NumeroMotor, data.Color,
+      data.IdTipoVehiculo, data.TarjetaCirculacion, data.FechaVencimientoTarjeta,
+      data.PolizaSeguro, data.FechaVencimientoSeguro, data.KilometrajeActual || 0, data.Observaciones || ''
+    ]);
     
-    const idVehiculo = result.recordset[0].IdVehiculo;
+    const idVehiculo = result.rows[0].idvehiculo;
     
     logger.info(`[INFO] Vehículo ${idVehiculo} creado por: ${usuario}`);
     
@@ -1211,53 +1212,42 @@ router.put('/vehiculos/:id', async (req, res) => {
   logger.info(`[INFO] Actualizando vehículo: ${idVehiculo}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar que el vehículo existe
-    const vehiculoCheck = await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .query('SELECT IdVehiculo FROM Vehiculos WHERE IdVehiculo = @IdVehiculo');
+    const vehiculoCheck = await client.query(
+      'SELECT idvehiculo FROM vehiculos WHERE idvehiculo = $1',
+      [idVehiculo]
+    );
     
-    if (vehiculoCheck.recordset.length === 0) {
+    if (vehiculoCheck.rows.length === 0) {
       return res.status(404).json({ message: 'Vehículo no encontrado' });
     }
     
-    await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .input('Marca', sql.NVarChar(100), data.Marca)
-      .input('Modelo', sql.NVarChar(100), data.Modelo)
-      .input('Anio', sql.Int, data.Anio)
-      .input('Placa', sql.NVarChar(20), data.Placa)
-      .input('NumeroChasis', sql.NVarChar(100), data.NumeroChasis)
-      .input('NumeroMotor', sql.NVarChar(100), data.NumeroMotor)
-      .input('Color', sql.NVarChar(50), data.Color)
-      .input('IdTipoVehiculo', sql.Int, data.IdTipoVehiculo)
-      .input('TarjetaCirculacion', sql.NVarChar(100), data.TarjetaCirculacion)
-      .input('FechaVencimientoTarjeta', sql.Date, data.FechaVencimientoTarjeta)
-      .input('PolizaSeguro', sql.NVarChar(100), data.PolizaSeguro)
-      .input('FechaVencimientoSeguro', sql.Date, data.FechaVencimientoSeguro)
-      .input('KilometrajeActual', sql.Decimal(10,2), data.KilometrajeActual)
-      .input('IdEstado', sql.Int, data.IdEstado)
-      .input('Observaciones', sql.NVarChar(1000), data.Observaciones || '')
-      .query(`
-        UPDATE Vehiculos SET
-          Marca = @Marca,
-          Modelo = @Modelo,
-          Anio = @Anio,
-          Placa = @Placa,
-          NumeroChasis = @NumeroChasis,
-          NumeroMotor = @NumeroMotor,
-          Color = @Color,
-          IdTipoVehiculo = @IdTipoVehiculo,
-          TarjetaCirculacion = @TarjetaCirculacion,
-          FechaVencimientoTarjeta = @FechaVencimientoTarjeta,
-          PolizaSeguro = @PolizaSeguro,
-          FechaVencimientoSeguro = @FechaVencimientoSeguro,
-          KilometrajeActual = @KilometrajeActual,
-          IdEstado = @IdEstado,
-          Observaciones = @Observaciones
-        WHERE IdVehiculo = @IdVehiculo
-      `);
+    await client.query(`
+      UPDATE vehiculos SET
+        marca = $1,
+        modelo = $2,
+        anio = $3,
+        placa = $4,
+        numerochasis = $5,
+        numeromotor = $6,
+        color = $7,
+        idtipovehiculo = $8,
+        tarjetacirculacion = $9,
+        fechavencimientotarjeta = $10,
+        polizaseguro = $11,
+        fechavencimientoseguro = $12,
+        kilometrajeactual = $13,
+        idestado = $14,
+        observaciones = $15
+      WHERE idvehiculo = $16
+    `, [
+      data.Marca, data.Modelo, data.Anio, data.Placa, data.NumeroChasis, data.NumeroMotor, data.Color,
+      data.IdTipoVehiculo, data.TarjetaCirculacion, data.FechaVencimientoTarjeta,
+      data.PolizaSeguro, data.FechaVencimientoSeguro, data.KilometrajeActual, data.IdEstado,
+      data.Observaciones || '', idVehiculo
+    ]);
     
     logger.info(`[INFO] Vehículo ${idVehiculo} actualizado exitosamente`);
     
@@ -1277,34 +1267,28 @@ router.delete('/vehiculos/:id', async (req, res) => {
   logger.info(`[INFO] Eliminando vehículo: ${idVehiculo}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar que el vehículo no tiene asignaciones activas
-    const asignacionesCheck = await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .query(`
-        SELECT IdAsignacion 
-        FROM AsignacionesVehiculos 
-        WHERE IdVehiculo = @IdVehiculo AND IdEstado IN (1, 4, 5)
-      `);
+    const asignacionesCheck = await client.query(`
+      SELECT idasignacion 
+      FROM asignacionesvehiculos 
+      WHERE idvehiculo = $1 AND idestado IN (1, 4, 5)
+    `, [idVehiculo]);
     
-    if (asignacionesCheck.recordset.length > 0) {
+    if (asignacionesCheck.rows.length > 0) {
       return res.status(409).json({ 
         message: 'No se puede eliminar el vehículo porque tiene asignaciones activas' 
       });
     }
     
     // Actualizar estado a "Inactivo" (2)
-    await pool.request()
-      .input('IdVehiculo', sql.Int, idVehiculo)
-      .input('Observaciones', sql.NVarChar(1000), 
-             `Eliminado por: ${Usuario}. Motivo: ${Motivo || 'No especificado'}`)
-      .query(`
-        UPDATE Vehiculos 
-        SET IdEstado = 2, 
-            Observaciones = ISNULL(Observaciones, '') + ' | ' + @Observaciones
-        WHERE IdVehiculo = @IdVehiculo
-      `);
+    await client.query(`
+      UPDATE vehiculos 
+      SET idestado = 2, 
+          observaciones = COALESCE(observaciones, '') || ' | ' || $1
+      WHERE idvehiculo = $2
+    `, [`Eliminado por: ${Usuario}. Motivo: ${Motivo || 'No especificado'}`, idVehiculo]);
     
     logger.info(`[INFO] Vehículo ${idVehiculo} eliminado por: ${Usuario}`);
     
@@ -1323,23 +1307,31 @@ router.delete('/vehiculos/:id', async (req, res) => {
 // GET: OBTENER TODAS LAS LICENCIAS
 router.get('/licencias', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          lc.*,
-          e.Nombre + ' ' + e.Apellido AS NombreConductor,
-          d.Nombre AS Departamento,
-          eg.Nombre AS EstadoNombre
-        FROM LicenciasConductores lc
-        INNER JOIN Empleados e ON lc.IdEmpleado = e.IdEmpleado
-        INNER JOIN Departamento d ON e.IdDepartamento = d.IdDepartamento
-        INNER JOIN EstadosGenerales eg ON lc.IdEstado = eg.IdEstado
-        ORDER BY e.Nombre, e.Apellido
-      `);
+    const result = await client.query(`
+      SELECT 
+        lc.idlicencia AS "IdLicencia"
+      ,lc.IdEmpleado AS "IdEmpleado"
+      ,lc.NumeroLicencia AS "NumeroLicencia"
+      ,lc.TipoLicencia AS "TipoLicencia"
+      ,lc.FechaExpedicion AS "FechaExpedicion"
+      ,lc.FechaCaducidad AS "FechaCaducidad"
+      ,lc.Restricciones AS "Restricciones"
+      ,lc.DocumentoLicencia AS "DocumentoLicencia"
+      ,lc.IdEstado AS "IdEstado"
+      ,lc.FechaRegistro AS "FechaRegistro",
+        CONCAT(e.nombre, ' ', e.apellido) as "NombreConductor",
+        d.nombre as "Departamento",
+        eg.nombre as "EstadoNombre"
+      FROM licenciasconductores lc
+      INNER JOIN empleados e ON lc.idempleado = e.idempleado
+      INNER JOIN departamento d ON e.iddepartamento = d.iddepartamento
+      INNER JOIN estadosgenerales eg ON lc.idestado = eg.idestado
+      ORDER BY e.nombre, e.apellido
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener licencias: ${err.message}`);
@@ -1355,45 +1347,33 @@ router.post('/licencias', async (req, res) => {
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // Verificar si el empleado ya tiene una licencia activa
-    const licenciaCheck = await pool.request()
-      .input('IdEmpleado', sql.Int, data.IdEmpleado)
-      .query(`
-        SELECT IdLicencia 
-        FROM LicenciasConductores 
-        WHERE IdEmpleado = @IdEmpleado AND IdEstado = 1
-      `);
+    const licenciaCheck = await client.query(`
+      SELECT idlicencia 
+      FROM licenciasconductores 
+      WHERE idempleado = $1 AND idestado = 1
+    `, [data.IdEmpleado]);
     
-    if (licenciaCheck.recordset.length > 0) {
+    if (licenciaCheck.rows.length > 0) {
       return res.status(409).json({ 
         message: 'El empleado ya tiene una licencia activa' 
       });
     }
     
-    const result = await pool.request()
-      .input('IdEmpleado', sql.Int, data.IdEmpleado)
-      .input('NumeroLicencia', sql.NVarChar(50), data.NumeroLicencia)
-      .input('TipoLicencia', sql.NVarChar(50), data.TipoLicencia)
-      .input('FechaExpedicion', sql.Date, data.FechaExpedicion)
-      .input('FechaCaducidad', sql.Date, data.FechaCaducidad)
-      .input('Estado', sql.Int, data.Estado)
-      .input('Restricciones', sql.NVarChar(500), data.Restricciones || '')
-      .input('UsuarioRegistro', sql.NVarChar(100), usuario)
-      .query(`
-        INSERT INTO LicenciasConductores (
-          IdEmpleado, NumeroLicencia, TipoLicencia, FechaExpedicion, 
-          FechaCaducidad,IdEstado, Restricciones
-        )
-        OUTPUT INSERTED.IdLicencia
-        VALUES (
-          @IdEmpleado, @NumeroLicencia, @TipoLicencia, @FechaExpedicion,
-          @FechaCaducidad,@Estado, @Restricciones
-        )
-      `);
+    const result = await client.query(`
+      INSERT INTO licenciasconductores (
+        idempleado, numerolicencia, tipolicencia, fechaexpedicion, 
+        fechacaducidad, idestado, restricciones
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING idlicencia
+    `, [
+      data.IdEmpleado, data.NumeroLicencia, data.TipoLicencia, data.FechaExpedicion,
+      data.FechaCaducidad, data.Estado, data.Restricciones || ''
+    ]);
     
-    const idLicencia = result.recordset[0].IdLicencia;
+    const idLicencia = result.rows[0].idlicencia;
     
     logger.info(`[INFO] Licencia ${idLicencia} creada por: ${usuario}`);
     
@@ -1416,27 +1396,21 @@ router.put('/licencias/:id', async (req, res) => {
   logger.info(`[INFO] Actualizando licencia: ${idLicencia}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    await pool.request()
-      .input('IdLicencia', sql.Int, idLicencia)
-      .input('NumeroLicencia', sql.NVarChar(50), data.NumeroLicencia)
-      .input('TipoLicencia', sql.NVarChar(50), data.TipoLicencia)
-      .input('FechaExpedicion', sql.Date, data.FechaExpedicion)
-      .input('FechaCaducidad', sql.Date, data.FechaCaducidad)
-      .input('Estado', sql.Int, data.Estado)
-      .input('Restricciones', sql.NVarChar(500), data.Restricciones || '')
-      .input('IdEstado', sql.Int, data.IdEstado)
-      .query(`
-        UPDATE LicenciasConductores SET
-          NumeroLicencia = @NumeroLicencia,
-          TipoLicencia = @TipoLicencia,
-          FechaExpedicion = @FechaExpedicion,
-          FechaCaducidad = @FechaCaducidad,
-          IdEstado = @IdEstado,
-          Restricciones = @Restricciones
-        WHERE IdLicencia = @IdLicencia
-      `);
+    await client.query(`
+      UPDATE licenciasconductores SET
+        numerolicencia = $1,
+        tipolicencia = $2,
+        fechaexpedicion = $3,
+        fechacaducidad = $4,
+        idestado = $5,
+        restricciones = $6
+      WHERE idlicencia = $7
+    `, [
+      data.NumeroLicencia, data.TipoLicencia, data.FechaExpedicion,
+      data.FechaCaducidad, data.IdEstado, data.Restricciones || '', idLicencia
+    ]);
     
     logger.info(`[INFO] Licencia ${idLicencia} actualizada exitosamente`);
     
@@ -1456,30 +1430,26 @@ router.delete('/licencias/:id', async (req, res) => {
   logger.info(`[INFO] Intentando ELIMINAR FÍSICAMENTE licencia: ${idLicencia} por ${Usuario}`);
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
     // PASO 1: Obtener el IdEmpleado asociado a la licencia
-    const resultConductor = await pool.request()
-      .input('IdLicencia', sql.Int, idLicencia)
-      .query('SELECT IdEmpleado FROM LicenciasConductores WHERE IdLicencia = @IdLicencia');
+    const resultConductor = await client.query(
+      'SELECT idempleado FROM licenciasconductores WHERE idlicencia = $1',
+      [idLicencia]
+    );
 
-    if (resultConductor.recordset.length === 0) {
+    if (resultConductor.rows.length === 0) {
         return res.status(404).json({ error: 'Licencia no encontrada.' });
     }
-    const idConductor = resultConductor.recordset[0].IdEmpleado;
+    const idConductor = resultConductor.rows[0].idempleado;
 
-    // PASO 2: Verificar si el conductor (dueño de la licencia) está en alguna ASIGNACIÓN ACTIVA
-    // La lógica de asignación activa dependerá de tus estados, pero generalmente es por IdEstado.
-    // Asumo que IdEstado = 1 indica "Activa".
-    const resultAsignacion = await pool.request()
-      .input('IdConductor', sql.Int, idConductor)
-      .query(`
-        SELECT TOP 1 * FROM AsignacionesVehiculos 
-        WHERE IdConductor = @IdConductor AND IdEstado = 1; 
-      `); 
+    // PASO 2: Verificar si el conductor está en alguna ASIGNACIÓN ACTIVA
+    const resultAsignacion = await client.query(`
+      SELECT * FROM asignacionesvehiculos 
+      WHERE idconductor = $1 AND idestado = 1
+    `, [idConductor]);
     
-    if (resultAsignacion.recordset.length > 0) {
-      // Si se encuentra una asignación activa, devolver un error 409 Conflict
+    if (resultAsignacion.rows.length > 0) {
       logger.warn(`[WARN] Intento de eliminación de Licencia ${idLicencia} fallido: En asignación activa.`);
       return res.status(409).json({ 
         message: 'No se puede eliminar la licencia porque el conductor tiene una o más ASIGNACIONES ACTIVAS.', 
@@ -1488,9 +1458,10 @@ router.delete('/licencias/:id', async (req, res) => {
     }
 
     // PASO 3: Si no hay asignaciones activas, proceder con la eliminación física
-    await pool.request()
-      .input('IdLicencia', sql.Int, idLicencia)
-      .query('DELETE FROM LicenciasConductores WHERE IdLicencia = @IdLicencia');
+    await client.query(
+      'DELETE FROM licenciasconductores WHERE idlicencia = $1',
+      [idLicencia]
+    );
     
     logger.info(`[INFO] Licencia ${idLicencia} ELIMINADA FÍSICAMENTE por: ${Usuario}`);
     
@@ -1501,28 +1472,30 @@ router.delete('/licencias/:id', async (req, res) => {
     res.status(500).json({ error: 'Error interno al eliminar la licencia: ' + err.message });
   }
 });
+
 // =============================================================
 // GET: OBTENER EMPLEADOS POR DEPARTAMENTO (PILOTOS)
 // =============================================================
-router.get('/empleados/pilotos/', async (req, res) => {
-  const idDepartamento = req.params.idDepartamento;
-  
+router.get('/empleados/pilotos', async (req, res) => {
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdDepartamento', sql.Int, idDepartamento)
-      .query(`
-        SELECT 
-          e.*,
-          d.Nombre AS Departamento
-        FROM Empleados e
-        INNER JOIN Departamento d ON e.IdDepartamento = d.IdDepartamento
-        WHERE d.Nombre LIKE '%Pilotos%' OR d.Nombre LIKE '%Mecánicos%'
-        ORDER BY e.Nombre, e.Apellido
-      `);
+    const result = await client.query(`
+      SELECT 
+        e.idempleado as "IdEmpleado",
+        e.nombre as "Nombre",
+        e.apellido as "Apellido",
+        e.email as "Email",
+        e.telefono as "Telefono",
+        e.fechaingreso as "FechaIngreso",
+        d.nombre as "Departamento"
+      FROM empleados e
+      INNER JOIN departamento d ON e.iddepartamento = d.iddepartamento
+      WHERE d.nombre LIKE '%Pilotos%' OR d.nombre LIKE '%Mecánicos%'
+      ORDER BY e.nombre, e.apellido
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener empleados por departamento: ${err.message}`);

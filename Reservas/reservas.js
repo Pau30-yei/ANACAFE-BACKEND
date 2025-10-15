@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const sql = require('mssql');
 const { connectDB } = require('../database.js'); 
 const winston = require('winston');
 
@@ -14,7 +13,7 @@ const logger = winston.createLogger({
 });
 
 // =============================================================
-// POST: CREACIÓN DE NUEVA SOLICITUD DE RESERVA
+// POST: CREACIÓN DE NUEVA SOLICITUD DE RESERVA - POSTGRESQL
 // =============================================================
 router.post('/', async (req, res) => {
   logger.info('[INFO] Intento de crear nueva solicitud de reserva.');
@@ -24,9 +23,9 @@ router.post('/', async (req, res) => {
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
   logger.info(`[INFO] Usuario que crea la solicitud: ${usuario}`);
   
-  let transaction;
+  let client;
 
-  // Sanitizar horas
+  // Sanitizar horas para PostgreSQL
   const sanitizeTime = (timeString) => {
     if (!timeString) return null;
     if (/^\d{2}:\d{2}$/.test(timeString)) return timeString + ":00";
@@ -48,44 +47,42 @@ router.post('/', async (req, res) => {
   let idTipoSolicitante = null;
 
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
-    // Validación de conflicto de horario
+    // Validación de conflicto de horario - PostgreSQL
     logger.info('[INFO] Verificando conflicto de horario para la nueva solicitud.');
     const conflictCheckQuery = `
       SELECT
-          S.IdSolicitud,
-          S.NombreEvento,
-          CONVERT(VARCHAR, S.HoraInicio, 8) AS HoraInicio,
-          CONVERT(VARCHAR, S.HoraFin, 8) AS HoraFin,
-          SAL.Nombre AS NombreSalon
-      FROM Solicitudes S
-      INNER JOIN SolicitudSalones SS ON S.IdSolicitud = SS.IdSolicitud
-      INNER JOIN Salones SAL ON SS.IdSalon = SAL.IdSalon 
+          s.idsolicitud as "IdSolicitud",
+          s.nombreevento as "NombreEvento",
+          TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio",
+          TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin",
+          sal.nombre as "NombreSalon"
+      FROM solicitudes s
+      INNER JOIN solicitudsalones ss ON s.idsolicitud = ss.idsolicitud
+      INNER JOIN salones sal ON ss.idsalon = sal.idsalon 
       WHERE
-          SS.IdSalon = @IdSalon
-          AND S.FechaEvento = @FechaEvento
-          AND S.IdEstado IN (4, 5)
+          ss.idsalon = $1
+          AND s.fechaevento = $2
+          AND s.idestado IN (4, 5)
           AND (
-              (S.HoraInicio < @HoraFinSanitizada AND S.HoraFin > @HoraInicioSanitizada)
-              OR (@HoraInicioSanitizada < S.HoraFin AND @HoraFinSanitizada > S.HoraInicio)
+              (s.horainicio < $4 AND s.horafin > $3)
+              OR ($3 < s.horafin AND $4 > s.horainicio)
           );
     `;
 
-    const conflictRequest = new sql.Request(transaction);
-    conflictRequest.input('IdSalon', sql.Int, data.IdSalon); 
-    conflictRequest.input('FechaEvento', sql.Date, data.FechaEvento);
-    conflictRequest.input('HoraInicioSanitizada', sql.VarChar(8), horaInicioSanitizada);
-    conflictRequest.input('HoraFinSanitizada', sql.VarChar(8), horaFinSanitizada);
+    const conflictResult = await client.query(conflictCheckQuery, [
+      data.IdSalon, 
+      data.FechaEvento,
+      horaInicioSanitizada,
+      horaFinSanitizada
+    ]);
 
-    const conflictResult = await conflictRequest.query(conflictCheckQuery);
-
-    if (conflictResult.recordset.length > 0) {
-      await transaction.rollback();
+    if (conflictResult.rows.length > 0) {
+      await client.query('ROLLBACK');
       logger.warn(`[WARN] Conflicto de horario detectado. Rollback. Solicitud cancelada.`);
-      const conflictInfo = conflictResult.recordset.map(r => ({
+      const conflictInfo = conflictResult.rows.map(r => ({
         IdSolicitud: r.IdSolicitud,
         NombreEvento: r.NombreEvento,
         HoraInicio: r.HoraInicio,
@@ -112,127 +109,152 @@ router.post('/', async (req, res) => {
         throw new Error("Datos de Solicitante Externo faltantes.");
       }
 
-      let result = await (transaction.request()
-        .input('Email', sql.NVarChar(100), data.EmailExterno)
-        .query('SELECT IdSolicitanteExterno FROM [dbo].[SolicitantesExternos] WHERE Email = @Email'));
+      // Buscar o crear solicitante externo
+      let result = await client.query(
+        'SELECT idsolicitanteexterno FROM solicitantesexternos WHERE email = $1',
+        [data.EmailExterno]
+      );
 
-      if (result.recordset.length > 0) {
-        idSolicitanteExterno = result.recordset[0].IdSolicitanteExterno;
+      if (result.rows.length > 0) {
+        idSolicitanteExterno = result.rows[0].idsolicitanteexterno;
       } else {
-        result = await (transaction.request()
-          .input('Nombre', sql.NVarChar(100), data.NombreSolicitanteExterno)
-          .input('Empresa', sql.NVarChar(100), data.EmpresaExterna)
-          .input('Email', sql.NVarChar(100), data.EmailExterno)
-          .input('Telefono', sql.NVarChar(20), data.TelefonoExterno || null)
-          .query(`
-            INSERT INTO [dbo].[SolicitantesExternos] (Nombre, Empresa, Email, Telefono) 
-            VALUES (@Nombre, @Empresa, @Email, @Telefono);
-            SELECT SCOPE_IDENTITY() AS IdSolicitanteExterno;
-          `));
-        idSolicitanteExterno = result.recordset[0].IdSolicitanteExterno;
+        result = await client.query(
+          `INSERT INTO solicitantesexternos (nombre, empresa, email, telefono) 
+           VALUES ($1, $2, $3, $4) RETURNING idsolicitanteexterno`,
+          [data.NombreSolicitanteExterno, data.EmpresaExterna, data.EmailExterno, data.TelefonoExterno || null]
+        );
+        idSolicitanteExterno = result.rows[0].idsolicitanteexterno;
         logger.info(`[INFO] Nuevo solicitante externo creado: ${idSolicitanteExterno}`);
       }
     }
 
     // 2. Insertar en Solicitudes
-    const solicitudResult = await (transaction.request()
-      .input('IdTipoSolicitante', sql.Int, idTipoSolicitante)
-      .input('NombreEvento', sql.NVarChar(200), data.NombreEvento)
-      .input('FechaEvento', sql.Date, data.FechaEvento)
-      .input('HoraInicio', sql.VarChar(8), horaInicioSanitizada) 
-      .input('HoraFin', sql.VarChar(8), horaFinSanitizada)   
-      .input('Participantes', sql.Int, data.NumParticipantes)
-      .input('Observaciones', sql.NVarChar(sql.MAX), data.Observaciones || '')
-      .input('IdEstado', sql.Int, ID_ESTADO_PENDIENTE)
-      .query(`
-        INSERT INTO [dbo].[Solicitudes] 
-        (IdTipoSolicitante, NombreEvento, FechaEvento, HoraInicio, HoraFin, Participantes, Observaciones, IdEstado)
-        VALUES (@IdTipoSolicitante, @NombreEvento, @FechaEvento, @HoraInicio, @HoraFin, @Participantes, @Observaciones, @IdEstado);
-        SELECT SCOPE_IDENTITY() AS IdSolicitud;
-      `));
+    const solicitudResult = await client.query(
+      `INSERT INTO solicitudes 
+        (idtiposolicitante, nombreevento, fechaevento, horainicio, horafin, participantes, observaciones, idestado)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING idsolicitud`,
+      [idTipoSolicitante, data.NombreEvento, data.FechaEvento, horaInicioSanitizada, 
+       horaFinSanitizada, data.NumParticipantes, data.Observaciones || '', ID_ESTADO_PENDIENTE]
+    );
 
-    const idSolicitud = solicitudResult.recordset[0].IdSolicitud;
+    const idSolicitud = solicitudResult.rows[0].idsolicitud;
     logger.info(`[INFO] Registro de Solicitud principal creado: ${idSolicitud}`);
 
-    console.log('DEBUG - IdEmpleado:', idEmpleado, 'Tipo:', typeof idEmpleado);
-    logger.info(`[DEBUG] IdEmpleado a insertar: ${idEmpleado}, Tipo: ${typeof idEmpleado}`);
-
     // 3. Insertar en SolicitudesSolicitantes
-    await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdEmpleado', sql.Int, idEmpleado)
-      .input('IdSolicitanteExterno', sql.Int, idSolicitanteExterno)
-      .query(`
-        INSERT INTO [dbo].[SolicitudesSolicitantes] (IdSolicitud, IdEmpleado, IdSolicitanteExterno)
-        VALUES (@IdSolicitud, @IdEmpleado, @IdSolicitanteExterno);
-      `));
+    await client.query(
+      `INSERT INTO solicitudessolicitantes (idsolicitud, idempleado, idsolicitanteexterno)
+        VALUES ($1, $2, $3)`,
+      [idSolicitud, idEmpleado, idSolicitanteExterno]
+    );
 
     // 4. Insertar en SolicitudSalones
-    const solicitudSalonResult = await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdSalon', sql.Int, data.IdSalon)
-      .input('IdCapacidad', sql.Int, data.IdCapacidad)
-      .input('Nota', sql.NVarChar(200), data.NotaSalon || null)
-      .query(`
-        INSERT INTO [dbo].[SolicitudSalones] (IdSolicitud, IdSalon, IdCapacidad, Nota)
-        VALUES (@IdSolicitud, @IdSalon, @IdCapacidad, @Nota);
-        SELECT SCOPE_IDENTITY() AS IdSolicitudSalon;
-      `));
-    const idSolicitudSalon = solicitudSalonResult.recordset[0].IdSolicitudSalon;
+    const solicitudSalonResult = await client.query(
+      `INSERT INTO solicitudsalones (idsolicitud, idsalon, idcapacidad, nota)
+        VALUES ($1, $2, $3, $4) RETURNING idsolicitudsalon`,
+      [idSolicitud, data.IdSalon, data.IdCapacidad, data.NotaSalon || null]
+    );
+    const idSolicitudSalon = solicitudSalonResult.rows[0].idsolicitudsalon;
 
-    // 5. Insertar detalles (Servicios, Equipo, Degustaciones)
+    // DEBUG: Mostrar estructura de datos recibida
+    console.log('=== ESTRUCTURA DE DATOS RECIBIDA ===');
+    console.log('Tipo de ServiciosSeleccionados:', typeof data.ServiciosSeleccionados);
+    console.log('Es array?', Array.isArray(data.ServiciosSeleccionados));
+    if (Array.isArray(data.ServiciosSeleccionados) && data.ServiciosSeleccionados.length > 0) {
+      console.log('Primer elemento de ServiciosSeleccionados:', data.ServiciosSeleccionados[0]);
+      console.log('Keys del primer elemento:', Object.keys(data.ServiciosSeleccionados[0]));
+    }
+    console.log('====================================');
+
+    // 5. Insertar detalles (Servicios, Equipo, Degustaciones) - VERSIÓN CORREGIDA
     const insertDetails = async (details, table, columnId) => {
       if (Array.isArray(details) && details.length > 0) {
+        console.log(`[DEBUG] Insertando en ${table}:`, details);
+        
         for (const detail of details) {
-          const detailId = typeof detail === 'object' ? detail[columnId] : detail;
-          const detailNota = typeof detail === 'object' && detail.Nota ? detail.Nota : null; 
+          // EXTRAER ID CORRECTAMENTE - Respeta mayúsculas del frontend
+          let detailId;
+          let detailNota = null;
 
-          const detailRequest = new sql.Request(transaction); 
-          
-          let sqlQuery = `INSERT INTO [dbo].[${table}] (IdSolicitudSalon, ${columnId}`;
-          let sqlValues = 'VALUES (@IdSolicitudSalon, @DetailId';
+          if (typeof detail === 'object' && detail !== null) {
+            // Buscar el ID con las claves exactas que usa el frontend
+            if (columnId === 'idservicio') {
+              detailId = detail.IdServicio;
+              console.log('IdServicio encontrado:', detailId);
+            } else if (columnId === 'idequipo') {
+              detailId = detail.IdEquipo;
+              console.log('IdEquipo encontrado:', detailId);
+            } else if (columnId === 'iddegustacion') {
+              detailId = detail.IdDegustacion;
+              console.log('IdDegustacion encontrado:', detailId);
+            } else {
+              detailId = detail[columnId] || detail.id;
+            }
+            
+            detailNota = detail.Nota || null;
+          }
 
-          if ((table === 'SolicitudServicios' || table === 'SolicitudEquipo' || table === 'SolicitudDegustaciones') && detailNota !== null) {
-            sqlQuery += ', Nota';
-            sqlValues += ', @Nota';
-            detailRequest.input('Nota', sql.NVarChar(200), detailNota); 
+          // Validar que tenemos un ID válido
+          if (detailId === null || detailId === undefined || isNaN(detailId)) {
+            console.warn(`[WARN] ID inválido para ${table}:`, detail);
+            continue;
+          }
+
+          console.log(`[INFO] Insertando en ${table}: ID=${detailId}, Nota=${detailNota}`);
+
+          // Construir consulta SQL
+          let sqlQuery = `INSERT INTO ${table} (idsolicitudsalon, ${columnId}`;
+          let sqlValues = 'VALUES ($1, $2';
+          const params = [idSolicitudSalon, detailId];
+
+          if ((table === 'solicitudservicios' || table === 'solicitudequipo' || table === 'solicituddegustaciones') && detailNota !== null) {
+            sqlQuery += ', nota';
+            sqlValues += ', $3';
+            params.push(detailNota);
           }
           
           sqlQuery += ') ' + sqlValues + ')';
           
-          await (detailRequest
-            .input('IdSolicitudSalon', sql.Int, idSolicitudSalon)
-            .input('DetailId', sql.Int, detailId)
-            .query(sqlQuery)); 
+          try {
+            await client.query(sqlQuery, params);
+            console.log(`[SUCCESS] Registro insertado en ${table}: ID=${detailId}`);
+          } catch (err) {
+            console.error(`[ERROR] Error al insertar en ${table}:`, err.message);
+            throw err;
+          }
         }
+      } else {
+        console.log(`[INFO] No hay detalles para insertar en ${table}`);
       }
     };
 
-    await insertDetails(data.ServiciosSeleccionados, 'SolicitudServicios', 'IdServicio');
-    await insertDetails(data.EquipoSeleccionado, 'SolicitudEquipo', 'IdEquipo');
+    // Insertar los detalles
+    await insertDetails(data.ServiciosSeleccionados, 'solicitudservicios', 'idservicio');
+    await insertDetails(data.EquipoSeleccionado, 'solicitudequipo', 'idequipo');
     if (data.RequiereDegustacion === 'SI') {
-      await insertDetails(data.DegustacionesSeleccionadas, 'SolicitudDegustaciones', 'IdDegustacion');
+      await insertDetails(data.DegustacionesSeleccionadas, 'solicituddegustaciones', 'iddegustacion');
     }
 
     // 6. Commit
-    await transaction.commit();
+    await client.query('COMMIT');
     logger.info(`[INFO] Solicitud de reserva ${idSolicitud} finalizada con COMMIT por usuario: ${usuario}`);
 
     res.status(201).json({
-      message: 'Solicitud enviada exitosamente. Estado: PENDIENTE.',
-      idSolicitud: idSolicitud
+      Message: 'Solicitud enviada exitosamente. Estado: PENDIENTE.',
+      IdSolicitud: idSolicitud
     });
 
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    if (client) await client.query('ROLLBACK');
     logger.warn(`[WARN] Transacción con ROLLBACK debido a error.`);
     logger.error(`[ERR] Error al procesar la solicitud de reserva: ${err.message}`);
     res.status(500).json({ error: 'Error al procesar la solicitud. ' + err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
 // =============================================================
-// GET: BÚSQUEDA DE SOLICITANTES EXTERNOS POR COINCIDENCIA
+// GET: BÚSQUEDA DE SOLICITANTES EXTERNOS POR COINCIDENCIA - POSTGRESQL
 // =============================================================
 router.get('/solicitantes-externos/search', async (req, res) => {
   const query = req.query.q;
@@ -242,29 +264,27 @@ router.get('/solicitantes-externos/search', async (req, res) => {
   }
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     const searchTerm = `%${query}%`;
 
-    const result = await pool.request()
-      .input('SearchTerm', sql.NVarChar(100), searchTerm)
-      .query(`
-        SELECT 
-          IdSolicitanteExterno,
-          Nombre,
-          Empresa,
-          Email,
-          Telefono
-        FROM 
-          [dbo].[SolicitantesExternos]
-        WHERE 
-          Email LIKE @SearchTerm OR 
-          Nombre LIKE @SearchTerm OR 
-          Empresa LIKE @SearchTerm
-        ORDER BY
-          Nombre
-      `);
+    const result = await client.query(`
+      SELECT 
+        idsolicitanteexterno as "IdSolicitanteExterno",
+        nombre as "Nombre",
+        empresa as "Empresa",
+        email as "Email",
+        telefono as "Telefono"
+      FROM 
+        solicitantesexternos
+      WHERE 
+        email ILIKE $1 OR 
+        nombre ILIKE $1 OR 
+        empresa ILIKE $1
+      ORDER BY
+        nombre
+    `, [searchTerm]);
 
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
 
   } catch (err) {
     logger.error(`[ERROR] Error al buscar solicitantes externos: ${err.message}`);
@@ -273,37 +293,36 @@ router.get('/solicitantes-externos/search', async (req, res) => {
 });
 
 // =============================================================
-// GET: OBTENER SOLICITUDES PARA CALENDARIO
+// GET: OBTENER SOLICITUDES PARA CALENDARIO - POSTGRESQL
 // =============================================================
 router.get('/calendario', async (req, res) => {
   logger.info('[INFO] Intento de obtener solicitudes para calendario.');
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query(`
-        SELECT 
-          S.IdSolicitud, 
-          S.NombreEvento, 
-          S.FechaEvento, 
-          S.HoraInicio, 
-          S.HoraFin, 
-          S.IdEstado,
-          SAL.Nombre AS NombreSalon
-        FROM 
-          [dbo].[Solicitudes] S
-        INNER JOIN
-          [dbo].[SolicitudSalones] SSAL ON S.IdSolicitud = SSAL.IdSolicitud
-        INNER JOIN
-          [dbo].[Salones] SAL ON SSAL.IdSalon = SAL.IdSalon
-        WHERE 
-          S.IdEstado IN (4, 5);
-      `);
+    const result = await client.query(`
+      SELECT 
+        s.idsolicitud as "IdSolicitud", 
+        s.nombreevento as "NombreEvento", 
+        s.fechaevento as "FechaEvento", 
+        TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio", 
+        TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin", 
+        s.idestado as "IdEstado",
+        sal.nombre as "NombreSalon"
+      FROM 
+        solicitudes s
+      INNER JOIN
+        solicitudsalones ssal ON s.idsolicitud = ssal.idsolicitud
+      INNER JOIN
+        salones sal ON ssal.idsalon = sal.idsalon
+      WHERE 
+        s.idestado IN (4, 5)
+    `);
 
-    const eventos = result.recordset.map(solicitud => {
-      const fecha = solicitud.FechaEvento.toISOString().split('T')[0];
-      const horaInicioLimpia = solicitud.HoraInicio.toISOString().substring(11, 19);
-      const horaFinLimpia = solicitud.HoraFin.toISOString().substring(11, 19);
+    const eventos = result.rows.map(solicitud => {
+      const fecha = new Date(solicitud.FechaEvento).toISOString().split('T')[0];
+      const horaInicioLimpia = solicitud.HoraInicio;
+      const horaFinLimpia = solicitud.HoraFin;
 
       let colorEvento;
       let estadoTexto;
@@ -325,8 +344,7 @@ router.get('/calendario', async (req, res) => {
         start: `${fecha}T${horaInicioLimpia}`, 
         end: `${fecha}T${horaFinLimpia}`,
         color: colorEvento,
-        extendedProps: 
-        { 
+        extendedProps: { 
           estado: estadoTexto,
           idEstado: solicitud.IdEstado,
           salon: solicitud.NombreSalon,
@@ -344,7 +362,7 @@ router.get('/calendario', async (req, res) => {
 });
 
 // =============================================================
-// GET: VERIFICAR SUPERPOSICIÓN DE HORARIO
+// GET: VERIFICAR SUPERPOSICIÓN DE HORARIO - POSTGRESQL
 // =============================================================
 router.get('/check-overlap', async (req, res) => {
   logger.info('[INFO] Intento de verificar superposición de horario.');
@@ -357,32 +375,28 @@ router.get('/check-overlap', async (req, res) => {
   const horaInicioLimpia = horaInicio.length === 5 ? `${horaInicio}:00` : horaInicio;
 
   try {
-    const pool = await connectDB();
-    const request = pool.request();
+    const client = await connectDB();
     
     const query = `
       SELECT 
-        S.IdSolicitud, 
-        S.NombreEvento, 
-        S.HoraInicio,
-        S.HoraFin
-      FROM Solicitudes AS S
+        s.idsolicitud as "IdSolicitud", 
+        s.nombreevento as "NombreEvento", 
+        TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio",
+        TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin"
+      FROM solicitudes s
       WHERE 
-        S.FechaEvento = @FechaEvento
-        AND S.IdEstado IN (4, 5) 
+        s.fechaevento = $1
+        AND s.idestado IN (4, 5) 
         AND (
-          (S.HoraInicio <= @HoraInicio AND S.HoraFin > @HoraInicio)
-          OR (S.HoraInicio = @HoraInicio)
+          (s.horainicio <= $2 AND s.horafin > $2)
+          OR (s.horainicio = $2)
         );
     `;
     
-    request.input('FechaEvento', sql.Date, fecha);
-    request.input('HoraInicio', sql.VarChar(8), horaInicioLimpia);
-    
-    const result = await request.query(query);
+    const result = await client.query(query, [fecha, horaInicioLimpia]);
 
-    if (result.recordset.length > 0) {
-      const conflictInfo = result.recordset.map(r => ({
+    if (result.rows.length > 0) {
+      const conflictInfo = result.rows.map(r => ({
         IdSolicitud: r.IdSolicitud,
         NombreEvento: r.NombreEvento,
         HoraInicio: r.HoraInicio,
@@ -400,91 +414,84 @@ router.get('/check-overlap', async (req, res) => {
 });
 
 // =============================================================
-// GET: OBTENER SOLICITUD POR ID (COMPLETO) 
+// GET: OBTENER SOLICITUD POR ID (COMPLETO) - POSTGRESQL
 // =============================================================
 router.get('/:id', async (req, res) => {
   const idSolicitud = req.params.id;
   logger.info(`[INFO] Intento de obtener solicitud con ID: ${idSolicitud}`);
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    // Consulta principal de la solicitud - CORREGIDA para formatear horas
+    // Consulta principal de la solicitud - PostgreSQL
     const solicitudQuery = `
       SELECT 
-        S.*,
-        SS.IdSalon,
-        SS.IdCapacidad,
-        SS.Nota AS NotaSalon,
-        SE.Nombre AS NombreSolicitanteExterno,
-        SE.Empresa AS EmpresaExterna,
-        SSol.IdEmpleado,  
-        SE.Email AS EmailExterno,
-        SE.Telefono AS TelefonoExterno,
-        CONVERT(VARCHAR(8), S.HoraInicio, 108) AS HoraInicioFormateada,
-        CONVERT(VARCHAR(8), S.HoraFin, 108) AS HoraFinFormateada
-      FROM Solicitudes S
-      LEFT JOIN SolicitudSalones SS ON S.IdSolicitud = SS.IdSolicitud
-      LEFT JOIN SolicitudesSolicitantes SSol ON S.IdSolicitud = SSol.IdSolicitud
-      LEFT JOIN SolicitantesExternos SE ON SSol.IdSolicitanteExterno = SE.IdSolicitanteExterno
-      WHERE S.IdSolicitud = @IdSolicitud
+        s.idsolicitud as "idSolicitud",
+        s.idtiposolicitante as "IdTipoSolicitante",
+        s.nombreevento AS "NombreEvento",
+        s.fechaevento AS "FechaEvento",
+        s.horainicio AS "HoraInicio",
+        s.horafin AS "HoraFin",
+        s.participantes AS "Participantes",
+        s.observaciones AS "Observaciones",
+        s.idestado AS "IdEstado",
+        s.fechasolicitud AS "FechaSolicitud",
+        ss.idsalon as "IdSalon",
+        ss.idcapacidad as "IdCapacidad",
+        ss.nota as "NotaSalon",
+        se.nombre as "NombreSolicitanteExterno",
+        se.empresa as "EmpresaExterna",
+        ssol.idempleado as "IdEmpleado",  
+        se.email as "EmailExterno",
+        se.telefono as "TelefonoExterno",
+        TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio",
+        TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin"
+      FROM solicitudes s
+      LEFT JOIN solicitudsalones ss ON s.idsolicitud = ss.idsolicitud
+      LEFT JOIN solicitudessolicitantes ssol ON s.idsolicitud = ssol.idsolicitud
+      LEFT JOIN solicitantesexternos se ON ssol.idsolicitanteexterno = se.idsolicitanteexterno
+      WHERE s.idsolicitud = $1
     `;
 
-    const solicitudResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(solicitudQuery);
+    const solicitudResult = await client.query(solicitudQuery, [idSolicitud]);
 
-    if (solicitudResult.recordset.length === 0) {
+    if (solicitudResult.rows.length === 0) {
       return res.status(404).json({ message: 'Solicitud no encontrada.' });
     }
 
-    const solicitud = solicitudResult.recordset[0];
-
-    // Usar las horas formateadas para el frontend
-    solicitud.HoraInicio = solicitud.HoraInicioFormateada;
-    solicitud.HoraFin = solicitud.HoraFinFormateada;
-
-    // Eliminar los campos temporales
-    delete solicitud.HoraInicioFormateada;
-    delete solicitud.HoraFinFormateada;
+    const solicitud = solicitudResult.rows[0];
 
     // Cargar servicios seleccionados
-    const serviciosResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT SS.IdServicio, SS.Nota 
-        FROM SolicitudServicios SS
-        INNER JOIN SolicitudSalones SSal ON SS.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
-    solicitud.ServiciosSeleccionados = serviciosResult.recordset;
+    const serviciosResult = await client.query(`
+      SELECT ss.idservicio as "IdServicio", ss.nota as "Nota" 
+      FROM solicitudservicios ss
+      INNER JOIN solicitudsalones ssal ON ss.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
+    solicitud.ServiciosSeleccionados = serviciosResult.rows;
 
     // Cargar equipo seleccionado
-    const equipoResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT SE.IdEquipo, SE.Nota 
-        FROM SolicitudEquipo SE
-        INNER JOIN SolicitudSalones SSal ON SE.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
-    solicitud.EquipoSeleccionado = equipoResult.recordset;
+    const equipoResult = await client.query(`
+      SELECT se.idequipo as "IdEquipo", se.nota as "Nota" 
+      FROM solicitudequipo se
+      INNER JOIN solicitudsalones ssal ON se.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
+    solicitud.EquipoSeleccionado = equipoResult.rows;
 
     // Cargar degustaciones seleccionadas
-    const degustacionesResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT SD.IdDegustacion, SD.Nota 
-        FROM SolicitudDegustaciones SD
-        INNER JOIN SolicitudSalones SSal ON SD.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
-    solicitud.DegustacionesSeleccionadas = degustacionesResult.recordset;
+    const degustacionesResult = await client.query(`
+      SELECT sd.iddegustacion as "IdDegustacion", sd.nota as "Nota" 
+      FROM solicituddegustaciones sd
+      INNER JOIN solicitudsalones ssal ON sd.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
+    solicitud.DegustacionesSeleccionadas = degustacionesResult.rows;
 
     // Determinar el tipo de solicitud basado en los datos
-    if (solicitud.IdTipoSolicitante === 1) {
+    if (solicitud.idtiposolicitante === 1) {
       solicitud.TipoSolicitud = 'Interna';
-    } else if (solicitud.IdTipoSolicitante === 2) {
+    } else if (solicitud.idtiposolicitante === 2) {
       solicitud.TipoSolicitud = 'Externa';
     }
 
@@ -500,7 +507,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // =============================================================
-// PUT: ACTUALIZAR SOLICITUD COMPLETA CON AUDITORÍA CORREGIDA
+// PUT: ACTUALIZAR SOLICITUD COMPLETA CON AUDITORÍA - POSTGRESQL
 // =============================================================
 router.put('/:id', async (req, res) => {
   const idSolicitud = req.params.id;
@@ -511,7 +518,7 @@ router.put('/:id', async (req, res) => {
   const usuario = data.Usuario || 'UsuarioNoIdentificado';
   logger.info(`[INFO] Usuario que modifica la solicitud ${idSolicitud}: ${usuario}`);
   
-  let transaction;
+  let client;
 
   // Sanitizar horas
   const sanitizeTime = (timeString) => {
@@ -524,46 +531,44 @@ router.put('/:id', async (req, res) => {
   const horaFinSanitizada = sanitizeTime(data.HoraFin);
 
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Validación de conflicto de horario (excluyendo la solicitud actual)
     logger.info('[INFO] Verificando conflicto de horario para la actualización.');
     const conflictCheckQuery = `
       SELECT
-        S.IdSolicitud,
-        S.NombreEvento,
-        CONVERT(VARCHAR, S.HoraInicio, 8) AS HoraInicio,
-        CONVERT(VARCHAR, S.HoraFin, 8) AS HoraFin,
-        SAL.Nombre AS NombreSalon
-      FROM Solicitudes S
-      INNER JOIN SolicitudSalones SS ON S.IdSolicitud = SS.IdSolicitud
-      INNER JOIN Salones SAL ON SS.IdSalon = SAL.IdSalon 
+        s.idsolicitud as "IdSolicitud",
+        s.nombreevento as "NombreEvento",
+        TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio",
+        TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin",
+        sal.nombre as "NombreSalon"
+      FROM solicitudes s
+      INNER JOIN solicitudsalones ss ON s.idsolicitud = ss.idsolicitud
+      INNER JOIN salones sal ON ss.idsalon = sal.idsalon 
       WHERE
-        SS.IdSalon = @IdSalon
-        AND S.FechaEvento = @FechaEvento
-        AND S.IdEstado IN (4, 5)
-        AND S.IdSolicitud != @IdSolicitud
+        ss.idsalon = $1
+        AND s.fechaevento = $2
+        AND s.idestado IN (4, 5)
+        AND s.idsolicitud != $3
         AND (
-          (S.HoraInicio < @HoraFinSanitizada AND S.HoraFin > @HoraInicioSanitizada)
-          OR (@HoraInicioSanitizada < S.HoraFin AND @HoraFinSanitizada > S.HoraInicio)
+          (s.horainicio < $5 AND s.horafin > $4)
+          OR ($4 < s.horafin AND $5 > s.horainicio)
         );
     `;
 
-    const conflictRequest = new sql.Request(transaction);
-    conflictRequest.input('IdSolicitud', sql.Int, idSolicitud);
-    conflictRequest.input('IdSalon', sql.Int, data.IdSalon); 
-    conflictRequest.input('FechaEvento', sql.Date, data.FechaEvento);
-    conflictRequest.input('HoraInicioSanitizada', sql.VarChar(8), horaInicioSanitizada);
-    conflictRequest.input('HoraFinSanitizada', sql.VarChar(8), horaFinSanitizada);
+    const conflictResult = await client.query(conflictCheckQuery, [
+      data.IdSalon, 
+      data.FechaEvento,
+      idSolicitud,
+      horaInicioSanitizada,
+      horaFinSanitizada
+    ]);
 
-    const conflictResult = await conflictRequest.query(conflictCheckQuery);
-
-    if (conflictResult.recordset.length > 0) {
-      await transaction.rollback();
+    if (conflictResult.rows.length > 0) {
+      await client.query('ROLLBACK');
       logger.warn(`[WARN] Conflicto de horario detectado. Rollback. Actualización cancelada.`);
-      const conflictInfo = conflictResult.recordset.map(r => ({
+      const conflictInfo = conflictResult.rows.map(r => ({
         IdSolicitud: r.IdSolicitud,
         NombreEvento: r.NombreEvento,
         HoraInicio: r.HoraInicio,
@@ -578,20 +583,18 @@ router.put('/:id', async (req, res) => {
     }
 
     // Obtener valores actuales para auditoría
-    const valoresActuales = await transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT FechaEvento, HoraInicio, HoraFin, NombreEvento 
-        FROM Solicitudes 
-        WHERE IdSolicitud = @IdSolicitud
-      `);
+    const valoresActuales = await client.query(`
+      SELECT fechaevento, horainicio, horafin, nombreevento 
+      FROM solicitudes 
+      WHERE idsolicitud = $1
+    `, [idSolicitud]);
 
-    if (valoresActuales.recordset.length === 0) {
-      await transaction.rollback();
+    if (valoresActuales.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ message: 'Solicitud no encontrada.' });
     }
 
-    const actual = valoresActuales.recordset[0];
+    const actual = valoresActuales.rows[0];
 
     // Determinar tipo de solicitante
     let idTipoSolicitante;
@@ -610,88 +613,71 @@ router.put('/:id', async (req, res) => {
       }
 
       // Buscar o crear solicitante externo
-      let result = await (transaction.request()
-        .input('Email', sql.NVarChar(100), data.EmailExterno)
-        .query('SELECT IdSolicitanteExterno FROM [dbo].[SolicitantesExternos] WHERE Email = @Email'));
+      let result = await client.query(
+        'SELECT idsolicitanteexterno FROM solicitantesexternos WHERE email = $1',
+        [data.EmailExterno]
+      );
 
-      if (result.recordset.length > 0) {
-        idSolicitanteExterno = result.recordset[0].IdSolicitanteExterno;
+      if (result.rows.length > 0) {
+        idSolicitanteExterno = result.rows[0].idsolicitanteexterno;
       } else {
-        result = await (transaction.request()
-          .input('Nombre', sql.NVarChar(100), data.NombreSolicitanteExterno)
-          .input('Empresa', sql.NVarChar(100), data.EmpresaExterna)
-          .input('Email', sql.NVarChar(100), data.EmailExterno)
-          .input('Telefono', sql.NVarChar(20), data.TelefonoExterno || null)
-          .query(`
-            INSERT INTO [dbo].[SolicitantesExternos] (Nombre, Empresa, Email, Telefono) 
-            VALUES (@Nombre, @Empresa, @Email, @Telefono);
-            SELECT SCOPE_IDENTITY() AS IdSolicitanteExterno;
-          `));
-        idSolicitanteExterno = result.recordset[0].IdSolicitanteExterno;
+        result = await client.query(
+          `INSERT INTO solicitantesexternos (nombre, empresa, email, telefono) 
+           VALUES ($1, $2, $3, $4) RETURNING idsolicitanteexterno`,
+          [data.NombreSolicitanteExterno, data.EmpresaExterna, data.EmailExterno, data.TelefonoExterno || null]
+        );
+        idSolicitanteExterno = result.rows[0].idsolicitanteexterno;
         logger.info(`[INFO] Nuevo solicitante externo creado: ${idSolicitanteExterno}`);
       }
     }
 
     // Actualizar tabla principal Solicitudes
     const updateSolicitudQuery = `
-      UPDATE Solicitudes SET 
-        IdTipoSolicitante = @IdTipoSolicitante,
-        NombreEvento = @NombreEvento,
-        FechaEvento = @FechaEvento,
-        HoraInicio = @HoraInicio,
-        HoraFin = @HoraFin,
-        Participantes = @Participantes,
-        Observaciones = @Observaciones
-      WHERE IdSolicitud = @IdSolicitud;
+      UPDATE solicitudes SET 
+        idtiposolicitante = $1,
+        nombreevento = $2,
+        fechaevento = $3,
+        horainicio = $4,
+        horafin = $5,
+        participantes = $6,
+        observaciones = $7
+      WHERE idsolicitud = $8;
     `;
 
-    await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdTipoSolicitante', sql.Int, idTipoSolicitante)
-      .input('NombreEvento', sql.NVarChar(200), data.NombreEvento)
-      .input('FechaEvento', sql.Date, data.FechaEvento)
-      .input('HoraInicio', sql.VarChar(8), horaInicioSanitizada)
-      .input('HoraFin', sql.VarChar(8), horaFinSanitizada)
-      .input('Participantes', sql.Int, data.NumParticipantes)
-      .input('Observaciones', sql.NVarChar(sql.MAX), data.Observaciones || '')
-      .query(updateSolicitudQuery));
+    await client.query(updateSolicitudQuery, [
+      idTipoSolicitante, data.NombreEvento, data.FechaEvento, horaInicioSanitizada,
+      horaFinSanitizada, data.NumParticipantes, data.Observaciones || '', idSolicitud
+    ]);
 
     // =============================================================
-    // SISTEMA DE AUDITORÍA PARA CAMBIOS CRÍTICOS - CORREGIDO
+    // SISTEMA DE AUDITORÍA PARA CAMBIOS CRÍTICOS - POSTGRESQL
     // =============================================================
     
-    // Función helper para auditoría - ACTUALIZADA para usar la columna 'Usuario'
+    // Función helper para auditoría - POSTGRESQL
     const registrarAuditoria = async (campo, valorAnterior, valorNuevo, motivo, usuarioAuditoria) => {
       if (valorAnterior != valorNuevo) {
         console.log(`📝 AUDITORÍA: Cambio en ${campo} - De: ${valorAnterior} → A: ${valorNuevo} - Usuario: ${usuarioAuditoria}`);
         
-        await transaction.request()
-          .input('IdSolicitud', sql.Int, idSolicitud)
-          .input('CampoModificado', sql.VarChar(50), campo)
-          .input('ValorAnterior', sql.VarChar(255), valorAnterior)
-          .input('ValorNuevo', sql.VarChar(255), valorNuevo)
-          .input('Motivo', sql.VarChar(500), motivo || 'Sin motivo especificado')
-          .input('Usuario', sql.NVarChar(100), usuarioAuditoria) // Usando 'Usuario' según tu tabla
-          .query(`
-            INSERT INTO AuditoriaCambiosEvento 
-            (IdSolicitud, CampoModificado, ValorAnterior, ValorNuevo, Motivo, Usuario)
-            VALUES (@IdSolicitud, @CampoModificado, @ValorAnterior, @ValorNuevo, @Motivo, @Usuario)
-          `);
+        await client.query(`
+          INSERT INTO auditoriacambiosevento 
+          (idsolicitud, campomodificado, valoranterior, valornuevo, motivo, usuario)
+          VALUES ($1, $2, $3, $4, $5, $6)
+        `, [idSolicitud, campo, valorAnterior, valorNuevo, motivo || 'Sin motivo especificado', usuarioAuditoria]);
       }
     };
 
-    // Registrar cambios en campos críticos - PASANDO EL USUARIO
-    const fechaEventoAnterior = actual.FechaEvento.toISOString().split('T')[0];
-    const horaInicioAnterior = actual.HoraInicio.toISOString().substring(11, 16);
-    const horaFinAnterior = actual.HoraFin.toISOString().substring(11, 16);
+    // Registrar cambios en campos críticos
+    const fechaEventoAnterior = new Date(actual.fechaevento).toISOString().split('T')[0];
+    const horaInicioAnterior = actual.horainicio.toISOString().substring(11, 16);
+    const horaFinAnterior = actual.horafin.toISOString().substring(11, 16);
 
     await registrarAuditoria('FechaEvento', fechaEventoAnterior, data.FechaEvento, data.MotivoCambioFecha, usuario);
     await registrarAuditoria('HoraInicio', horaInicioAnterior, data.HoraInicio, data.MotivoCambioHorario, usuario);
     await registrarAuditoria('HoraFin', horaFinAnterior, data.HoraFin, data.MotivoCambioHorario, usuario);
     
     // Auditoría para cambio de nombre del evento
-    if (actual.NombreEvento !== data.NombreEvento) {
-      await registrarAuditoria('NombreEvento', actual.NombreEvento, data.NombreEvento, 'Cambio en nombre del evento', usuario);
+    if (actual.nombreevento !== data.NombreEvento) {
+      await registrarAuditoria('NombreEvento', actual.nombreevento, data.NombreEvento, 'Cambio en nombre del evento', usuario);
     }
 
     // =============================================================
@@ -699,103 +685,123 @@ router.put('/:id', async (req, res) => {
     // =============================================================
 
     // Actualizar SolicitudSalones
-    await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdSalon', sql.Int, data.IdSalon)
-      .input('IdCapacidad', sql.Int, data.IdCapacidad)
-      .input('Nota', sql.NVarChar(200), data.NotaSalon || null)
-      .query(`
-        UPDATE SolicitudSalones SET 
-          IdSalon = @IdSalon,
-          IdCapacidad = @IdCapacidad,
-          Nota = @Nota
-        WHERE IdSolicitud = @IdSolicitud;
-      `));
+    await client.query(`
+      UPDATE solicitudsalones SET 
+        idsalon = $1,
+        idcapacidad = $2,
+        nota = $3
+      WHERE idsolicitud = $4;
+    `, [data.IdSalon, data.IdCapacidad, data.NotaSalon || null, idSolicitud]);
 
     // Actualizar SolicitudesSolicitantes
-    await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdEmpleado', sql.Int, idEmpleado)
-      .input('IdSolicitanteExterno', sql.Int, idSolicitanteExterno)
-      .query(`
-        UPDATE SolicitudesSolicitantes SET 
-          IdEmpleado = @IdEmpleado,
-          IdSolicitanteExterno = @IdSolicitanteExterno
-        WHERE IdSolicitud = @IdSolicitud;
-      `));
+    await client.query(`
+      UPDATE solicitudessolicitantes SET 
+        idempleado = $1,
+        idsolicitanteexterno = $2
+      WHERE idsolicitud = $3;
+    `, [idEmpleado, idSolicitanteExterno, idSolicitud]);
 
     // Obtener IdSolicitudSalon para las tablas de detalles
-    const salonResult = await (transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query('SELECT IdSolicitudSalon FROM SolicitudSalones WHERE IdSolicitud = @IdSolicitud'));
+    const salonResult = await client.query(
+      'SELECT idsolicitudsalon FROM solicitudsalones WHERE idsolicitud = $1', 
+      [idSolicitud]
+    );
     
-    const idSolicitudSalon = salonResult.recordset[0].IdSolicitudSalon;
+    const idSolicitudSalon = salonResult.rows[0].idsolicitudsalon;
 
     // Eliminar registros existentes en tablas de detalles
-    await (transaction.request()
-      .input('IdSolicitudSalon', sql.Int, idSolicitudSalon)
-      .query('DELETE FROM SolicitudServicios WHERE IdSolicitudSalon = @IdSolicitudSalon'));
-    
-    await (transaction.request()
-      .input('IdSolicitudSalon', sql.Int, idSolicitudSalon)
-      .query('DELETE FROM SolicitudEquipo WHERE IdSolicitudSalon = @IdSolicitudSalon'));
-    
-    await (transaction.request()
-      .input('IdSolicitudSalon', sql.Int, idSolicitudSalon)
-      .query('DELETE FROM SolicitudDegustaciones WHERE IdSolicitudSalon = @IdSolicitudSalon'));
+    await client.query('DELETE FROM solicitudservicios WHERE idsolicitudsalon = $1', [idSolicitudSalon]);
+    await client.query('DELETE FROM solicitudequipo WHERE idsolicitudsalon = $1', [idSolicitudSalon]);
+    await client.query('DELETE FROM solicituddegustaciones WHERE idsolicitudsalon = $1', [idSolicitudSalon]);
 
-    // Insertar nuevos detalles
+    // Insertar nuevos detalles - USANDO LA MISMA FUNCIÓN CORREGIDA DEL POST
     const insertDetails = async (details, table, columnId) => {
       if (Array.isArray(details) && details.length > 0) {
+        console.log(`[DEBUG] Insertando en ${table}:`, details);
+        
         for (const detail of details) {
-          const detailId = typeof detail === 'object' ? detail[columnId] : detail;
-          const detailNota = typeof detail === 'object' && detail.Nota ? detail.Nota : null; 
+          // EXTRAER ID CORRECTAMENTE - Respeta mayúsculas del frontend
+          let detailId;
+          let detailNota = null;
 
-          const detailRequest = new sql.Request(transaction); 
-          
-          let sqlQuery = `INSERT INTO [dbo].[${table}] (IdSolicitudSalon, ${columnId}`;
-          let sqlValues = 'VALUES (@IdSolicitudSalon, @DetailId';
+          if (typeof detail === 'object' && detail !== null) {
+            // Buscar el ID con las claves exactas que usa el frontend
+            if (columnId === 'idservicio') {
+              detailId = detail.IdServicio;
+              console.log('IdServicio encontrado:', detailId);
+            } else if (columnId === 'idequipo') {
+              detailId = detail.IdEquipo;
+              console.log('IdEquipo encontrado:', detailId);
+            } else if (columnId === 'iddegustacion') {
+              detailId = detail.IdDegustacion;
+              console.log('IdDegustacion encontrado:', detailId);
+            } else {
+              detailId = detail[columnId] || detail.id;
+            }
+            
+            detailNota = detail.Nota || null;
+          }
 
-          if ((table === 'SolicitudServicios' || table === 'SolicitudEquipo' || table === 'SolicitudDegustaciones') && detailNota !== null) {
-            sqlQuery += ', Nota';
-            sqlValues += ', @Nota';
-            detailRequest.input('Nota', sql.NVarChar(200), detailNota); 
+          // Validar que tenemos un ID válido
+          if (detailId === null || detailId === undefined || isNaN(detailId)) {
+            console.warn(`[WARN] ID inválido para ${table}:`, detail);
+            continue;
+          }
+
+          console.log(`[INFO] Insertando en ${table}: ID=${detailId}, Nota=${detailNota}`);
+
+          // Construir consulta SQL
+          let sqlQuery = `INSERT INTO ${table} (idsolicitudsalon, ${columnId}`;
+          let sqlValues = 'VALUES ($1, $2';
+          const params = [idSolicitudSalon, detailId];
+
+          if ((table === 'solicitudservicios' || table === 'solicitudequipo' || table === 'solicituddegustaciones') && detailNota !== null) {
+            sqlQuery += ', nota';
+            sqlValues += ', $3';
+            params.push(detailNota);
           }
           
           sqlQuery += ') ' + sqlValues + ')';
           
-          await (detailRequest
-            .input('IdSolicitudSalon', sql.Int, idSolicitudSalon)
-            .input('DetailId', sql.Int, detailId)
-            .query(sqlQuery)); 
+          try {
+            await client.query(sqlQuery, params);
+            console.log(`[SUCCESS] Registro insertado en ${table}: ID=${detailId}`);
+          } catch (err) {
+            console.error(`[ERROR] Error al insertar en ${table}:`, err.message);
+            throw err;
+          }
         }
+      } else {
+        console.log(`[INFO] No hay detalles para insertar en ${table}`);
       }
     };
 
-    await insertDetails(data.ServiciosSeleccionados, 'SolicitudServicios', 'IdServicio');
-    await insertDetails(data.EquipoSeleccionado, 'SolicitudEquipo', 'IdEquipo');
+    await insertDetails(data.ServiciosSeleccionados, 'solicitudservicios', 'idservicio');
+    await insertDetails(data.EquipoSeleccionado, 'solicitudequipo', 'idequipo');
     if (data.RequiereDegustacion === 'SI') {
-      await insertDetails(data.DegustacionesSeleccionadas, 'SolicitudDegustaciones', 'IdDegustacion');
+      await insertDetails(data.DegustacionesSeleccionadas, 'solicituddegustaciones', 'iddegustacion');
     }
 
-    await transaction.commit();
+    await client.query('COMMIT');
     logger.info(`[INFO] Solicitud ${idSolicitud} actualizada exitosamente con auditoría por usuario: ${usuario}`);
 
     res.status(200).json({ 
-      message: 'Solicitud actualizada exitosamente.', 
-      idSolicitud: idSolicitud 
+      Message: 'Solicitud actualizada exitosamente.', 
+      IdSolicitud: idSolicitud 
     });
 
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    await client.query('ROLLBACK');
     logger.warn(`[WARN] Transacción de actualización para ID ${idSolicitud} revertida.`);
     logger.error(`[ERROR] Error al actualizar solicitud ID ${idSolicitud}: ${err.message}`);
     res.status(500).json({ message: 'Error interno del servidor al actualizar la solicitud.', error: err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
 // =============================================================
-// PUT: ACTUALIZAR SOLO EL ESTADO
+// PUT: ACTUALIZAR SOLO EL ESTADO - POSTGRESQL
 // =============================================================
 router.put('/:id/estado', async (req, res) => {
   const idSolicitud = req.params.id;
@@ -804,15 +810,15 @@ router.put('/:id/estado', async (req, res) => {
   logger.info(`[INFO] Actualizando estado de solicitud ${idSolicitud} a ${IdEstado}`);
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdEstado', sql.Int, IdEstado)
-      .query('UPDATE Solicitudes SET IdEstado = @IdEstado WHERE IdSolicitud = @IdSolicitud');
+    await client.query(
+      'UPDATE solicitudes SET idestado = $1 WHERE idsolicitud = $2',
+      [IdEstado, idSolicitud]
+    );
 
     logger.info(`[INFO] Estado de solicitud ${idSolicitud} actualizado a ${IdEstado}`);
-    res.status(200).json({ message: 'Estado actualizado exitosamente.' });
+    res.status(200).json({ Message: 'Estado actualizado exitosamente.' });
 
   } catch (err) {
     logger.error(`[ERROR] Error al actualizar estado de solicitud ${idSolicitud}: ${err.message}`);
@@ -821,164 +827,136 @@ router.put('/:id/estado', async (req, res) => {
 });
 
 // =============================================================
-// GET: GENERAR CONTRATO EN PDF PARA SOLICITUD AUTORIZADA
+// GET: GENERAR CONTRATO EN PDF PARA SOLICITUD AUTORIZADA - POSTGRESQL
 // =============================================================
 router.get('/:id/contrato', async (req, res) => {
   const idSolicitud = req.params.id;
   logger.info(`[INFO] Generando contrato para solicitud: ${idSolicitud}`);
 
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
 
     // Obtener datos completos de la solicitud autorizada
     const solicitudQuery = `
       SELECT 
-    S.IdSolicitud,
-    S.NombreEvento,
-    FORMAT(S.FechaEvento, 'yyyy-MM-dd') AS FechaEvento,
-    CONVERT(VARCHAR, S.HoraInicio, 108) AS HoraInicio,
-    CONVERT(VARCHAR, S.HoraFin, 108) AS HoraFin,
-    S.Participantes,
-    S.Observaciones,
-    SS.IdSalon,
-    SS.IdCapacidad,
-    SS.Nota AS NotaSalon,
-    SE.Nombre AS NombreSolicitanteExterno,
-    SE.Empresa AS EmpresaExterna,
-    SE.Email AS EmailExterno,
-    SE.Telefono AS TelefonoExterno,
-    SSol.IdEmpleado,
-    EMP.Nombre + ' ' + EMP.Apellido AS NombreEmpleado,  -- Concatenar nombre y apellido
-    EMP.Email AS EmailEmpleado,
-    DEP.Nombre AS DepartamentoEmpleado,
-    SAL.Nombre AS NombreSalon,
-    STRING_AGG(TC.Nombre + ': ' + FORMAT(C.Monto, 'N2'), ' | ') AS CostosConcatenados,
-    TM.Nombre AS NombreTipoMontaje,
-    CAP.CantidadPersonas,
-    EST.Nombre AS EstadoSolicitud
-FROM Solicitudes S
-LEFT JOIN SolicitudSalones SS ON S.IdSolicitud = SS.IdSolicitud
-LEFT JOIN SolicitudesSolicitantes SSol ON SSol.IdSolicitud = S.IdSolicitud
-LEFT JOIN SolicitantesExternos SE ON SSol.IdSolicitanteExterno = SE.IdSolicitanteExterno
-LEFT JOIN Empleados EMP ON SSol.IdEmpleado = EMP.IdEmpleado
-LEFT JOIN Departamento DEP ON EMP.IdDepartamento = DEP.IdDepartamento
-LEFT JOIN Costos C ON SS.IdSalon = C.IdSalon
-LEFT JOIN TiposCosto TC ON TC.IdTipoCosto = C.IdTipoCosto
-LEFT JOIN Capacidades CAP ON SS.IdCapacidad = CAP.IdCapacidad
-LEFT JOIN TiposMontaje TM ON CAP.IdTipoMontaje = TM.IdTipoMontaje
-LEFT JOIN EstadosGenerales EST ON S.IdEstado = EST.IdEstado 
-LEFT JOIN Salones SAL ON SS.IdSalon = SAL.IdSalon
-WHERE S.IdSolicitud = @IdSolicitud AND S.IdEstado = 5
-GROUP BY 
-    S.IdSolicitud,
-    S.NombreEvento,
-    S.FechaEvento,
-    S.HoraInicio,
-    S.HoraFin,
-    S.Participantes,
-    S.Observaciones,
-    SS.IdSalon,
-    SS.IdCapacidad,
-    SS.Nota,
-    SE.Nombre,
-    SE.Empresa,
-    SE.Email,
-    SE.Telefono,
-    SSol.IdEmpleado,
-    EMP.Nombre,
-    EMP.Apellido,
-    EMP.Email,
-    DEP.Nombre,
-    SAL.Nombre,
-    TM.Nombre,
-    CAP.CantidadPersonas,
-    EST.Nombre
+        s.idsolicitud as "IdSolicitud",
+        s.nombreevento as "NombreEvento",
+        TO_CHAR(s.fechaevento, 'YYYY-MM-DD') as "FechaEvento",
+        TO_CHAR(s.horainicio, 'HH24:MI:SS') as "HoraInicio",
+        TO_CHAR(s.horafin, 'HH24:MI:SS') as "HoraFin",
+        s.participantes as "Participantes",
+        s.observaciones as "Observaciones",
+        ss.idsalon as "IdSalon",
+        ss.idcapacidad as "IdCapacidad",
+        ss.nota as "NotaSalon",
+        se.nombre as "NombreSolicitanteExterno",
+        se.empresa as "EmpresaExterna",
+        se.email as "EmailExterno",
+        se.telefono as "TelefonoExterno",
+        ssol.idempleado as "IdEmpleado",
+        CONCAT(emp.nombre, ' ', emp.apellido) as "NombreEmpleado",
+        emp.email as "EmailEmpleado",
+        dep.nombre as "DepartamentoEmpleado",
+        sal.nombre as "NombreSalon",
+        STRING_AGG(tc.nombre || ': ' || TO_CHAR(c.monto, 'FM999,999,999.00'), ' | ') as "CostosConcatenados",
+        tm.nombre as "NombreTipoMontaje",
+        cap.cantidadpersonas as "CantidadPersonas",
+        est.nombre as "EstadoSolicitud"
+      FROM solicitudes s
+      LEFT JOIN solicitudsalones ss ON s.idsolicitud = ss.idsolicitud
+      LEFT JOIN solicitudessolicitantes ssol ON ssol.idsolicitud = s.idsolicitud
+      LEFT JOIN solicitantesexternos se ON ssol.idsolicitanteexterno = se.idsolicitanteexterno
+      LEFT JOIN empleados emp ON ssol.idempleado = emp.idempleado
+      LEFT JOIN departamento dep ON emp.iddepartamento = dep.iddepartamento
+      LEFT JOIN costos c ON ss.idsalon = c.idsalon
+      LEFT JOIN tiposcosto tc ON tc.idtipocosto = c.idtipocosto
+      LEFT JOIN capacidades cap ON ss.idcapacidad = cap.idcapacidad
+      LEFT JOIN tiposmontaje tm ON cap.idtipomontaje = tm.idtipomontaje
+      LEFT JOIN estadosgenerales est ON s.idestado = est.idestado 
+      LEFT JOIN salones sal ON ss.idsalon = sal.idsalon
+      WHERE s.idsolicitud = $1 AND s.idestado = 5
+      GROUP BY 
+        s.idsolicitud, s.nombreevento, s.fechaevento, s.horainicio, s.horafin, s.participantes, s.observaciones,
+        ss.idsalon, ss.idcapacidad, ss.nota, se.nombre, se.empresa, se.email, se.telefono, ssol.idempleado,
+        emp.nombre, emp.apellido, emp.email, dep.nombre, sal.nombre, tm.nombre, cap.cantidadpersonas, est.nombre
     `;
 
-    const solicitudResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(solicitudQuery);
+    const solicitudResult = await client.query(solicitudQuery, [idSolicitud]);
 
-    if (solicitudResult.recordset.length === 0) {
+    if (solicitudResult.rows.length === 0) {
       return res.status(404).json({ message: 'Solicitud no encontrada o no autorizada.' });
     }
 
-    const solicitud = solicitudResult.recordset[0];
+    const solicitud = solicitudResult.rows[0];
 
     // Obtener servicios seleccionados
-    const serviciosResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT 
-          SERV.Nombre AS NombreServicio,
-          SS.Nota
-        FROM SolicitudServicios SS
-        INNER JOIN Servicios SERV ON SS.IdServicio = SERV.IdServicio
-        INNER JOIN SolicitudSalones SSal ON SS.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
+    const serviciosResult = await client.query(`
+      SELECT 
+        serv.nombre as "NombreServicio",
+        ss.nota as "Nota"
+      FROM solicitudservicios ss
+      INNER JOIN servicios serv ON ss.idservicio = serv.idservicio
+      INNER JOIN solicitudsalones ssal ON ss.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
 
     // Obtener equipo seleccionado
-    const equipoResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT 
-          EQ.Nombre AS NombreEquipoOpcional,
-          SE.Nota
-        FROM SolicitudEquipo SE
-        INNER JOIN EquipoOpcional EQ ON SE.IdEquipo = EQ.IdEquipo
-        INNER JOIN SolicitudSalones SSal ON SE.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
+    const equipoResult = await client.query(`
+      SELECT 
+        eq.nombre as "NombreEquipoOpcional",
+        se.nota as "Nota"
+      FROM solicitudequipo se
+      INNER JOIN equipoopcional eq ON se.idequipo = eq.idequipo
+      INNER JOIN solicitudsalones ssal ON se.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
 
     // Obtener degustaciones seleccionadas
-    const degustacionesResult = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-		SELECT 
-          DEG.Nombre,
-          SD.Nota
-        FROM SolicitudDegustaciones SD
-        INNER JOIN Degustaciones DEG ON SD.IdDegustacion = DEG.IdDegustacion
-        INNER JOIN SolicitudSalones SSal ON SD.IdSolicitudSalon = SSal.IdSolicitudSalon
-        WHERE SSal.IdSolicitud = @IdSolicitud
-      `);
+    const degustacionesResult = await client.query(`
+      SELECT 
+        deg.nombre as "Nombre",
+        sd.nota as "Nota"
+      FROM solicituddegustaciones sd
+      INNER JOIN degustaciones deg ON sd.iddegustacion = deg.iddegustacion
+      INNER JOIN solicitudsalones ssal ON sd.idsolicitudsalon = ssal.idsolicitudsalon
+      WHERE ssal.idsolicitud = $1
+    `, [idSolicitud]);
 
     // Preparar datos para el contrato
     const contratoData = {
-      idSolicitud: solicitud.IdSolicitud,
-      nombreEvento: solicitud.NombreEvento,
-      fechaEvento: solicitud.FechaEvento,
-      horaInicio: solicitud.HoraInicio,
-      horaFin: solicitud.HoraFin,
-      participantes: solicitud.Participantes,
-      nombreSalon: solicitud.NombreSalon,
-      tipoMontaje: solicitud.NombreTipoMontaje,
-      capacidad: solicitud.CantidadPersonas,
-      costos: solicitud.CostosConcatenados || 'Por definir',
+      IdSolicitud: solicitud.IdSolicitud,
+      NombreEvento: solicitud.NombreEvento,
+      FechaEvento: solicitud.FechaEvento,
+      HoraInicio: solicitud.HoraInicio,
+      HoraFin: solicitud.HoraFin,
+      Participantes: solicitud.Participantes,
+      NombreSalon: solicitud.NombreSalon,
+      TipoMontaje: solicitud.NombreTipoMontaje,
+      Capacidad: solicitud.CantidadPersonas,
+      Costos: solicitud.CostosConcatenados || 'Por definir',
       
       // Datos del solicitante
-      solicitante: solicitud.IdEmpleado ? {
-        tipo: 'Interno',
-        nombre: solicitud.NombreEmpleado,
-        email: solicitud.EmailEmpleado,
-        departamento: solicitud.DepartamentoEmpleado
+      Solicitante: solicitud.IdEmpleado ? {
+        Tipo: 'Interno',
+        Nombre: solicitud.NombreEmpleado,
+        Email: solicitud.EmailEmpleado,
+        Departamento: solicitud.DepartamentoEmpleado
       } : {
-        tipo: 'Externo',
-        nombre: solicitud.NombreSolicitanteExterno,
-        empresa: solicitud.EmpresaExterna,
-        email: solicitud.EmailExterno,
-        telefono: solicitud.TelefonoExterno
+        Tipo: 'Externo',
+        Nombre: solicitud.NombreSolicitanteExterno,
+        Empresa: solicitud.EmpresaExterna,
+        Email: solicitud.EmailExterno,
+        Telefono: solicitud.TelefonoExterno
       },
       
       // Servicios y adicionales
-      servicios: serviciosResult.recordset,
-      equipo: equipoResult.recordset,
-      degustaciones: degustacionesResult.recordset,
+      Servicios: serviciosResult.rows,
+      Equipo: equipoResult.rows,
+      Degustaciones: degustacionesResult.rows,
       
       // Fecha de generación
-      fechaGeneracion: new Date().toLocaleDateString('es-ES'),
-      horaGeneracion: new Date().toLocaleTimeString('es-ES')
+      FechaGeneracion: new Date().toLocaleDateString('es-ES'),
+      HoraGeneracion: new Date().toLocaleTimeString('es-ES')
     };
 
     // Enviar datos del contrato (el frontend generará el PDF)
@@ -991,18 +969,21 @@ GROUP BY
 });
 
 // =============================================================
-// GET: OBTENER TIPOS DE PAGO
+// GET: OBTENER TIPOS DE PAGO - POSTGRESQL
 // =============================================================
 router.get('/tipos-pago', async (req, res) => {
   logger.info('[INFO] Obteniendo tipos de pago');
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query('SELECT IdTipoPago, Nombre, Descripcion FROM TiposPago ORDER BY Nombre');
+    const result = await client.query(`
+      SELECT idtipopago as "IdTipoPago", nombre as "Nombre", descripcion as "Descripcion" 
+      FROM tipospago 
+      ORDER BY nombre
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener tipos de pago: ${err.message}`);
@@ -1011,31 +992,29 @@ router.get('/tipos-pago', async (req, res) => {
 });
 
 // =============================================================
-// GET: OBTENER COSTOS DEL SALÓN (USANDO TABLAS EXISTENTES)
+// GET: OBTENER COSTOS DEL SALÓN - POSTGRESQL
 // =============================================================
 router.get('/salones/:id/costos', async (req, res) => {
   const idSalon = req.params.id;
   logger.info(`[INFO] Obteniendo costos para salón: ${idSalon}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdSalon', sql.Int, idSalon)
-      .query(`
-        SELECT 
-          PrecioBase = ISNULL((SELECT TOP 1 Monto FROM Costos WHERE IdSalon = @IdSalon AND IdTipoCosto = 1 ORDER BY FechaRegistro DESC), 0),
-          DepositoReembolsable = ISNULL((SELECT TOP 1 Monto FROM Costos WHERE IdSalon = @IdSalon AND IdTipoCosto = 2 ORDER BY FechaRegistro DESC), 0)
-      `);
+    const result = await client.query(`
+      SELECT 
+        COALESCE((SELECT monto FROM costos WHERE idsalon = $1 AND idtipocosto = 1 ORDER BY fecharegistro DESC LIMIT 1), 0) as "PrecioBase",
+        COALESCE((SELECT monto FROM costos WHERE idsalon = $1 AND idtipocosto = 2 ORDER BY fecharegistro DESC LIMIT 1), 0) as "DepositoReembolsable"
+    `, [idSalon]);
     
     // Si ambos son 0, probablemente no hay costos registrados
-    if (result.recordset[0].PrecioBase === 0 && result.recordset[0].DepositoReembolsable === 0) {
+    if (result.rows[0].PrecioBase === 0 && result.rows[0].DepositoReembolsable === 0) {
       return res.status(404).json({ 
         message: 'No se encontraron costos registrados para este salón' 
       });
     }
     
-    res.status(200).json(result.recordset[0]);
+    res.status(200).json(result.rows[0]);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener costos del salón: ${err.message}`);
@@ -1044,7 +1023,7 @@ router.get('/salones/:id/costos', async (req, res) => {
 });
 
 // =============================================================
-// POST: CREAR PAGO PARA SOLICITUD
+// POST: CREAR PAGO PARA SOLICITUD - POSTGRESQL
 // =============================================================
 router.post('/:id/pago', async (req, res) => {
   const idSolicitud = req.params.id;
@@ -1052,95 +1031,89 @@ router.post('/:id/pago', async (req, res) => {
   
   logger.info(`[INFO] Creando pago para solicitud: ${idSolicitud}`);
   
-  let transaction;
+  let client;
   
   try {
-    const pool = await connectDB();
-    transaction = new sql.Transaction(pool);
-    await transaction.begin();
+    client = await connectDB();
+    await client.query('BEGIN');
 
     // Verificar que la solicitud existe y está pendiente
-    const solicitudCheck = await transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query('SELECT IdEstado FROM Solicitudes WHERE IdSolicitud = @IdSolicitud');
+    const solicitudCheck = await client.query(
+      'SELECT idestado FROM solicitudes WHERE idsolicitud = $1', 
+      [idSolicitud]
+    );
     
-    if (solicitudCheck.recordset.length === 0) {
-      await transaction.rollback();
+    if (solicitudCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
       return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
     
-    const estadoActual = solicitudCheck.recordset[0].IdEstado;
+    const estadoActual = solicitudCheck.rows[0].idestado;
     if (estadoActual !== 4) { // 4 = PENDIENTE
-      await transaction.rollback();
+      await client.query('ROLLBACK');
       return res.status(400).json({ message: 'Solo se pueden crear pagos para solicitudes pendientes' });
     }
 
     // Insertar el pago
-    const pagoResult = await transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdTipoPago', sql.Int, pagoData.IdTipoPago)
-      .input('MontoTotal', sql.Decimal(10,2), pagoData.MontoTotal)
-      .input('Anticipo', sql.Decimal(10,2), pagoData.Anticipo)
-      .input('Saldo', sql.Decimal(10,2), pagoData.Saldo)
-      .input('NumeroComprobante', sql.VarChar(100), pagoData.NumeroComprobante || null)
-      .input('Observaciones', sql.VarChar(500), pagoData.Observaciones || null)
-      .query(`
-        INSERT INTO Pagos (IdSolicitud, IdTipoPago, MontoTotal, Anticipo, Saldo, NumeroComprobante, Observaciones, Estado)
-        VALUES (@IdSolicitud, @IdTipoPago, @MontoTotal, @Anticipo, @Saldo, @NumeroComprobante, @Observaciones, 'Completado');
-        SELECT SCOPE_IDENTITY() AS IdPago;
-      `);
+    const pagoResult = await client.query(`
+      INSERT INTO pagos (idsolicitud, idtipopago, montototal, anticipo, saldo, numerocomprobante, observaciones, estado)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, 'Completado') RETURNING idpago
+    `, [
+      idSolicitud, pagoData.IdTipoPago, pagoData.MontoTotal, pagoData.Anticipo, 
+      pagoData.Saldo, pagoData.NumeroComprobante || null, pagoData.Observaciones || null
+    ]);
     
-    const idPago = pagoResult.recordset[0].IdPago;
+    const idPago = pagoResult.rows[0].idpago;
     
     // Actualizar estado de la solicitud a AUTORIZADA (5)
-    await transaction.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .input('IdEstado', sql.Int, 5) // 5 = AUTORIZADA
-      .query('UPDATE Solicitudes SET IdEstado = @IdEstado WHERE IdSolicitud = @IdSolicitud');
+    await client.query(
+      'UPDATE solicitudes SET idestado = $1 WHERE idsolicitud = $2',
+      [5, idSolicitud]
+    );
     
-    await transaction.commit();
+    await client.query('COMMIT');
     
     logger.info(`[INFO] Pago ${idPago} creado y solicitud ${idSolicitud} autorizada`);
     
     res.status(201).json({
-      message: 'Pago registrado y solicitud autorizada exitosamente',
-      idPago: idPago,
-      idSolicitud: idSolicitud
+      Message: 'Pago registrado y solicitud autorizada exitosamente',
+      IdPago: idPago,
+      IdSolicitud: idSolicitud
     });
     
   } catch (err) {
-    if (transaction) await transaction.rollback();
+    await client.query('ROLLBACK');
     logger.error(`[ERROR] Error al crear pago: ${err.message}`);
     res.status(500).json({ error: 'Error al procesar el pago: ' + err.message });
+  } finally {
+    if (client) client.release();
   }
 });
 
 // =============================================================
-// GET: OBTENER PAGO POR SOLICITUD
+// GET: OBTENER PAGO POR SOLICITUD - POSTGRESQL
 // =============================================================
 router.get('/:id/pago', async (req, res) => {
   const idSolicitud = req.params.id;
   logger.info(`[INFO] Obteniendo pago para solicitud: ${idSolicitud}`);
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .input('IdSolicitud', sql.Int, idSolicitud)
-      .query(`
-        SELECT 
-          P.*,
-          TP.Nombre AS TipoPagoNombre
-        FROM Pagos P
-        INNER JOIN TiposPago TP ON P.IdTipoPago = TP.IdTipoPago
-        WHERE P.IdSolicitud = @IdSolicitud
-      `);
+    const result = await client.query(`
+      SELECT 
+        p.*,
+        tp.nombre as "TipoPagoNombre"
+      FROM pagos p
+      INNER JOIN tipospago tp ON p.idtipopago = tp.idtipopago
+      WHERE p.idsolicitud = $1
+    `, [idSolicitud]);
     
-    if (result.recordset.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(404).json({ message: 'No se encontró pago para esta solicitud' });
     }
     
-    res.status(200).json(result.recordset[0]);
+    res.status(200).json(result.rows[0]);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener pago: ${err.message}`);
@@ -1149,18 +1122,21 @@ router.get('/:id/pago', async (req, res) => {
 });
 
 // =============================================================
-// GET: OBTENER TIPOS DE COSTOS DISPONIBLES
+// GET: OBTENER TIPOS DE COSTOS DISPONIBLES - POSTGRESQL
 // =============================================================
 router.get('/tipos-costo', async (req, res) => {
   logger.info('[INFO] Obteniendo tipos de costo');
   
   try {
-    const pool = await connectDB();
+    const client = await connectDB();
     
-    const result = await pool.request()
-      .query('SELECT IdTipoCosto, Nombre FROM TiposCosto ORDER BY Nombre');
+    const result = await client.query(`
+      SELECT idtipocosto as "IdTipoCosto", nombre as "Nombre" 
+      FROM tiposcosto 
+      ORDER BY nombre
+    `);
     
-    res.status(200).json(result.recordset);
+    res.status(200).json(result.rows);
     
   } catch (err) {
     logger.error(`[ERROR] Error al obtener tipos de costo: ${err.message}`);

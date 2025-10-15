@@ -22,7 +22,8 @@ const flotasRoutes = require('./Flota/flotas');
 require('dotenv').config();
 
 app.use(cors({
-  origin: 'https://anacafe-recurso.web.app',
+  //origin: 'https://anacafe-recurso.web.app',
+  origin: 'http://localhost:4200',
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true
 }));
