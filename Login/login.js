@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const { connectDB } = require('../database.js');
 
 // Clave secreta para JWT
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || '413fIL$18';
 
 // Función auxiliar para registrar historial
 async function registrarHistorial(client, idUsuario, idTipoLogin, idMotivo) {
@@ -26,6 +26,7 @@ async function registrarHistorial(client, idUsuario, idTipoLogin, idMotivo) {
 router.post('/', async (req, res) => {
     const { email, clave } = req.body;
     console.log("Intento de login con:", { email, clave });
+    
 
     let client;
     try {
