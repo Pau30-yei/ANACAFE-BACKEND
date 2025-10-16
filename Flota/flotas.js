@@ -1180,9 +1180,9 @@ router.post('/vehiculos', async (req, res) => {
       INSERT INTO vehiculos (
         marca, modelo, anio, placa, numerochasis, numeromotor, color, 
         idtipovehiculo, tarjetacirculacion, fechavencimientotarjeta, 
-        polizaseguro, fechavencimientoseguro, kilometrajeactual, observaciones
+        polizaseguro, fechavencimientoseguro, kilometrajeactual,idestado, observaciones
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING idvehiculo
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,8, $14) RETURNING idvehiculo
     `, [
       data.Marca, data.Modelo, data.Anio, data.Placa, data.NumeroChasis, data.NumeroMotor, data.Color,
       data.IdTipoVehiculo, data.TarjetaCirculacion, data.FechaVencimientoTarjeta,
